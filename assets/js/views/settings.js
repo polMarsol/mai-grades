@@ -127,10 +127,15 @@ export function renderSettings(root, params) {
       </div>
     </section>
 
-    <section class="block about" aria-labelledby="h-about">
+    <section class="block" aria-labelledby="h-about">
       <h2 class="section-title" id="h-about">About</h2>
-      <p class="muted">${icon('lock')}Your grades are stored only in this browser. There is no account and nothing is sent anywhere.</p>
-      <p class="muted">Weights and dates come from the 2026–27 course guides for the Master in Artificial Intelligence (UPC, UB, URV). Professors can change them, so check the official guide and adjust with Edit structure.</p>
+      <div class="card list">
+        <a class="list-row" href="#/about">
+          <div class="list-text"><span>What MAI Grades is for</span><span class="muted small">How it works, and how to report a change or contribute.</span></div>
+          ${icon('arrow')}
+        </a>
+      </div>
+      <p class="muted small" style="margin-top:12px">${icon('lock')} Your grades are stored only in this browser. There is no account and nothing is sent anywhere.</p>
     </section>`;
 
   const rerender = () => renderSettings(root, {});

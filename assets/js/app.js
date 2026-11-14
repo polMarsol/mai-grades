@@ -2,8 +2,9 @@ import { renderHome } from './views/home.js';
 import { renderSubject } from './views/subject.js';
 import { renderOverview } from './views/overview.js';
 import { renderSettings } from './views/settings.js';
+import { renderAbout } from './views/about.js';
 import { applyTheme, cycleTheme, getTheme } from './theme.js';
-import { reveal, spotlight, reducedMotion, toast, icon } from './ui.js';
+import { reveal, reducedMotion, toast, icon } from './ui.js';
 import { takeMigrationNotice } from './store.js';
 
 const main = document.getElementById('main');
@@ -18,10 +19,11 @@ function parseRoute() {
   if (parts[0] === 's' && parts[1]) return { name: 'subject', id: decodeURIComponent(parts[1]), params };
   if (parts[0] === 'overview') return { name: 'overview', params };
   if (parts[0] === 'settings') return { name: 'settings', params };
+  if (parts[0] === 'about') return { name: 'about', params };
   return { name: 'home', params };
 }
 
-const TITLES = { home: 'Subjects', overview: 'Overview', settings: 'Settings' };
+const TITLES = { home: 'Subjects', overview: 'Overview', settings: 'Settings', about: 'About' };
 
 function moveIndicator() {
   const active = nav.querySelector('[aria-current="page"]');
@@ -48,11 +50,11 @@ function render() {
     if (r.name === 'home') renderHome(main);
     else if (r.name === 'subject') renderSubject(main, r.id);
     else if (r.name === 'overview') renderOverview(main);
+    else if (r.name === 'about') renderAbout(main);
     else renderSettings(main, r.params);
     const h1 = main.querySelector('h1');
     document.title = `${r.name === 'subject' ? h1?.textContent : TITLES[r.name]} – MAI Grades`;
     reveal(main);
-    spotlight(main);
   };
 
   if (!first && document.startViewTransition && !reducedMotion()) document.startViewTransition(draw);

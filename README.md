@@ -10,6 +10,8 @@ A small, private grade tracker for students of the Master in Artificial Intellig
 - Ungraded dates (choosing a topic, a contribution rubric) appear alongside graded deadlines.
 - When the course guides change, subjects you haven't edited update automatically; edited ones offer a one-click restore.
 
+The About page explains what the app is for and how to report a change: by email (the address is only assembled on click, so it is not in the page source) or by forking this repository and opening a pull request.
+
 Everything is stored in the browser (`localStorage`). There is no account, no server and no tracking. Export a JSON backup in Settings to move your grades to another device.
 
 ## Subjects included (2026–27, first semester)
@@ -49,7 +51,7 @@ assets/css/app.css    all styles, light and dark tokens
 assets/js/grades.js   grade engine (pure functions, tested)
 assets/js/catalog.js  official subject structures
 assets/js/store.js    local-first state
-assets/js/views/      home, subject, overview, settings
+assets/js/views/      home, subject, overview, settings, about
 assets/js/editor.js   structure editor
 ```
 

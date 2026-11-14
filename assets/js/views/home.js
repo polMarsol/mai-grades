@@ -99,9 +99,9 @@ export function renderHome(root) {
       ${evs
         .map(
           ({ s, ev }, i) => `
-        <a class="tile" href="#/s/${esc(s.id)}" data-color="${esc(s.color)}" data-spotlight data-reveal style="--i:${i}">
+        <a class="tile" href="#/s/${esc(s.id)}" data-color="${esc(s.color)}" data-reveal style="--i:${i}">
           <span class="tile-top">
-            <span class="tile-code">${esc(s.code)}</span>
+            <span class="tile-code"><span class="code-dot" aria-hidden="true"></span>${esc(s.code)}</span>
             ${ev.status === 'not-started' ? '' : statusPill(ev.status)}
           </span>
           <span class="tile-name">${esc(s.name)}</span>
