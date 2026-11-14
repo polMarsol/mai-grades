@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en" class="is-loading">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>MAI Grades</title>
+  <meta name="description" content="Track your grades in the Master in Artificial Intelligence (UPC, UB, URV): final mark, what you need, what-if scenarios and deadlines. Private, offline, no account.">
+  <meta name="theme-color" content="#f5f5f7">
+  <meta name="color-scheme" content="light dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="MAI Grades">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/inter-latin-opsz.woff2" as="font" type="font/woff2" crossorigin>
+  <script>
+    // Apply theme and intro state before first paint (no flash).
+    (function () {
+      var d = document.documentElement, t = 'system';
+      try { t = localStorage.getItem('mai-grades:theme') || 'system'; } catch (e) {}
+      var dark = t === 'dark' || (t === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
+      d.dataset.theme = dark ? 'dark' : 'light';
+      var seen = false;
+      try { seen = sessionStorage.getItem('mai-grades:intro') === '1'; } catch (e) {}
+      if (seen || matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.remove('is-loading');
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/css/app.css">
+  <script type="module" src="assets/js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="bg" aria-hidden="true">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+  </div>
+
+  <div id="loader" class="loader" role="status" aria-label="Loading MAI Grades">
+    <svg class="logo logo-draw" viewBox="0 0 48 48" aria-hidden="true">
+      <rect class="logo-frame" x="3" y="3" width="42" height="42" rx="13" pathLength="1"/>
+      <path class="logo-track" d="M13 31h22" pathLength="1"/>
+      <path class="logo-fill" d="M13 31h15" pathLength="1"/>
+      <path class="logo-needle" d="M28 31V17" pathLength="1"/>
+      <circle class="logo-pin" cx="28" cy="15.5" r="2.6"/>
+    </svg>
+    <p class="loader-word">MAI Grades</p>
+    <button class="loader-skip" type="button">Skip</button>
+  </div>
+
+  <header class="nav-wrap">
+    <nav class="nav" aria-label="Main">
+      <a class="brand" href="#/" aria-label="MAI Grades, home">
+        <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
+          <rect class="logo-frame" x="3" y="3" width="42" height="42" rx="13"/>
+          <path class="logo-track" d="M13 31h22"/>
+          <path class="logo-fill" d="M13 31h15"/>
+          <path class="logo-needle" d="M28 31V17"/>
+          <circle class="logo-pin" cx="28" cy="15.5" r="2.6"/>
+        </svg>
+        <span>MAI Grades</span>
+      </a>
+      <div class="nav-links">
+        <span class="nav-indicator" aria-hidden="true"></span>
+        <a href="#/" data-section="home">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>
+          <span>Subjects</span>
+        </a>
+        <a href="#/overview" data-section="overview">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+          <span>Overview</span>
+        </a>
+        <a href="#/settings" data-section="settings">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M2.5 12h3M18.5 12h3M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></svg>
+          <span>Settings</span>
+        </a>
+      </div>
+      <button class="icon-btn theme-btn" id="theme-btn" type="button" aria-label="Change theme"></button>
+    </nav>
+  </header>
+
+  <main id="main" class="main" tabindex="-1"></main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <noscript><p class="noscript">MAI Grades needs JavaScript to run.</p></noscript>
+</body>
+</html>
