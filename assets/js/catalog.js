@@ -4,7 +4,10 @@
 // assumption is listed in `notes` so students can adjust it in the editor.
 // `milestones` are dates that matter but carry no grade (topic choice, rubrics…).
 
-export const CATALOG_VERSION = '2026-27.2';
+export const CATALOG_VERSION = '2026-27.3';
+
+// Day the structures below were last checked against the course guides and announcements.
+export const CHECKED = '2026-11-14';
 
 export const COLORS = ['blue', 'orange', 'aqua', 'violet', 'magenta', 'green', 'yellow', 'red'];
 
@@ -114,8 +117,8 @@ export const CATALOG = [
     color: 'orange',
     rule: 'Final = 50% Practicum + 50% Theory. Both parts must be passed.',
     milestones: [
-      { id: 'cv-paper-topic', name: 'Paper presentation: article and group', date: '2026-11-16' },
-      { id: 'cv-paper-slides', name: 'Paper presentation: slides and critical discussion', date: '2026-12-13' },
+      { id: 'cv-paper-topic', name: 'Paper presentation: article and group', date: '2026-11-16', time: 'by 23:00' },
+      { id: 'cv-paper-slides', name: 'Paper presentation: slides and critical discussion', date: '2026-12-13', time: 'by 23:00' },
     ],
     source: 'CV 2026-27 Course Presentation and Campus Virtual',
     notes: [
@@ -135,7 +138,7 @@ export const CATALOG = [
           { id: 'cv-lab3', name: 'Lab 3', weight: 1 },
           { id: 'cv-lab4', name: 'Lab 4', weight: 1 },
           { id: 'cv-lab5', name: 'Lab 5', weight: 1 },
-          { id: 'cv-paper', name: 'Paper presentation', weight: 1, date: '2026-12-15' },
+          { id: 'cv-paper', name: 'Paper presentation', weight: 1, date: '2026-12-15', time: '15:30–18:30' },
         ],
       },
       {
@@ -191,14 +194,47 @@ export const CATALOG = [
     ],
     items: [
       { id: 'par-plan-prac', name: 'Planning practical exercise', weight: 25, date: '2026-11-06', retake: 8 },
-      { id: 'par-plan-exam', name: 'Planning theory exam', weight: 30, min: 5, date: '2026-11-18', kind: 'exam' },
+      { id: 'par-plan-exam', name: 'Planning theory exam', weight: 30, min: 5, date: '2026-11-18', time: '11:00–13:00', place: 'Rooms A215 and A207, building E1', kind: 'exam' },
       { id: 'par-ar-prac', name: 'Approximate Reasoning practical exercise', weight: 15, date: '2026-12-14', retake: 8 },
       { id: 'par-ar-exam', name: 'Approximate Reasoning theory exam', weight: 30, min: 5, date: '2027-01-13', kind: 'exam' },
     ],
   },
 ];
 
+for (const s of CATALOG) s.checked = CHECKED;
+
 export const catalogById = Object.fromEntries(CATALOG.map((s) => [s.id, s]));
+
+// Changes announced during the course, newest first. `date` is the day the app was updated.
+export const NEWS = [
+  {
+    date: '2026-11-14',
+    subject: 'iml',
+    title: 'Work 3 is now due on 6 December',
+    detail: 'The Work 3 exam is replaced by an ungraded contribution rubric.',
+  },
+  {
+    date: '2026-11-14',
+    subject: 'par',
+    title: 'Planning exam moved to Wednesday 18 November',
+    detail: '11:00–13:00, rooms A215 and A207 (building E1). 10 true/false and 10 multiple-choice questions.',
+  },
+  {
+    date: '2026-11-14',
+    subject: 'cv',
+    title: 'Paper presentation dates',
+    detail: 'Article and group by 16 November; slides and critical discussion by 13 December.',
+  },
+];
+
+// Made-up grades for the "See an example" mode.
+export const DEMO_GRADES = {
+  iml: { 'iml-w2-code': { v: 8.5 }, 'iml-w2-report': { v: 7.8 }, 'iml-w2-exam': { v: 6.4 }, 'iml-tests': { v: 9 } },
+  ihlt: { 'ihlt-sessions': { v: 9 } },
+  ci: { 'ci-ec': { v: 8.2 } },
+  cv: { 'cv-lab1': { v: 9 }, 'cv-lab2': { v: 8.5 }, 'cv-mid1': { v: 4.6 } },
+  par: { 'par-plan-prac': { v: 7.5 } },
+};
 
 /** Starting structure for a subject the student creates themselves. */
 export function blankSubject(id, color) {

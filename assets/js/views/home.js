@@ -1,19 +1,23 @@
-import { getState, getGrades, getTarget, startWith, catalog } from '../store.js';
+import { getState, getGrades, startWith, loadDemo, catalog } from '../store.js';
+import { NEWS } from '../catalog.js';
 import { evaluate, datedItems, weightedMean } from '../grades.js';
-import { esc, fmt, pct, scale, icon, fmtDate, relDay, daysFrom, statusPill, countTo } from '../ui.js';
+import { esc, fmt, pct, scale, icon, fmtDate, relDay, daysFrom, statusPill, countTo, go } from '../ui.js';
+import { mountInstallHint } from '../install.js';
 
-export function upcoming(subjects, limit = Infinity, horizon = Infinity) {
+/** Dated items from `from` to `horizon` days ahead, soonest first. */
+export function upcoming(subjects, limit = Infinity, horizon = Infinity, from = 0) {
   const rows = [];
   for (const s of subjects) {
     for (const n of datedItems(s)) {
       const d = daysFrom(n.date);
-      if (d >= 0 && d <= horizon) rows.push({ s, n, d });
+      if (d >= from && d <= horizon) rows.push({ s, n, d });
     }
   }
   return rows.sort((a, b) => a.d - b.d || a.s.code.localeCompare(b.s.code)).slice(0, limit);
 }
 
 export function deadlineRow({ s, n }) {
+  const where = [n.item.time, n.item.place].filter(Boolean).map(esc).join(', ');
   return `
     <li class="deadline" data-color="${esc(s.color)}">
       <time class="deadline-date" datetime="${n.date}">
@@ -23,6 +27,21 @@ export function deadlineRow({ s, n }) {
       <div class="deadline-text">
         <a href="#/s/${esc(s.id)}" class="deadline-title"><span class="code-dot" aria-hidden="true"></span>${esc(s.code)}: ${esc(n.item.name)}</a>
         <span class="muted">${relDay(n.date)}, ${n.isMilestone ? 'no grade' : `${pct(n.frac)} of the final mark`}</span>
+        ${where ? `<span class="deadline-where">${where}</span>` : ''}
+      </div>
+    </li>`;
+}
+
+function newsRow(item, s) {
+  return `
+    <li class="deadline" data-color="${esc(s.color)}">
+      <time class="deadline-date" datetime="${item.date}">
+        <span>${fmtDate(item.date, { day: 'numeric' })}</span>
+        <small>${fmtDate(item.date, { month: 'short' })}</small>
+      </time>
+      <div class="deadline-text">
+        <a href="#/s/${esc(s.id)}" class="deadline-title"><span class="code-dot" aria-hidden="true"></span>${esc(s.code)}: ${esc(item.title)}</a>
+        <span class="muted">${esc(item.detail)}</span>
       </div>
     </li>`;
 }
@@ -53,8 +72,9 @@ function onboarding(root) {
       </fieldset>
       <div class="pick-actions">
         <button class="btn btn-primary btn-lg" type="submit" id="pick-go">Start tracking</button>
-        <p class="muted small">You can add optional subjects or build your own later in Settings.</p>
+        <button class="btn btn-ghost btn-lg" type="button" id="pick-demo">See an example</button>
       </div>
+      <p class="muted small pick-note">The example fills in made-up grades so you can look around. You can add optional subjects later in Settings.</p>
     </form>`;
 
   const form = root.querySelector('#pick');
@@ -69,7 +89,11 @@ function onboarding(root) {
     e.preventDefault();
     const ids = [...form.querySelectorAll('input:checked')].map((i) => i.value);
     startWith(ids);
-    location.hash = ids.length ? '#/' : '#/settings';
+    go(ids.length ? '#/' : '#/settings');
+  });
+  root.querySelector('#pick-demo').addEventListener('click', () => {
+    loadDemo();
+    go('#/');
   });
 }
 
@@ -81,19 +105,36 @@ export function renderHome(root) {
   const avg = weightedMean(evs.map(({ s, ev }) => ({ value: ev.average, ects: s.ects })));
   const totalEcts = evs.reduce((a, { s }) => a + (Number(s.ects) || 0), 0);
   const gradedShare = totalEcts ? evs.reduce((a, { s, ev }) => a + ev.gradedFrac * (Number(s.ects) || 0), 0) / totalEcts : 0;
-  const next = upcoming(st.subjects, 4, 45);
+  const week = upcoming(st.subjects, Infinity, 7);
+  const later = upcoming(st.subjects, 4, 45, 8);
+  const byId = Object.fromEntries(st.subjects.map((s) => [s.id, s]));
+  const news = NEWS.filter((n) => byId[n.subject]).slice(0, 4);
 
   root.innerHTML = `
     <section class="home-head">
-      <div>
-        <h1 class="display">Your subjects</h1>
-        <p class="lede">${
-          avg == null
-            ? 'Add your first grade to see your average.'
-            : `Average <strong class="num" id="home-avg">${fmt(avg)}</strong> across ${pct(gradedShare)} of the semester graded so far.`
-        }</p>
-      </div>
+      <h1 class="display">Your subjects</h1>
+      <p class="lede">${
+        avg == null
+          ? 'Add your first grade to see your average.'
+          : `Average <strong class="num" id="home-avg">${fmt(avg)}</strong> across ${pct(gradedShare)} of the semester graded so far.`
+      }</p>
     </section>
+
+    ${
+      st.subjects.length
+        ? `<section class="week" aria-labelledby="h-week">
+            <div class="block-head">
+              <h2 class="section-title" id="h-week">This week</h2>
+              <a class="link" href="#/overview">All deadlines</a>
+            </div>
+            ${
+              week.length
+                ? `<ul class="deadlines">${week.map(deadlineRow).join('')}</ul>`
+                : '<p class="muted">Nothing due in the next 7 days.</p>'
+            }
+          </section>`
+        : ''
+    }
 
     <section class="tiles" aria-label="Subjects">
       ${evs
@@ -128,16 +169,25 @@ export function renderHome(root) {
     </section>
 
     ${
-      next.length
+      later.length
         ? `<section class="block" aria-labelledby="h-next">
-            <div class="block-head">
-              <h2 class="section-title" id="h-next">Coming up</h2>
-              <a class="link" href="#/overview">All deadlines</a>
-            </div>
-            <ul class="deadlines">${next.map(deadlineRow).join('')}</ul>
+            <div class="block-head"><h2 class="section-title" id="h-next">Coming up</h2></div>
+            <ul class="deadlines">${later.map(deadlineRow).join('')}</ul>
           </section>`
         : ''
-    }`;
+    }
+
+    ${
+      news.length
+        ? `<section class="block" aria-labelledby="h-news">
+            <div class="block-head"><h2 class="section-title" id="h-news">Course news</h2></div>
+            <ul class="deadlines">${news.map((n) => newsRow(n, byId[n.subject])).join('')}</ul>
+          </section>`
+        : ''
+    }
+
+    <div data-install-slot></div>`;
 
   countTo(root.querySelector('#home-avg'), avg);
+  mountInstallHint(root.querySelector('[data-install-slot]'));
 }

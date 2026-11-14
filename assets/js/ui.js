@@ -66,6 +66,7 @@ const PATHS = {
   download: '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
   upload: '<path d="M12 20V9M7 14l5-5 5 5M5 4h14"/>',
   flask: '<path d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3"/><path d="M7.5 15h9"/>',
+  share: '<path d="M12 15V4M8 8l4-4 4 4"/><path d="M5 12v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>',
   mail: '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.5 7.5l8.5 6 8.5-6"/>',
   external: '<path d="M8 16L16 8M9.5 8H16v6.5"/>',
   copy: '<rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2.5"/><path d="M15.5 8.5V6.5A2.5 2.5 0 0 0 13 4H6.5A2.5 2.5 0 0 0 4 6.5V13a2.5 2.5 0 0 0 2.5 2.5h2"/>',
@@ -189,6 +190,12 @@ export function spotlight(root = document) {
       el.style.setProperty('--my', `${e.clientY - r.top}px`);
     });
   });
+}
+
+/** Navigate to a route, re-rendering even when the hash is already there. */
+export function go(hash) {
+  if (location.hash === hash) window.dispatchEvent(new Event('hashchange'));
+  else location.hash = hash;
 }
 
 let toastTimer;

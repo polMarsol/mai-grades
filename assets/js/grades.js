@@ -102,6 +102,19 @@ export function findItem(items, id) {
   return null;
 }
 
+/** Names from the top-level item down to `id`, e.g. ['Work', 'Work 2', 'Code']. */
+export function itemPath(items, id, trail = []) {
+  for (const it of items) {
+    const here = [...trail, it.name];
+    if (it.id === id) return here;
+    if (it.children?.length) {
+      const f = itemPath(it.children, id, here);
+      if (f) return f;
+    }
+  }
+  return null;
+}
+
 function hasUngraded(item, grades) {
   if (!item.children?.length) return leafValue(item, grades[item.id]) == null;
   return item.children.some((c) => hasUngraded(c, grades));

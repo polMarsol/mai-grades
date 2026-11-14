@@ -1,5 +1,5 @@
 import { getState, getSubject, addFromCatalog, createCustom, moveSubject, exportData, importData, eraseAll, catalog } from '../store.js';
-import { esc, icon, toast, download, confirmDialog, openDialog } from '../ui.js';
+import { esc, icon, toast, download, confirmDialog, openDialog, go } from '../ui.js';
 import { openEditor } from '../editor.js';
 import { buildICS } from '../ics.js';
 import { getTheme, setTheme } from '../theme.js';
@@ -193,7 +193,7 @@ export function renderSettings(root, params) {
     if (ok) {
       eraseAll();
       toast('All data erased');
-      location.hash = '#/';
+      go('#/');
     }
   });
 

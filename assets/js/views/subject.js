@@ -1,5 +1,7 @@
 import { getSubject, getGrades, getTarget, setGrade, setRetake, setTarget, resetStructure } from '../store.js';
-import { evaluate, needed, parseGrade, leafValue, flatten, PASS } from '../grades.js';
+import { evaluate, needed, parseGrade, leafValue, flatten, findItem, itemPath, PASS } from '../grades.js';
+import { catalogById } from '../catalog.js';
+import { shareLink, needCard, shareImage } from '../share.js';
 import { esc, fmt, pct, pctFine, scale, updateScale, icon, fmtDate, relDay, statusPill, countTo, toast } from '../ui.js';
 import { openEditor } from '../editor.js';
 
@@ -29,6 +31,12 @@ function leafRow(s, n, grades) {
           : ''
       }
       <span class="leaf-err" id="err-${esc(it.id)}" role="alert"></span>
+      ${
+        // group work only: exams and quizzes are individual
+        it.kind !== 'exam' && it.kind !== 'test' && catalogById[s.id] && findItem(catalogById[s.id].items, it.id)
+          ? `<button class="link-btn" type="button" data-share-grade ${val == null ? 'hidden' : ''}>${icon('share')}Share with your team</button>`
+          : ''
+      }
     </div>
     <div class="leaf-sim">
       <input type="range" min="0" max="10" step="0.1" aria-label="What-if grade for ${esc(it.name)}">
@@ -85,6 +93,13 @@ export function renderSubject(root, id) {
       <span class="chip">${esc(s.code)}</span>
       <h1 class="title">${esc(s.name)}</h1>
       <p class="muted">${[s.university, s.ects ? `${s.ects} ECTS` : ''].filter(Boolean).map(esc).join(', ')}${s.rule ? `. ${esc(s.rule)}` : ''}</p>
+      ${
+        s.checked && !s.edited && !s.custom
+          ? `<p class="checked">${icon('check')}Checked against the course guide on ${fmtDate(s.checked, { day: 'numeric', month: 'short', year: 'numeric' })}</p>`
+          : s.edited
+            ? '<p class="checked">Structure edited by you</p>'
+            : ''
+      }
     </header>
 
     ${
@@ -123,6 +138,7 @@ export function renderSubject(root, id) {
         </div>
       </div>
       <p class="need" id="need"></p>
+      <button class="btn btn-ghost btn-sm" type="button" id="share-need">${icon('share')}Share as an image</button>
       ${hasMins ? '<ul class="reqs" id="reqs" aria-label="Minimum grades"></ul>' : ''}
     </section>
 
@@ -218,6 +234,7 @@ export function renderSubject(root, id) {
       if (need.binding) html += ` The minimum on ${esc(need.binding.name)} (${need.binding.min}) is what sets this.`;
     }
     $('#need').innerHTML = html;
+    $('#share-need').hidden = need.kind === 'impossible';
 
     const reqs = $('#reqs');
     if (reqs) {
@@ -250,6 +267,7 @@ export function renderSubject(root, id) {
       const lid = row.dataset.id;
       const graded = g[lid]?.v != null;
       row.classList.toggle('is-sim', sim.on && !graded);
+      row.querySelector('[data-share-grade]')?.toggleAttribute('hidden', !graded);
       if (sim.on && !graded) {
         const r = row.querySelector('input[type=range]');
         const v = sim.values[lid] ?? 5;
@@ -354,6 +372,41 @@ export function renderSubject(root, id) {
     resetStructure(id);
     toast('Official structure restored');
     renderSubject(root, id);
+  });
+
+  // Share a group grade as a link the rest of the team can accept.
+  root.querySelectorAll('[data-share-grade]').forEach((b) =>
+    b.addEventListener('click', () => {
+      const lid = b.closest('.leaf').dataset.id;
+      const v = getGrades(id)[lid]?.v;
+      if (v == null) return;
+      const label = itemPath(s.items, lid).slice(-2).join(', ');
+      const url = `${location.origin}${location.pathname}#/add?s=${encodeURIComponent(id)}&i=${encodeURIComponent(lid)}&v=${v}`;
+      shareLink({ title: `${s.code}: ${label}`, text: `Our grade for ${s.code}, ${label}. Open the link to add it to MAI Grades.`, url });
+    }),
+  );
+
+  // Share "what I need" as an image. It shows the needed mark, never the grades you have.
+  $('#share-need').addEventListener('click', async () => {
+    const g = getGrades(id);
+    const target = getTarget(id);
+    const need = needed(s, g, target);
+    if (need.kind === 'impossible') return;
+    const open = flat.filter((n) => n.isLeaf && leafValue(n.item, g[n.item.id]) == null);
+    const an = target === 8 ? 'an' : 'a';
+    const goal = target === PASS ? `pass ${s.code}` : `get ${an} ${target} in ${s.code}`;
+    const card =
+      need.kind === 'secured'
+        ? { lead: 'Secured', big: String(target), tail: `My ${target} in ${s.code} is safe, whatever happens next.`, mark: target }
+        : {
+            lead: open.length === 1 ? 'I need' : 'I need an average of',
+            big: fmt(need.x),
+            tail: `${open.length === 1 ? `in the ${open[0].item.name}` : `on the remaining ${pct(evaluate(s, g).remainingFrac)}`} to ${goal}.`,
+            mark: need.x,
+          };
+    const color = getComputedStyle(root.querySelector('.hero')).getPropertyValue('--c').trim() || '#1d1d1f';
+    const blob = await needCard({ code: s.code, name: s.name, color, ...card });
+    shareImage(blob, `mai-grades-${s.code.toLowerCase()}.png`, `${card.lead} ${card.big} ${card.tail}`);
   });
 
   $('#edit').addEventListener('click', () =>

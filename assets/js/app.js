@@ -3,6 +3,9 @@ import { renderSubject } from './views/subject.js';
 import { renderOverview } from './views/overview.js';
 import { renderSettings } from './views/settings.js';
 import { renderAbout } from './views/about.js';
+import { renderAdd } from './views/add.js';
+import { getState, eraseAll } from './store.js';
+import { countVisit } from './install.js';
 import { applyTheme, cycleTheme, getTheme } from './theme.js';
 import { reveal, reducedMotion, toast, icon } from './ui.js';
 import { takeMigrationNotice } from './store.js';
@@ -20,10 +23,11 @@ function parseRoute() {
   if (parts[0] === 'overview') return { name: 'overview', params };
   if (parts[0] === 'settings') return { name: 'settings', params };
   if (parts[0] === 'about') return { name: 'about', params };
+  if (parts[0] === 'add') return { name: 'add', params };
   return { name: 'home', params };
 }
 
-const TITLES = { home: 'Subjects', overview: 'Overview', settings: 'Settings', about: 'About' };
+const TITLES = { home: 'Subjects', overview: 'Overview', settings: 'Settings', about: 'About', add: 'Add a grade' };
 
 function moveIndicator() {
   const active = nav.querySelector('[aria-current="page"]');
@@ -51,9 +55,22 @@ function render() {
     else if (r.name === 'subject') renderSubject(main, r.id);
     else if (r.name === 'overview') renderOverview(main);
     else if (r.name === 'about') renderAbout(main);
+    else if (r.name === 'add') renderAdd(main, r.params);
     else renderSettings(main, r.params);
     const h1 = main.querySelector('h1');
     document.title = `${r.name === 'subject' ? h1?.textContent : TITLES[r.name]} – MAI Grades`;
+    if (getState().demo && r.name !== 'add') {
+      const banner = document.createElement('div');
+      banner.className = 'sim-banner demo-banner';
+      banner.innerHTML = `<p>These are example grades, so you can look around.</p><button class="btn btn-primary btn-sm" type="button">Clear and start with yours</button>`;
+      banner.querySelector('button').addEventListener('click', () => {
+        eraseAll();
+        toast('Example cleared');
+        if (location.hash === '#/') render();
+        else location.hash = '#/';
+      });
+      main.prepend(banner);
+    }
     reveal(main);
   };
 
@@ -109,6 +126,7 @@ function runLoader() {
   setTimeout(done, 1500);
 }
 
+countVisit();
 applyTheme();
 themeIcon();
 runLoader();

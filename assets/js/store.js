@@ -1,5 +1,5 @@
 // Local-first state. Everything lives in this browser's localStorage.
-import { CATALOG, catalogById, CATALOG_VERSION, blankSubject, COLORS } from './catalog.js';
+import { CATALOG, catalogById, CATALOG_VERSION, blankSubject, COLORS, DEMO_GRADES } from './catalog.js';
 
 const KEY = 'mai-grades:v1';
 const clone = (x) => structuredClone(x);
@@ -79,6 +79,12 @@ export const getTarget = (id) => state.targets[id] ?? 5;
 export function startWith(ids) {
   state.subjects = ids.filter((id) => catalogById[id]).map(official);
   state.onboarded = true;
+  persist();
+}
+
+/** Load every subject with made-up grades so people can look around before typing anything. */
+export function loadDemo() {
+  state = { ...empty(), onboarded: true, demo: true, subjects: CATALOG.map((s) => official(s.id)), grades: clone(DEMO_GRADES) };
   persist();
 }
 

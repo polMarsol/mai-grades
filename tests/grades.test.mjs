@@ -102,3 +102,13 @@ test('course updates: PAR planning exam on 18 Nov, IML Work 3 on 6 Dec', () => {
   assert.equal(flatten(catalogById.iml.items).find((n) => n.item.id === 'iml-w3-code').item.date, '2026-12-06');
   assert.equal(flatten(catalogById.iml.items).find((n) => n.item.id === 'iml-w3-exam'), undefined);
 });
+
+test('example grades and news point at real subjects and items', async () => {
+  const { DEMO_GRADES, NEWS } = await import('../assets/js/catalog.js');
+  const { findItem, itemPath } = await import('../assets/js/grades.js');
+  for (const [sid, grades] of Object.entries(DEMO_GRADES)) {
+    for (const lid of Object.keys(grades)) assert.ok(findItem(catalogById[sid].items, lid), `${sid}/${lid}`);
+  }
+  for (const n of NEWS) assert.ok(catalogById[n.subject], n.subject);
+  assert.deepEqual(itemPath(catalogById.iml.items, 'iml-w2-code').slice(-2), ['Work 2: Lazy learning, SVM and RF', 'Code']);
+});
