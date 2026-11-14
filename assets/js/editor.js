@@ -62,6 +62,7 @@ export function openEditor(subject, onSaved) {
           <label class="field field-wide"><span>Name</span><input data-m="name" value="${esc(draft.name)}" required></label>
           <label class="field"><span>University</span><input data-m="university" value="${esc(draft.university)}" maxlength="12"></label>
           <label class="field"><span>ECTS</span><input data-m="ects" inputmode="decimal" value="${esc(draft.ects)}"></label>
+          <label class="field field-full"><span>Course page link (Campus Virtual, Atenea…)</span><input data-m="url" type="url" inputmode="url" placeholder="https://" value="${esc(draft.url ?? '')}"></label>
         </div>
         <fieldset class="swatches">
           <legend>Colour</legend>
@@ -226,6 +227,9 @@ export function openEditor(subject, onSaved) {
     const flat = flatten(draft.items);
     if (!String(draft.code).trim() || !String(draft.name).trim()) return (err.textContent = 'Add a code and a name for the subject.');
     if (!draft.items.length) return (err.textContent = 'Add at least one item.');
+    draft.url = String(draft.url ?? '').trim();
+    if (draft.url && !/^https?:\/\//i.test(draft.url)) return (err.textContent = 'The course page link must start with https://');
+    if (!draft.url) delete draft.url;
     if (flat.some((n) => !String(n.item.name).trim())) return (err.textContent = 'Every item needs a name.');
     if (flat.some((n) => !(Number(n.item.weight) > 0))) return (err.textContent = 'Every weight must be greater than 0.');
     if (flat.some((n) => n.item.min != null && !(n.item.min >= 0 && n.item.min <= 10)))

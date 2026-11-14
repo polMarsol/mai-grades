@@ -4,7 +4,7 @@
 // assumption is listed in `notes` so students can adjust it in the editor.
 // `milestones` are dates that matter but carry no grade (topic choice, rubrics…).
 
-export const CATALOG_VERSION = '2026-27.3';
+export const CATALOG_VERSION = '2026-27.4';
 
 // Day the structures below were last checked against the course guides and announcements.
 export const CHECKED = '2026-11-14';
@@ -201,7 +201,17 @@ export const CATALOG = [
   },
 ];
 
-for (const s of CATALOG) s.checked = CHECKED;
+// Where each university hosts its courses. A subject or item can carry its own `url`
+// (the course page or the task itself); otherwise the campus home page is used.
+export const CAMPUS = {
+  UB: 'https://campusvirtual.ub.edu/',
+  UPC: 'https://atenea.upc.edu/',
+  URV: 'https://campusvirtual.urv.cat/',
+};
+for (const s of CATALOG) {
+  s.checked = CHECKED;
+  s.url ??= CAMPUS[s.university];
+}
 
 export const catalogById = Object.fromEntries(CATALOG.map((s) => [s.id, s]));
 

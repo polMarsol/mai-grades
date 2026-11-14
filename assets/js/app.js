@@ -27,7 +27,7 @@ function parseRoute() {
   return { name: 'home', params };
 }
 
-const TITLES = { home: 'Subjects', overview: 'Overview', settings: 'Settings', about: 'About', add: 'Add a grade' };
+const TITLES = { home: 'Home', overview: 'Overview', settings: 'Settings', about: 'About', add: 'Add a grade' };
 
 function moveIndicator() {
   const active = nav.querySelector('[aria-current="page"]');

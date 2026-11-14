@@ -2,7 +2,7 @@ import { getSubject, getGrades, getTarget, setGrade, setRetake, setTarget, reset
 import { evaluate, needed, parseGrade, leafValue, flatten, findItem, itemPath, PASS } from '../grades.js';
 import { catalogById } from '../catalog.js';
 import { shareLink, needCard, shareImage } from '../share.js';
-import { esc, fmt, pct, pctFine, scale, updateScale, icon, fmtDate, relDay, statusPill, countTo, toast } from '../ui.js';
+import { esc, fmt, pct, pctFine, scale, updateScale, icon, fmtDate, relDay, statusPill, countTo, toast, safeUrl } from '../ui.js';
 import { openEditor } from '../editor.js';
 
 const TARGETS = [5, 6, 7, 8, 9, 10];
@@ -93,6 +93,7 @@ export function renderSubject(root, id) {
       <span class="chip">${esc(s.code)}</span>
       <h1 class="title">${esc(s.name)}</h1>
       <p class="muted">${[s.university, s.ects ? `${s.ects} ECTS` : ''].filter(Boolean).map(esc).join(', ')}${s.rule ? `. ${esc(s.rule)}` : ''}</p>
+      ${safeUrl(s.url) ? `<p><a class="link-btn" href="${esc(safeUrl(s.url))}" target="_blank" rel="noopener noreferrer">Open the course page${icon('external')}</a></p>` : ''}
       ${
         s.checked && !s.edited && !s.custom
           ? `<p class="checked">${icon('check')}Checked against the course guide on ${fmtDate(s.checked, { day: 'numeric', month: 'short', year: 'numeric' })}</p>`

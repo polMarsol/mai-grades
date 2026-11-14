@@ -7,7 +7,8 @@ A small, private grade tracker for students of the Master in Artificial Intellig
 - What-if mode: drag sliders on ungraded items without touching your saved grades.
 - Overview of the semester: ECTS-weighted average, a 0–10 scale per subject, and every deadline, which you can export as an `.ics` calendar file.
 - Edit any subject's structure (items, weights, dates, minimums, resubmission cap), or create your own for optional subjects.
-- This week: what is due in the next 7 days, with time and room when known, plus a short list of course news.
+- Home is a dates dashboard: countdown rings for the next deadlines, a week or month calendar, and links to each course page (set `url` on a subject or item in `catalog.js`, or in Edit structure).
+- Course news: a short dated list of changes.
 - See an example: made-up grades to look around before typing anything.
 - Share what you need as an image, or send a group grade to your team as a link they confirm before it is saved.
 - Ungraded dates (choosing a topic, a contribution rubric) appear alongside graded deadlines.

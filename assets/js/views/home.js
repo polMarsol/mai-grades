@@ -1,7 +1,7 @@
 import { getState, getGrades, startWith, loadDemo, catalog } from '../store.js';
 import { NEWS } from '../catalog.js';
 import { evaluate, datedItems, weightedMean } from '../grades.js';
-import { esc, fmt, pct, scale, icon, fmtDate, relDay, daysFrom, statusPill, countTo, go } from '../ui.js';
+import { esc, fmt, pct, scale, icon, fmtDate, relDay, daysFrom, statusPill, countTo, go, today, safeUrl } from '../ui.js';
 import { mountInstallHint } from '../install.js';
 
 /** Dated items from `from` to `horizon` days ahead, soonest first. */
@@ -28,6 +28,37 @@ export function deadlineRow({ s, n }) {
         <a href="#/s/${esc(s.id)}" class="deadline-title"><span class="code-dot" aria-hidden="true"></span>${esc(s.code)}: ${esc(n.item.name)}</a>
         <span class="muted">${relDay(n.date)}, ${n.isMilestone ? 'no grade' : `${pct(n.frac)} of the final mark`}</span>
         ${where ? `<span class="deadline-where">${where}</span>` : ''}
+        ${campusLink(s, n.item)}
+      </div>
+    </li>`;
+}
+
+/** Link to the task (or the course page) on the university's campus, when there is one. */
+export function campusLink(s, item) {
+  const url = safeUrl(item?.url) || safeUrl(s.url);
+  if (!url) return '';
+  return `<a class="link-btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${item?.url ? 'Open the task' : 'Open the course page'}${icon('external')}</a>`;
+}
+
+/** A deadline with a ring that fills as the day gets closer (two weeks out = empty). */
+function counter(r, big) {
+  const p = Math.max(0.03, 1 - Math.min(r.d, 14) / 14);
+  const when = [fmtDate(r.n.date), r.n.item.time, r.n.item.place].filter(Boolean).map(esc).join(', ');
+  const label = r.d === 0 ? 'Today' : `${r.d} ${r.d === 1 ? 'day' : 'days'} left`;
+  return `
+    <li class="count${big ? ' count-lg' : ''}" data-color="${esc(r.s.color)}">
+      <div class="count-ring" role="img" aria-label="${label}">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <circle class="ring-track" cx="32" cy="32" r="28"/>
+          <circle class="ring-fill" cx="32" cy="32" r="28" pathLength="1" stroke-dasharray="${p.toFixed(3)} 1"/>
+        </svg>
+        ${r.d === 0 ? '<span class="count-n count-today">Today</span>' : `<span class="count-n num">${r.d}</span><span class="count-u">${r.d === 1 ? 'day' : 'days'}</span>`}
+      </div>
+      <div class="count-text">
+        <a class="count-title" href="#/s/${esc(r.s.id)}"><span class="code-dot" aria-hidden="true"></span>${esc(r.s.code)}: ${esc(r.n.item.name)}</a>
+        <span class="count-when">${when}</span>
+        <span class="muted">${r.n.isMilestone ? 'No grade' : `${pct(r.n.frac)} of the final mark`}</span>
+        ${campusLink(r.s, r.n.item)}
       </div>
     </li>`;
 }
@@ -105,36 +136,62 @@ export function renderHome(root) {
   const avg = weightedMean(evs.map(({ s, ev }) => ({ value: ev.average, ects: s.ects })));
   const totalEcts = evs.reduce((a, { s }) => a + (Number(s.ects) || 0), 0);
   const gradedShare = totalEcts ? evs.reduce((a, { s, ev }) => a + ev.gradedFrac * (Number(s.ects) || 0), 0) / totalEcts : 0;
-  const week = upcoming(st.subjects, Infinity, 7);
-  const later = upcoming(st.subjects, 4, 45, 8);
   const byId = Object.fromEntries(st.subjects.map((s) => [s.id, s]));
   const news = NEWS.filter((n) => byId[n.subject]).slice(0, 4);
 
+  // Dates first: countdowns to the next deadlines and a calendar (week or month).
+  const all = upcoming(st.subjects);
+  const inWeek = all.filter((r) => r.d <= 7).length;
+  const now = today();
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const todayKey = iso(now);
+  const byDate = new Map();
+  for (const sub of st.subjects) {
+    for (const n of datedItems(sub)) {
+      if (!byDate.has(n.date)) byDate.set(n.date, []);
+      byDate.get(n.date).push({ s: sub, n });
+    }
+  }
+
   root.innerHTML = `
-    <section class="home-head">
-      <h1 class="display">Your subjects</h1>
+    <header class="dash-head">
+      <h1 class="display">${new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }).format(now)}</h1>
       <p class="lede">${
-        avg == null
-          ? 'Add your first grade to see your average.'
-          : `Average <strong class="num" id="home-avg">${fmt(avg)}</strong> across ${pct(gradedShare)} of the semester graded so far.`
+        !st.subjects.length
+          ? 'Add a subject to see its deadlines here.'
+          : inWeek
+            ? `${inWeek} ${inWeek === 1 ? 'deadline' : 'deadlines'} in the next 7 days.`
+            : 'Nothing due in the next 7 days.'
       }</p>
-    </section>
+    </header>
 
     ${
       st.subjects.length
-        ? `<section class="week" aria-labelledby="h-week">
-            <div class="block-head">
-              <h2 class="section-title" id="h-week">This week</h2>
-              <a class="link" href="#/overview">All deadlines</a>
-            </div>
-            ${
-              week.length
-                ? `<ul class="deadlines">${week.map(deadlineRow).join('')}</ul>`
-                : '<p class="muted">Nothing due in the next 7 days.</p>'
-            }
-          </section>`
+        ? `<div class="dash">
+            <section class="card cal" aria-label="Calendar" id="cal"></section>
+            <section class="dash-side" aria-labelledby="h-next">
+              <div class="block-head dash-sub">
+                <h2 class="section-title" id="h-next">Next up</h2>
+                <a class="link" href="#/overview">All deadlines</a>
+              </div>
+              ${
+                all.length
+                  ? `<ul class="counts">${all.slice(0, 4).map((r, k) => counter(r, k === 0)).join('')}</ul>`
+                  : '<p class="muted">No upcoming dates. Add them with Edit structure on each subject.</p>'
+              }
+            </section>
+          </div>`
         : ''
     }
+
+    <div class="block-head subjects-head">
+      <h2 class="section-title">Your subjects</h2>
+      <p class="muted">${
+        avg == null
+          ? 'Add your first grade to see your average.'
+          : `Average <strong class="num" id="home-avg">${fmt(avg)}</strong>, ${pct(gradedShare)} of the semester graded`
+      }</p>
+    </div>
 
     <section class="tiles" aria-label="Subjects">
       ${evs
@@ -169,15 +226,6 @@ export function renderHome(root) {
     </section>
 
     ${
-      later.length
-        ? `<section class="block" aria-labelledby="h-next">
-            <div class="block-head"><h2 class="section-title" id="h-next">Coming up</h2></div>
-            <ul class="deadlines">${later.map(deadlineRow).join('')}</ul>
-          </section>`
-        : ''
-    }
-
-    ${
       news.length
         ? `<section class="block" aria-labelledby="h-news">
             <div class="block-head"><h2 class="section-title" id="h-news">Course news</h2></div>
@@ -189,5 +237,130 @@ export function renderHome(root) {
     <div data-install-slot></div>`;
 
   countTo(root.querySelector('#home-avg'), avg);
+
+  // ----- calendar: week or month, with previous / next / today
+  const cal = root.querySelector('#cal');
+  if (cal) {
+    const monday = (d) => {
+      const m = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+      m.setDate(m.getDate() - ((m.getDay() + 6) % 7));
+      return m;
+    };
+    const add = (d, days) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + days);
+    const long = (d, o) => new Intl.DateTimeFormat('en-GB', o).format(d);
+    let view = 'month';
+    try {
+      if (localStorage.getItem('mai-grades:cal') === 'week') view = 'week';
+    } catch {
+      /* ignore */
+    }
+    let cursor = new Date(now);
+    let selected = (all.find((r) => r.n.date.slice(0, 7) === todayKey.slice(0, 7)) || {}).n?.date || todayKey;
+
+    const dayItems = (key) => {
+      const items = byDate.get(key) || [];
+      return items.length ? `<ul class="deadlines">${items.map(deadlineRow).join('')}</ul>` : '';
+    };
+
+    const draw = () => {
+      let title;
+      let body;
+      if (view === 'month') {
+        const first = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
+        const start = monday(first);
+        const weeks = Math.ceil(((first.getDay() + 6) % 7 + new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate()) / 7);
+        title = long(first, { month: 'long', year: 'numeric' });
+        const cells = Array.from({ length: weeks * 7 }, (_, k) => {
+          const d = add(start, k);
+          const key = iso(d);
+          const items = byDate.get(key) || [];
+          const cls = `cal-day${key === todayKey ? ' is-today' : ''}${key < todayKey ? ' is-past' : ''}${d.getMonth() !== first.getMonth() ? ' is-out' : ''}`;
+          const num = `<span class="cal-n">${d.getDate()}</span>`;
+          if (!items.length) return `<span class="${cls}">${num}</span>`;
+          const chips = [...new Map(items.map((r) => [r.s.id, r])).values()]
+            .slice(0, 3)
+            .map((r) => `<span class="cal-chip" data-color="${esc(r.s.color)}"><i></i><b>${esc(r.s.code)}</b></span>`)
+            .join('');
+          const label = `${fmtDate(key)}: ${items.map((r) => `${r.s.code} ${r.n.item.name}`).join('; ')}`;
+          return `<button type="button" class="${cls}" data-day="${key}" aria-pressed="${key === selected}" aria-label="${esc(label)}">${num}<span class="cal-chips">${chips}</span></button>`;
+        }).join('');
+        body = `
+          <div class="cal-grid">
+            ${['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => `<span class="cal-dow" aria-hidden="true">${d}</span>`).join('')}
+            ${cells}
+          </div>
+          <div class="cal-panel" aria-live="polite">
+            ${dayItems(selected) || '<p class="muted small">Pick a marked day to see what is due.</p>'}
+          </div>`;
+      } else {
+        const start = monday(cursor);
+        const end = add(start, 6);
+        title = `${long(start, { day: 'numeric', ...(start.getMonth() !== end.getMonth() ? { month: 'short' } : {}) })} to ${long(end, { day: 'numeric', month: 'long' })}`;
+        body = `<ol class="cal-week">${Array.from({ length: 7 }, (_, k) => {
+          const d = add(start, k);
+          const key = iso(d);
+          const items = byDate.get(key) || [];
+          return `<li class="wk${key === todayKey ? ' is-today' : ''}${key < todayKey ? ' is-past' : ''}">
+            <span class="wk-day"><small>${long(d, { weekday: 'short' })}</small><span class="cal-n">${d.getDate()}</span></span>
+            <div class="wk-items">${
+              items.length
+                ? items
+                    .map(
+                      (r) => `<div class="wk-item" data-color="${esc(r.s.color)}">
+                        <a href="#/s/${esc(r.s.id)}" class="wk-title">${esc(r.s.code)}: ${esc(r.n.item.name)}</a>
+                        <span class="muted">${[r.n.item.time, r.n.item.place, r.n.isMilestone ? 'no grade' : `${pct(r.n.frac)} of the final mark`].filter(Boolean).map(esc).join(', ')}</span>
+                        ${campusLink(r.s, r.n.item)}
+                      </div>`,
+                    )
+                    .join('')
+                : '<span class="wk-none" aria-label="Nothing due"></span>'
+            }</div>
+          </li>`;
+        }).join('')}</ol>`;
+      }
+      cal.innerHTML = `
+        <div class="cal-head">
+          <h2 class="cal-title" aria-live="polite">${title}</h2>
+          <div class="cal-nav">
+            <button type="button" class="icon-btn" data-cal="prev" aria-label="Previous ${view}">${icon('back')}</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-cal="today">Today</button>
+            <button type="button" class="icon-btn cal-next" data-cal="next" aria-label="Next ${view}">${icon('back')}</button>
+          </div>
+          <div class="segmented" role="group" aria-label="Calendar view">
+            <button type="button" data-view="week" aria-pressed="${view === 'week'}">Week</button>
+            <button type="button" data-view="month" aria-pressed="${view === 'month'}">Month</button>
+          </div>
+        </div>
+        ${body}`;
+    };
+
+    cal.addEventListener('click', (e) => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      const keep = b.dataset.cal || (b.dataset.view ? `view-${b.dataset.view}` : null);
+      if (b.dataset.day) selected = b.dataset.day;
+      else if (b.dataset.view) {
+        view = b.dataset.view;
+        try {
+          localStorage.setItem('mai-grades:cal', view);
+        } catch {
+          /* ignore */
+        }
+      } else if (b.dataset.cal === 'today') cursor = new Date(now);
+      else if (b.dataset.cal) {
+        const dir = b.dataset.cal === 'next' ? 1 : -1;
+        cursor = view === 'month' ? new Date(cursor.getFullYear(), cursor.getMonth() + dir, 1) : add(cursor, 7 * dir);
+      } else return;
+      draw();
+      // keep keyboard focus on the control that was used
+      const again = b.dataset.day
+        ? cal.querySelector(`[data-day="${b.dataset.day}"]`)
+        : keep?.startsWith('view-')
+          ? cal.querySelector(`[data-view="${keep.slice(5)}"]`)
+          : cal.querySelector(`[data-cal="${keep}"]`);
+      again?.focus({ preventScroll: true });
+    });
+    draw();
+  }
   mountInstallHint(root.querySelector('[data-install-slot]'));
 }
