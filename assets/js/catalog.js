@@ -2,8 +2,9 @@
 // Weights are relative to their siblings. Dates are delivery or exam days.
 // Where a guide does not publish a weight, siblings are split equally and the
 // assumption is listed in `notes` so students can adjust it in the editor.
+// `milestones` are dates that matter but carry no grade (topic choice, rubrics…).
 
-export const CATALOG_VERSION = '2026-27.1';
+export const CATALOG_VERSION = '2026-27.2';
 
 export const COLORS = ['blue', 'orange', 'aqua', 'violet', 'magenta', 'green', 'yellow', 'red'];
 
@@ -16,11 +17,14 @@ export const CATALOG = [
     ects: 5,
     color: 'blue',
     rule: 'Mark = 0.4 × Exam + 0.6 × Work, if Exam ≥ 3.5 and Work ≥ 4.5.',
-    source: 'T0 Overview IML 26-27 (v3)',
+    source: 'T0 Overview IML 26-27 (v3), updated with the Work 3 announcement',
     notes: [
       'Work 1 is mandatory but does not count towards the mark.',
+      'Work 3 has no exam: after submitting you fill in an ungraded contribution rubric and an integrity declaration. Large discrepancies can lead to an extra exam.',
+      'With the Work 3 exam removed, code and report are weighted equally here until the new split is published.',
       'Late deliveries lose 1 point per day.',
     ],
+    milestones: [{ id: 'iml-w3-rubric', name: 'Work 3 contribution rubric (not graded)', date: '2026-12-06' }],
     items: [
       {
         id: 'iml-work',
@@ -43,9 +47,8 @@ export const CATALOG = [
             name: 'Work 3: Clustering, factor analysis and visualisation',
             weight: 40,
             children: [
-              { id: 'iml-w3-code', name: 'Code', weight: 35, date: '2026-11-24' },
-              { id: 'iml-w3-report', name: 'Report', weight: 35, date: '2026-11-24' },
-              { id: 'iml-w3-exam', name: 'Work 3 exam', weight: 30, date: '2026-12-01', kind: 'exam' },
+              { id: 'iml-w3-code', name: 'Code', weight: 50, date: '2026-12-06' },
+              { id: 'iml-w3-report', name: 'Report', weight: 50, date: '2026-12-06' },
             ],
           },
           { id: 'iml-tests', name: 'Weekly theory questionnaires', weight: 20, kind: 'test' },
@@ -110,8 +113,13 @@ export const CATALOG = [
     ects: 5,
     color: 'orange',
     rule: 'Final = 50% Practicum + 50% Theory. Both parts must be passed.',
-    source: 'CV 2026-27 Course Presentation',
+    milestones: [
+      { id: 'cv-paper-topic', name: 'Paper presentation: article and group', date: '2026-11-16' },
+      { id: 'cv-paper-slides', name: 'Paper presentation: slides and critical discussion', date: '2026-12-13' },
+    ],
+    source: 'CV 2026-27 Course Presentation and Campus Virtual',
     notes: [
+      'Paper presentation: 13 minutes per group; submit the slides (course template) and a critical discussion of up to 2 pages.',
       'Lab and presentation weights inside the practicum are not published; they are equal here.',
       'If you fail the first midterm, the second exam covers the whole course.',
     ],
@@ -176,11 +184,14 @@ export const CATALOG = [
     ects: 5,
     color: 'magenta',
     rule: 'Both theory exams must reach 5 and practical work must be accepted.',
-    source: 'PAR Evaluation Guide 2026-27',
-    notes: ['Practical work not accepted on time can be resubmitted on 17 January with a maximum of 8.'],
+    source: 'PAR Evaluation Guide 2026-27, updated with the News Forum (10 Nov)',
+    notes: [
+      'Planning exam moved to Wednesday 18 November, 11:00–13:00, rooms A215 and A207 (building E1): 10 true/false and 10 multiple-choice questions.',
+      'Practical work not accepted on time can be resubmitted on 17 January with a maximum of 8.',
+    ],
     items: [
       { id: 'par-plan-prac', name: 'Planning practical exercise', weight: 25, date: '2026-11-06', retake: 8 },
-      { id: 'par-plan-exam', name: 'Planning theory exam', weight: 30, min: 5, date: '2026-11-11', kind: 'exam' },
+      { id: 'par-plan-exam', name: 'Planning theory exam', weight: 30, min: 5, date: '2026-11-18', kind: 'exam' },
       { id: 'par-ar-prac', name: 'Approximate Reasoning practical exercise', weight: 15, date: '2026-12-14', retake: 8 },
       { id: 'par-ar-exam', name: 'Approximate Reasoning theory exam', weight: 30, min: 5, date: '2027-01-13', kind: 'exam' },
     ],

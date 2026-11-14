@@ -7,6 +7,8 @@ A small, private grade tracker for students of the Master in Artificial Intellig
 - What-if mode: drag sliders on ungraded items without touching your saved grades.
 - Overview of the semester: ECTS-weighted average, a 0–10 scale per subject, and every deadline, which you can export as an `.ics` calendar file.
 - Edit any subject's structure (items, weights, dates, minimums, resubmission cap), or create your own for optional subjects.
+- Ungraded dates (choosing a topic, a contribution rubric) appear alongside graded deadlines.
+- When the course guides change, subjects you haven't edited update automatically; edited ones offer a one-click restore.
 
 Everything is stored in the browser (`localStorage`). There is no account, no server and no tracking. Export a JSON backup in Settings to move your grades to another device.
 
@@ -14,7 +16,7 @@ Everything is stored in the browser (`localStorage`). There is no account, no se
 
 | Code | Subject | Evaluation |
 |------|---------|------------|
-| IML  | Introduction to Machine Learning | 0.4 Exam + 0.6 Work, Exam ≥ 3.5 and Work ≥ 4.5 |
+| IML  | Introduction to Machine Learning | 0.4 Exam + 0.6 Work, Exam ≥ 3.5 and Work ≥ 4.5 (Work 3 due 6 Dec, no Work 3 exam) |
 | IHLT | Introduction to Human Language Technologies | 50% Exam + 50% Lab (sessions, STS project, questions) |
 | CI   | Computational Intelligence | 50% Projects (EC, NC, FC) + 50% Exam |
 | CV   | Computational Vision | 50% Practicum + 50% Theory, both ≥ 5 |
@@ -34,7 +36,7 @@ npm test                      # grade engine tests (Node 20+)
 
 ## Deploy on GitHub Pages
 
-Settings → Pages → Deploy from a branch → `main` / root. All paths are relative, so it works under `https://<user>.github.io/mai-grades/`. When you change any file, bump `VERSION` in `sw.js` so installed copies update.
+Settings → Pages → Deploy from a branch → `main` / root. All paths are relative, so it works under `https://<user>.github.io/mai-grades/`. When you change any file, bump `VERSION` in `sw.js` so installed copies update. When you change a subject in `catalog.js`, also bump `CATALOG_VERSION` so stored copies refresh.
 
 ## Structure
 

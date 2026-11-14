@@ -71,7 +71,23 @@ export function openEditor(subject, onSaved) {
         </fieldset>
         <p class="muted small">Weights are relative to the items next to them, so 35 / 35 / 30 and 1 / 1 / 1 both work. The percentage shows each item's share of the final mark. Min is the grade an item must reach to pass the subject.</p>
         <ul class="ed-list ed-root">${draft.items.map((it) => rowHtml(it, 0, fracs)).join('')}</ul>
-        <button type="button" class="btn btn-ghost btn-sm" data-act="add">${icon('plus')}Add item</button>
+        <button type="button" class="btn btn-ghost btn-sm ed-add" data-act="add">${icon('plus')}Add item</button>
+        <div class="ed-dates">
+          <h3 class="ed-subtitle">Other dates</h3>
+          <p class="muted small">Deadlines without a grade, such as choosing a topic. They show up in your deadlines and calendar.</p>
+          <ul class="ed-list">
+            ${(draft.milestones || [])
+              .map(
+                (m) => `<li class="ed-ms" data-ms="${esc(m.id)}">
+                  <input class="ed-name" data-mf="name" value="${esc(m.name)}" aria-label="Name" required>
+                  <label class="ed-field"><span>Date</span><input type="date" data-mf="date" value="${esc(m.date ?? '')}"></label>
+                  <button type="button" class="icon-btn" data-act="del-ms" aria-label="Remove ${esc(m.name)}">${icon('trash')}</button>
+                </li>`,
+              )
+              .join('')}
+          </ul>
+          <button type="button" class="btn btn-ghost btn-sm ed-add" data-act="add-ms">${icon('plus')}Add date</button>
+        </div>
         <p class="form-error" id="ed-error" role="alert"></p>
         <div class="sheet-actions sheet-actions-split">
           <div>
@@ -97,6 +113,13 @@ export function openEditor(subject, onSaved) {
     }
     if (t.name === 'color') {
       draft.color = t.value;
+      return;
+    }
+    const ms = t.closest('.ed-ms');
+    if (ms && t.dataset.mf) {
+      const m = draft.milestones.find((x) => x.id === ms.dataset.ms);
+      if (t.dataset.mf === 'date') m.date = t.value || undefined;
+      else m.name = t.value;
       return;
     }
     const li = t.closest('.ed-item');
@@ -133,6 +156,16 @@ export function openEditor(subject, onSaved) {
       draft.items.push({ id: uid(draft.id), name: 'New item', weight: 10 });
       render();
       dlg.querySelector('.ed-root > .ed-item:last-child .ed-name').select();
+    }
+    if (act === 'add-ms') {
+      (draft.milestones ||= []).push({ id: uid(`${draft.id}-d`), name: 'New date', date: '' });
+      render();
+      dlg.querySelector('.ed-ms:last-child .ed-name').select();
+    }
+    if (act === 'del-ms') {
+      const id = btn.closest('.ed-ms').dataset.ms;
+      draft.milestones = draft.milestones.filter((x) => x.id !== id);
+      render();
     }
     if (act === 'child') {
       const it = byId(li.dataset.id);
@@ -197,7 +230,9 @@ export function openEditor(subject, onSaved) {
     if (flat.some((n) => !(Number(n.item.weight) > 0))) return (err.textContent = 'Every weight must be greater than 0.');
     if (flat.some((n) => n.item.min != null && !(n.item.min >= 0 && n.item.min <= 10)))
       return (err.textContent = 'Minimum grades go from 0 to 10.');
+    if ((draft.milestones || []).some((m) => !String(m.name).trim())) return (err.textContent = 'Every date needs a name.');
     draft.code = String(draft.code).trim().toUpperCase();
+    draft.edited = true;
     saveSubject(draft);
     dlg.close();
     toast('Changes saved');

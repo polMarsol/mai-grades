@@ -1,4 +1,4 @@
-import { getSubject, getGrades, getTarget, setGrade, setRetake, setTarget } from '../store.js';
+import { getSubject, getGrades, getTarget, setGrade, setRetake, setTarget, resetStructure } from '../store.js';
 import { evaluate, needed, parseGrade, leafValue, flatten, PASS } from '../grades.js';
 import { esc, fmt, pct, pctFine, scale, updateScale, icon, fmtDate, relDay, statusPill, countTo, toast } from '../ui.js';
 import { openEditor } from '../editor.js';
@@ -87,6 +87,16 @@ export function renderSubject(root, id) {
       <p class="muted">${[s.university, s.ects ? `${s.ects} ECTS` : ''].filter(Boolean).map(esc).join(', ')}${s.rule ? `. ${esc(s.rule)}` : ''}</p>
     </header>
 
+    ${
+      s.outdated
+        ? `<div class="sim-banner outdated">
+            ${icon('alert')}
+            <p>The course guide for ${esc(s.code)} changed after you edited it. Restoring it keeps your grades for items that still exist.</p>
+            <button class="btn btn-ghost btn-sm" type="button" id="restore">${icon('reset')}Restore official guide</button>
+          </div>`
+        : ''
+    }
+
     <section class="card hero" data-color="${esc(s.color)}" aria-live="polite">
       <div class="hero-row">
         <div>
@@ -136,6 +146,26 @@ export function renderSubject(root, id) {
         ${flat.filter((n) => n.depth === 0).map((n) => (n.isLeaf ? leafRow(s, n, grades) : groupBlock(s, n, flat, grades))).join('')}
       </div>
     </section>
+
+    ${
+      s.milestones?.length
+        ? `<section class="block" aria-labelledby="h-dates">
+            <div class="block-head"><h2 class="section-title" id="h-dates">Other dates</h2></div>
+            <ul class="deadlines" data-color="${esc(s.color)}">
+              ${[...s.milestones]
+                .filter((m) => m.date)
+                .sort((a, b) => a.date.localeCompare(b.date))
+                .map(
+                  (m) => `<li class="deadline">
+                    <time class="deadline-date" datetime="${m.date}"><span>${fmtDate(m.date, { day: 'numeric' })}</span><small>${fmtDate(m.date, { month: 'short' })}</small></time>
+                    <div class="deadline-text"><span class="deadline-title">${esc(m.name)}</span><span class="muted">${relDay(m.date)}, no grade</span></div>
+                  </li>`,
+                )
+                .join('')}
+            </ul>
+          </section>`
+        : ''
+    }
 
     ${
       s.source || s.notes?.length
@@ -318,6 +348,12 @@ export function renderSubject(root, id) {
     seedSims();
     refresh();
     toast('What-if values reset');
+  });
+
+  $('#restore')?.addEventListener('click', () => {
+    resetStructure(id);
+    toast('Official structure restored');
+    renderSubject(root, id);
   });
 
   $('#edit').addEventListener('click', () =>

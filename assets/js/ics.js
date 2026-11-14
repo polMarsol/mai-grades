@@ -34,7 +34,7 @@ export function buildICS(subjects) {
         `DTSTART;VALUE=DATE:${icsDate(n.date)}`,
         `DTEND;VALUE=DATE:${nextDay(n.date)}`,
         fold(`SUMMARY:${escText(`${s.code}: ${n.item.name}`)}`),
-        fold(`DESCRIPTION:${escText(`${share}% of the final ${s.code} mark (${s.name}).`)}`),
+        fold(`DESCRIPTION:${escText(n.isMilestone ? `${s.name}. Not graded.` : `${share}% of the final ${s.code} mark (${s.name}).`)}`),
         'TRANSP:TRANSPARENT',
         'END:VEVENT',
       );

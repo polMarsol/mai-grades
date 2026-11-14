@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { evaluate, needed, parseGrade, flatten } from '../assets/js/grades.js';
+import { evaluate, needed, parseGrade, flatten, datedItems } from '../assets/js/grades.js';
 import { CATALOG, catalogById } from '../assets/js/catalog.js';
 
 const near = (a, b, eps = 1e-6) => assert.ok(Math.abs(a - b) < eps, `${a} ≈ ${b}`);
@@ -17,11 +17,11 @@ test('IML official formula', () => {
   const iml = catalogById.iml;
   const grades = g({
     'iml-w2-code': 8, 'iml-w2-report': 7, 'iml-w2-exam': 6,
-    'iml-w3-code': 9, 'iml-w3-report': 8, 'iml-w3-exam': 7,
+    'iml-w3-code': 9, 'iml-w3-report': 8,
     'iml-tests': 10, 'iml-exam': 6,
   });
   const w2 = 0.35 * 8 + 0.35 * 7 + 0.3 * 6;
-  const w3 = 0.35 * 9 + 0.35 * 8 + 0.3 * 7;
+  const w3 = 0.5 * 9 + 0.5 * 8; // Work 3 exam replaced by an ungraded rubric
   const work = 0.4 * w2 + 0.4 * w3 + 0.2 * 10;
   const mark = 0.4 * 6 + 0.6 * work;
   const ev = evaluate(iml, grades);
@@ -33,7 +33,7 @@ test('IML official formula', () => {
 test('IML exam below 3.5 fails the subject even with a good average', () => {
   const ev = evaluate(catalogById.iml, g({
     'iml-w2-code': 10, 'iml-w2-report': 10, 'iml-w2-exam': 10,
-    'iml-w3-code': 10, 'iml-w3-report': 10, 'iml-w3-exam': 10,
+    'iml-w3-code': 10, 'iml-w3-report': 10,
     'iml-tests': 10, 'iml-exam': 3,
   }));
   assert.ok(ev.secured > 5);
@@ -53,7 +53,7 @@ test('needed grade honours a minimum when it is the binding constraint', () => {
   const iml = catalogById.iml;
   const grades = g({
     'iml-w2-code': 10, 'iml-w2-report': 10, 'iml-w2-exam': 10,
-    'iml-w3-code': 10, 'iml-w3-report': 10, 'iml-w3-exam': 10, 'iml-tests': 10,
+    'iml-w3-code': 10, 'iml-w3-report': 10, 'iml-tests': 10,
   });
   const r = needed(iml, grades, 5);
   assert.equal(r.kind, 'need');
@@ -86,4 +86,19 @@ test('parseGrade accepts comma decimals and rejects junk', () => {
   assert.equal(parseGrade(''), null);
   assert.ok(Number.isNaN(parseGrade('11')));
   assert.ok(Number.isNaN(parseGrade('abc')));
+});
+
+test('ungraded milestones appear in deadlines with no weight', () => {
+  const cv = catalogById.cv;
+  const d = datedItems(cv);
+  const topic = d.find((n) => n.item.id === 'cv-paper-topic');
+  assert.ok(topic.isMilestone);
+  assert.equal(topic.frac, 0);
+  assert.deepEqual(d.map((n) => n.date), [...d.map((n) => n.date)].sort());
+});
+
+test('course updates: PAR planning exam on 18 Nov, IML Work 3 on 6 Dec', () => {
+  assert.equal(flatten(catalogById.par.items).find((n) => n.item.id === 'par-plan-exam').item.date, '2026-11-18');
+  assert.equal(flatten(catalogById.iml.items).find((n) => n.item.id === 'iml-w3-code').item.date, '2026-12-06');
+  assert.equal(flatten(catalogById.iml.items).find((n) => n.item.id === 'iml-w3-exam'), undefined);
 });

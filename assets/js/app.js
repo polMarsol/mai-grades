@@ -4,6 +4,7 @@ import { renderOverview } from './views/overview.js';
 import { renderSettings } from './views/settings.js';
 import { applyTheme, cycleTheme, getTheme } from './theme.js';
 import { reveal, spotlight, reducedMotion, toast, icon } from './ui.js';
+import { takeMigrationNotice } from './store.js';
 
 const main = document.getElementById('main');
 const nav = document.querySelector('.nav-links');
@@ -110,6 +111,8 @@ applyTheme();
 themeIcon();
 runLoader();
 render();
+const refreshed = takeMigrationNotice();
+if (refreshed.length) setTimeout(() => toast(`Updated from the latest course news: ${refreshed.join(', ')}`), 1700);
 window.addEventListener('hashchange', render);
 window.addEventListener('resize', moveIndicator);
 document.fonts?.ready.then(moveIndicator);

@@ -3,6 +3,8 @@ import { CATALOG, catalogById, CATALOG_VERSION, blankSubject, COLORS } from './c
 
 const KEY = 'mai-grades:v1';
 const clone = (x) => structuredClone(x);
+const official = (id) => ({ ...clone(catalogById[id]), v: CATALOG_VERSION });
+let migrated = [];
 
 const empty = () => ({
   version: 1,
@@ -21,10 +23,42 @@ function load() {
     const raw = localStorage.getItem(KEY);
     if (!raw) return empty();
     const parsed = JSON.parse(raw);
-    return { ...empty(), ...parsed };
+    return migrate({ ...empty(), ...parsed });
   } catch {
     return empty();
   }
+}
+
+/**
+ * When the course guides change, refresh subjects the student never edited.
+ * Edited subjects keep their structure and are flagged so the app can offer a restore.
+ */
+function migrate(st) {
+  if (st.catalogVersion === CATALOG_VERSION) return st;
+  st.subjects = st.subjects.map((s) => {
+    if (!catalogById[s.id] || s.v === CATALOG_VERSION) return s;
+    if (!s.edited) {
+      const next = official(s.id);
+      const shape = (x) => JSON.stringify([x.items, x.milestones || []]);
+      if (shape(next) !== shape(s)) migrated.push(s.code);
+      return { ...next, color: s.color };
+    }
+    return { ...s, outdated: true };
+  });
+  st.catalogVersion = CATALOG_VERSION;
+  try {
+    localStorage.setItem(KEY, JSON.stringify(st));
+  } catch {
+    /* ignore */
+  }
+  return st;
+}
+
+/** Codes of subjects refreshed from the course guides on this load (returned once). */
+export function takeMigrationNotice() {
+  const m = migrated;
+  migrated = [];
+  return m;
 }
 
 function persist() {
@@ -43,14 +77,14 @@ export const getGrades = (id) => state.grades[id] || {};
 export const getTarget = (id) => state.targets[id] ?? 5;
 
 export function startWith(ids) {
-  state.subjects = ids.map((id) => clone(catalogById[id])).filter(Boolean);
+  state.subjects = ids.filter((id) => catalogById[id]).map(official);
   state.onboarded = true;
   persist();
 }
 
 export function addFromCatalog(id) {
   if (getSubject(id) || !catalogById[id]) return;
-  state.subjects.push(clone(catalogById[id]));
+  state.subjects.push(official(id));
   state.onboarded = true;
   persist();
 }
@@ -90,9 +124,9 @@ export function saveSubject(subject) {
 }
 
 export function resetStructure(id) {
-  const official = catalogById[id];
-  if (!official) return;
-  saveSubject(clone(official));
+  if (!catalogById[id]) return;
+  const current = getSubject(id);
+  saveSubject({ ...official(id), color: current?.color ?? catalogById[id].color });
 }
 
 export function setGrade(subjectId, leafId, value, retake) {
@@ -128,7 +162,7 @@ export function importData(text) {
     throw new Error('This file is not a MAI Grades backup.');
   }
   const { app, exportedAt, ...rest } = data;
-  state = { ...empty(), ...rest, onboarded: true };
+  state = migrate({ ...empty(), ...rest, onboarded: true });
   persist();
 }
 

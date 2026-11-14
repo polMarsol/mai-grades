@@ -275,10 +275,13 @@ export function weightedMean(rows) {
   return w > 0 ? acc / w : null;
 }
 
-/** All dated items of a subject (leaves and groups), sorted by date. */
+/** All dated items of a subject (leaves, groups and ungraded milestones), sorted by date. */
 export function datedItems(subject) {
-  return flatten(subject.items)
+  const graded = flatten(subject.items)
     .filter((n) => n.item.date)
-    .map((n) => ({ ...n, date: n.item.date }))
-    .sort((a, b) => a.date.localeCompare(b.date));
+    .map((n) => ({ ...n, date: n.item.date }));
+  const milestones = (subject.milestones || [])
+    .filter((m) => m.date)
+    .map((m) => ({ item: m, frac: 0, depth: 0, parent: null, isLeaf: false, isMilestone: true, date: m.date }));
+  return [...graded, ...milestones].sort((a, b) => a.date.localeCompare(b.date));
 }

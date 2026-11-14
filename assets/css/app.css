@@ -672,6 +672,8 @@ label.btn:focus-within { outline: 3px solid var(--focus); outline-offset: 3px; }
 }
 .sim-banner p { flex: 1; color: var(--ink-2); }
 .sim-banner[hidden] { display: none; }
+.sim-banner.outdated { margin: -8px 0 16px; background: var(--warn-bg); }
+.sim-banner.outdated .icon { color: var(--warn); }
 
 .items { display: grid; gap: 12px; }
 .group {
@@ -919,6 +921,19 @@ dialog.sheet[open]::backdrop { animation: fadeIn 0.3s var(--ease); }
 .ed-share { align-self: center; padding-top: 18px; font-size: 13px; text-align: right; }
 .ed-actions { display: flex; align-items: center; gap: 2px; justify-content: flex-end; }
 .ed-actions .mini-check { margin-right: 6px; }
+.ed-add { justify-self: start; }
+.ed-dates { display: grid; gap: 8px; margin-top: 8px; padding-top: 18px; border-top: 1px solid var(--line); }
+.ed-subtitle { font-size: 17px; font-weight: 650; letter-spacing: -0.015em; }
+.ed-ms {
+  display: grid; grid-template-columns: minmax(0, 1fr) 160px auto; align-items: end; gap: 8px;
+  padding: 10px; border-radius: var(--r-md); background: var(--neutral-bg);
+}
+.ed-ms input:not([type='checkbox']) {
+  height: 44px; padding: 0 12px; font-size: 16px; color: var(--ink);
+  border-radius: var(--r-sm); border: 1.5px solid var(--line-strong); background: var(--surface-solid); width: 100%; min-width: 0;
+}
+.ed-ms input:focus-visible { outline: none; border-color: var(--focus); box-shadow: 0 0 0 4px color-mix(in oklab, var(--focus) 25%, transparent); }
+@media (max-width: 560px) { .ed-ms { grid-template-columns: minmax(0, 1fr) auto; } .ed-ms .ed-field { grid-column: 1; } .ed-ms .ed-name { grid-column: 1 / -1; } }
 .form-error { color: var(--bad); font-size: 14px; }
 .form-error:empty { display: none; }
 @media (max-width: 760px) {
