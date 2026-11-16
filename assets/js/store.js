@@ -1,5 +1,5 @@
 // Local-first state. Everything lives in this browser's localStorage.
-import { CATALOG, catalogById, CATALOG_VERSION, blankSubject, COLORS, DEMO_GRADES } from './catalog.js';
+import { CATALOG, catalogById, CATALOG_VERSION, blankSubject, COLORS, DEMO_GRADES, DEMO_DONE, NEWS } from './catalog.js';
 
 const KEY = 'mai-grades:v1';
 const clone = (x) => structuredClone(x);
@@ -13,7 +13,14 @@ const empty = () => ({
   subjects: [], // full subject structures, in display order
   grades: {}, // { [subjectId]: { [leafId]: { v, retake } } }
   targets: {}, // { [subjectId]: number }
+  done: {}, // { [subjectId]: { [itemId]: 'YYYY-MM-DD' } } submitted or taken, grade or not
+  seenNews: [], // ids of course news already shown on the home screen
 });
+
+const todayIso = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+};
 
 let state = load();
 const listeners = new Set();
@@ -23,6 +30,8 @@ function load() {
     const raw = localStorage.getItem(KEY);
     if (!raw) return empty();
     const parsed = JSON.parse(raw);
+    // Saved before news had ids: everything published so far was already on screen.
+    if (!Array.isArray(parsed.seenNews)) parsed.seenNews = parsed.onboarded ? NEWS.map((n) => n.id) : [];
     return migrate({ ...empty(), ...parsed });
   } catch {
     return empty();
@@ -79,12 +88,13 @@ export const getTarget = (id) => state.targets[id] ?? 5;
 export function startWith(ids) {
   state.subjects = ids.filter((id) => catalogById[id]).map(official);
   state.onboarded = true;
+  state.seenNews = NEWS.map((n) => n.id);
   persist();
 }
 
 /** Load every subject with made-up grades so people can look around before typing anything. */
 export function loadDemo() {
-  state = { ...empty(), onboarded: true, demo: true, subjects: CATALOG.map((s) => official(s.id)), grades: clone(DEMO_GRADES) };
+  state = { ...empty(), onboarded: true, demo: true, subjects: CATALOG.map((s) => official(s.id)), grades: clone(DEMO_GRADES), done: clone(DEMO_DONE), seenNews: NEWS.map((n) => n.id) };
   persist();
 }
 
@@ -110,6 +120,7 @@ export function removeSubject(id) {
   state.subjects = state.subjects.filter((s) => s.id !== id);
   delete state.grades[id];
   delete state.targets[id];
+  if (state.done) delete state.done[id];
   persist();
 }
 
@@ -150,6 +161,31 @@ export function setRetake(subjectId, leafId, retake) {
   if (!g[leafId]) return;
   if (retake) g[leafId].retake = true;
   else delete g[leafId].retake;
+  persist();
+}
+
+export const isDone = (subjectId, itemId) => !!state.done?.[subjectId]?.[itemId];
+export const doneOn = (subjectId, itemId) => state.done?.[subjectId]?.[itemId] || null;
+
+export function setDone(subjectId, itemId, on) {
+  const d = (state.done ||= {});
+  const m = (d[subjectId] ||= {});
+  if (on) m[itemId] = todayIso();
+  else delete m[itemId];
+  persist();
+}
+
+/** Course news for the student's subjects that the home screen hasn't shown yet. */
+export function unseenNews() {
+  const mine = new Set(state.subjects.map((s) => s.id));
+  const seen = new Set(state.seenNews || []);
+  return NEWS.filter((n) => mine.has(n.subject) && !seen.has(n.id));
+}
+
+export function markNewsSeen() {
+  const ids = unseenNews().map((n) => n.id);
+  if (!ids.length) return;
+  state.seenNews = [...(state.seenNews || []), ...ids];
   persist();
 }
 

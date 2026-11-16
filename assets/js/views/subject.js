@@ -1,6 +1,7 @@
 import { getSubject, getGrades, getTarget, setGrade, setRetake, setTarget, resetStructure } from '../store.js';
 import { evaluate, needed, parseGrade, leafValue, flatten, findItem, itemPath, PASS } from '../grades.js';
 import { catalogById } from '../catalog.js';
+import { doneButton, examButton } from '../progress.js';
 import { shareLink, needCard, shareImage } from '../share.js';
 import { esc, fmt, pct, pctFine, scale, updateScale, icon, fmtDate, relDay, statusPill, countTo, toast, safeUrl } from '../ui.js';
 import { openEditor } from '../editor.js';
@@ -21,6 +22,7 @@ function leafRow(s, n, grades) {
         ${it.date ? `<span>${fmtDate(it.date)} <span class="muted">(${relDay(it.date)})</span></span>` : ''}
         ${it.min != null && it.min !== '' ? `<span>At least ${it.min}</span>` : ''}
       </span>
+      ${examButton(s, it) ? `<span class="row-actions">${examButton(s, it)}</span>` : ''}
     </div>
     <div class="leaf-input">
       <input class="grade-input num" id="in-${esc(it.id)}" type="text" inputmode="decimal" autocomplete="off"
@@ -31,6 +33,7 @@ function leafRow(s, n, grades) {
           : ''
       }
       <span class="leaf-err" id="err-${esc(it.id)}" role="alert"></span>
+      ${doneButton(s, it, { keep: true })}
       ${
         // group work only: exams and quizzes are individual
         it.kind !== 'exam' && it.kind !== 'test' && catalogById[s.id] && findItem(catalogById[s.id].items, it.id)
@@ -269,6 +272,7 @@ export function renderSubject(root, id) {
       const graded = g[lid]?.v != null;
       row.classList.toggle('is-sim', sim.on && !graded);
       row.querySelector('[data-share-grade]')?.toggleAttribute('hidden', !graded);
+      row.querySelector('[data-done]')?.toggleAttribute('hidden', graded);
       if (sim.on && !graded) {
         const r = row.querySelector('input[type=range]');
         const v = sim.values[lid] ?? 5;

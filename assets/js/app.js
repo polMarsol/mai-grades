@@ -8,7 +8,8 @@ import { getState, eraseAll } from './store.js';
 import { countVisit } from './install.js';
 import { applyTheme, cycleTheme, getTheme } from './theme.js';
 import { reveal, reducedMotion, toast, icon } from './ui.js';
-import { takeMigrationNotice } from './store.js';
+import { takeMigrationNotice, unseenNews } from './store.js';
+import { wireProgress } from './progress.js';
 
 const main = document.getElementById('main');
 const nav = document.querySelector('.nav-links');
@@ -72,6 +73,11 @@ function render() {
       main.prepend(banner);
     }
     reveal(main);
+    // dot on the Home tab while there is course news the student hasn't seen
+    const homeLink = nav.querySelector('[data-section="home"]');
+    const n = unseenNews().length;
+    homeLink.classList.toggle('has-news', n > 0);
+    homeLink.setAttribute('aria-label', n > 0 ? `Home, ${n} new ${n === 1 ? 'update' : 'updates'}` : 'Home');
   };
 
   if (!first && document.startViewTransition && !reducedMotion()) document.startViewTransition(draw);
@@ -127,6 +133,7 @@ function runLoader() {
 }
 
 countVisit();
+wireProgress();
 applyTheme();
 themeIcon();
 runLoader();

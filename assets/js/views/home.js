@@ -1,5 +1,7 @@
 import { getState, getGrades, startWith, loadDemo, catalog } from '../store.js';
 import { NEWS } from '../catalog.js';
+import { progressHtml, doneButton, examButton, isFinished, doneOn } from '../progress.js';
+import { unseenNews, markNewsSeen } from '../store.js';
 import { evaluate, datedItems, weightedMean } from '../grades.js';
 import { esc, fmt, pct, scale, icon, fmtDate, relDay, daysFrom, statusPill, countTo, go, today, safeUrl } from '../ui.js';
 import { mountInstallHint } from '../install.js';
@@ -10,7 +12,7 @@ export function upcoming(subjects, limit = Infinity, horizon = Infinity, from = 
   for (const s of subjects) {
     for (const n of datedItems(s)) {
       const d = daysFrom(n.date);
-      if (d >= from && d <= horizon) rows.push({ s, n, d });
+      if (d >= from && d <= horizon && !isFinished(s, n.item)) rows.push({ s, n, d });
     }
   }
   return rows.sort((a, b) => a.d - b.d || a.s.code.localeCompare(b.s.code)).slice(0, limit);
@@ -19,16 +21,18 @@ export function upcoming(subjects, limit = Infinity, horizon = Infinity, from = 
 export function deadlineRow({ s, n }) {
   const where = [n.item.time, n.item.place].filter(Boolean).map(esc).join(', ');
   return `
-    <li class="deadline" data-color="${esc(s.color)}">
+    <li class="deadline${isFinished(s, n.item) ? ' is-done' : ''}" data-color="${esc(s.color)}" data-done-row>
       <time class="deadline-date" datetime="${n.date}">
         <span>${fmtDate(n.date, { day: 'numeric' })}</span>
         <small>${fmtDate(n.date, { month: 'short' })}</small>
       </time>
       <div class="deadline-text">
         <a href="#/s/${esc(s.id)}" class="deadline-title"><span class="code-dot" aria-hidden="true"></span>${esc(s.code)}: ${esc(n.item.name)}</a>
-        <span class="muted">${relDay(n.date)}, ${n.isMilestone ? 'no grade' : `${pct(n.frac)} of the final mark`}</span>
+        <span class="muted">${relDay(n.date)}, ${n.isMilestone ? 'no grade' : `${pct(n.frac)} of the final mark`}${
+          doneOn(s.id, n.item.id) ? `. ${n.item.kind === 'exam' ? 'Taken' : 'Submitted'} on ${fmtDate(doneOn(s.id, n.item.id), { day: 'numeric', month: 'short' })}` : ''
+        }</span>
         ${where ? `<span class="deadline-where">${where}</span>` : ''}
-        ${campusLink(s, n.item)}
+        <span class="row-actions">${doneButton(s, n.item)}${examButton(s, n.item)}${campusLink(s, n.item)}</span>
       </div>
     </li>`;
 }
@@ -46,7 +50,7 @@ function counter(r, big) {
   const when = [fmtDate(r.n.date), r.n.item.time, r.n.item.place].filter(Boolean).map(esc).join(', ');
   const label = r.d === 0 ? 'Today' : `${r.d} ${r.d === 1 ? 'day' : 'days'} left`;
   return `
-    <li class="count${big ? ' count-lg' : ''}" data-color="${esc(r.s.color)}">
+    <li class="count${big ? ' count-lg' : ''}" data-color="${esc(r.s.color)}" data-done-row>
       <div class="count-ring" role="img" aria-label="${label}">
         <svg viewBox="0 0 64 64" aria-hidden="true">
           <circle class="ring-track" cx="32" cy="32" r="28"/>
@@ -58,20 +62,20 @@ function counter(r, big) {
         <a class="count-title" href="#/s/${esc(r.s.id)}"><span class="code-dot" aria-hidden="true"></span>${esc(r.s.code)}: ${esc(r.n.item.name)}</a>
         <span class="count-when">${when}</span>
         <span class="muted">${r.n.isMilestone ? 'No grade' : `${pct(r.n.frac)} of the final mark`}</span>
-        ${campusLink(r.s, r.n.item)}
+        <span class="row-actions">${doneButton(r.s, r.n.item)}${examButton(r.s, r.n.item)}${campusLink(r.s, r.n.item)}</span>
       </div>
     </li>`;
 }
 
-function newsRow(item, s) {
+function newsRow(item, s, isNew) {
   return `
-    <li class="deadline" data-color="${esc(s.color)}">
+    <li class="deadline${isNew ? ' is-new' : ''}" data-color="${esc(s.color)}">
       <time class="deadline-date" datetime="${item.date}">
         <span>${fmtDate(item.date, { day: 'numeric' })}</span>
         <small>${fmtDate(item.date, { month: 'short' })}</small>
       </time>
       <div class="deadline-text">
-        <a href="#/s/${esc(s.id)}" class="deadline-title"><span class="code-dot" aria-hidden="true"></span>${esc(s.code)}: ${esc(item.title)}</a>
+        <a href="#/s/${esc(s.id)}" class="deadline-title"><span class="code-dot" aria-hidden="true"></span>${esc(s.code)}: ${esc(item.title)}${isNew ? '<span class="tag tag-new">New</span>' : ''}</a>
         <span class="muted">${esc(item.detail)}</span>
       </div>
     </li>`;
@@ -137,7 +141,9 @@ export function renderHome(root) {
   const totalEcts = evs.reduce((a, { s }) => a + (Number(s.ects) || 0), 0);
   const gradedShare = totalEcts ? evs.reduce((a, { s, ev }) => a + ev.gradedFrac * (Number(s.ects) || 0), 0) / totalEcts : 0;
   const byId = Object.fromEntries(st.subjects.map((s) => [s.id, s]));
-  const news = NEWS.filter((n) => byId[n.subject]).slice(0, 4);
+  const fresh = new Set(unseenNews().map((n) => n.id));
+  // unseen news always shows; then the latest ones, up to four
+  const news = NEWS.filter((n) => byId[n.subject]).sort((a, b) => fresh.has(b.id) - fresh.has(a.id)).slice(0, Math.max(4, fresh.size));
 
   // Dates first: countdowns to the next deadlines and a calendar (week or month).
   const all = upcoming(st.subjects);
@@ -163,6 +169,12 @@ export function renderHome(root) {
             ? `${inWeek} ${inWeek === 1 ? 'deadline' : 'deadlines'} in the next 7 days.`
             : 'Nothing due in the next 7 days.'
       }</p>
+      ${progressHtml(st)}
+      ${
+        fresh.size
+          ? `<button type="button" class="news-flag" id="news-flag"><span class="news-dot" aria-hidden="true"></span>${fresh.size} ${fresh.size === 1 ? 'update' : 'updates'} to your subjects since your last visit</button>`
+          : ''
+      }
     </header>
 
     ${
@@ -227,9 +239,9 @@ export function renderHome(root) {
 
     ${
       news.length
-        ? `<section class="block" aria-labelledby="h-news">
+        ? `<section class="block" aria-labelledby="h-news" id="news">
             <div class="block-head"><h2 class="section-title" id="h-news">Course news</h2></div>
-            <ul class="deadlines">${news.map((n) => newsRow(n, byId[n.subject])).join('')}</ul>
+            <ul class="deadlines">${news.map((n) => newsRow(n, byId[n.subject], fresh.has(n.id))).join('')}</ul>
           </section>`
         : ''
     }
@@ -237,6 +249,12 @@ export function renderHome(root) {
     <div data-install-slot></div>`;
 
   countTo(root.querySelector('#home-avg'), avg);
+  root.querySelector('#news-flag')?.addEventListener('click', () => {
+    const n = root.querySelector('#news');
+    n?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    n?.querySelector('a')?.focus({ preventScroll: true });
+  });
+  markNewsSeen();
 
   // ----- calendar: week or month, with previous / next / today
   const cal = root.querySelector('#cal');
@@ -279,7 +297,7 @@ export function renderHome(root) {
           if (!items.length) return `<span class="${cls}">${num}</span>`;
           const chips = [...new Map(items.map((r) => [r.s.id, r])).values()]
             .slice(0, 3)
-            .map((r) => `<span class="cal-chip" data-color="${esc(r.s.color)}"><i></i><b>${esc(r.s.code)}</b></span>`)
+            .map((r) => `<span class="cal-chip${isFinished(r.s, r.n.item) ? ' is-done' : ''}" data-color="${esc(r.s.color)}"><i></i><b>${esc(r.s.code)}</b></span>`)
             .join('');
           const label = `${fmtDate(key)}: ${items.map((r) => `${r.s.code} ${r.n.item.name}`).join('; ')}`;
           return `<button type="button" class="${cls}" data-day="${key}" aria-pressed="${key === selected}" aria-label="${esc(label)}">${num}<span class="cal-chips">${chips}</span></button>`;
@@ -306,10 +324,10 @@ export function renderHome(root) {
               items.length
                 ? items
                     .map(
-                      (r) => `<div class="wk-item" data-color="${esc(r.s.color)}">
+                      (r) => `<div class="wk-item${isFinished(r.s, r.n.item) ? ' is-done' : ''}" data-color="${esc(r.s.color)}" data-done-row>
                         <a href="#/s/${esc(r.s.id)}" class="wk-title">${esc(r.s.code)}: ${esc(r.n.item.name)}</a>
                         <span class="muted">${[r.n.item.time, r.n.item.place, r.n.isMilestone ? 'no grade' : `${pct(r.n.frac)} of the final mark`].filter(Boolean).map(esc).join(', ')}</span>
-                        ${campusLink(r.s, r.n.item)}
+                        <span class="row-actions">${doneButton(r.s, r.n.item)}${examButton(r.s, r.n.item)}${campusLink(r.s, r.n.item)}</span>
                       </div>`,
                     )
                     .join('')

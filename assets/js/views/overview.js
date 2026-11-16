@@ -1,4 +1,4 @@
-import { getState, getGrades } from '../store.js';
+import { getState, getGrades, isDone } from '../store.js';
 import { evaluate, weightedMean, datedItems, leafValue } from '../grades.js';
 import { esc, fmt, pct, scale, statusPill, icon, countTo, download, toast, fmtDate, daysFrom } from '../ui.js';
 import { upcoming, deadlineRow } from './home.js';
@@ -17,8 +17,9 @@ export function renderOverview(root) {
   for (const s of st.subjects) {
     const g = getGrades(s.id);
     for (const n of datedItems(s)) {
-      if (!n.isLeaf || daysFrom(n.date) >= 0) continue;
-      if (leafValue(n.item, g[n.item.id]) == null) waiting.push({ s, n });
+      if (!n.isLeaf || leafValue(n.item, g[n.item.id]) != null) continue;
+      // past its date, or handed in early
+      if (daysFrom(n.date) < 0 || isDone(s.id, n.item.id)) waiting.push({ s, n });
     }
   }
   waiting.sort((a, b) => b.n.date.localeCompare(a.n.date));

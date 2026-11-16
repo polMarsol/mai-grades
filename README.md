@@ -8,7 +8,9 @@ A small, private grade tracker for students of the Master in Artificial Intellig
 - Overview of the semester: ECTS-weighted average, a 0–10 scale per subject, and every deadline, which you can export as an `.ics` calendar file.
 - Edit any subject's structure (items, weights, dates, minimums, resubmission cap), or create your own for optional subjects.
 - Home is a dates dashboard: countdown rings for the next deadlines, a week or month calendar, and links to each course page (set `url` on a subject or item in `catalog.js`, or in Edit structure).
-- Course news: a short dated list of changes.
+- Course news: a short dated list of changes. News the student hasn't seen yet is marked New, with a dot on the Home tab.
+- Mark work as submitted (or an exam as taken, from its day on). A strip on Home shows how much of the semester is done; submitted work waits in Overview until it gets a grade.
+- Exam details: date, time, room, duration, format, preparation tips and what you need, for every exam. Add them under `exam` on an item in `catalog.js`.
 - See an example: made-up grades to look around before typing anything.
 - Share what you need as an image, or send a group grade to your team as a link they confirm before it is saved.
 - Ungraded dates (choosing a topic, a contribution rubric) appear alongside graded deadlines.
@@ -42,7 +44,7 @@ npm test                      # grade engine tests (Node 20+)
 
 ## Deploy on GitHub Pages
 
-Settings → Pages → Deploy from a branch → `main` / root. All paths are relative, so it works under `https://<user>.github.io/mai-grades/`. When you change any file, bump `VERSION` in `sw.js` so installed copies update. When you change a subject in `catalog.js`, also bump `CATALOG_VERSION` so stored copies refresh, set `CHECKED` to today and add a line to `NEWS`. The link preview (`og:url`, `og:image` in `index.html`) assumes the site lives at `https://polmarsol.github.io/mai-grades/`; change it if the address differs.
+Settings → Pages → Deploy from a branch → `main` / root. All paths are relative, so it works under `https://<user>.github.io/mai-grades/`. When you change any file, bump `VERSION` in `sw.js` so installed copies update. When you change a subject in `catalog.js`, also bump `CATALOG_VERSION` so stored copies refresh, set `CHECKED` to today and add a line to `NEWS` with a new unique `id`. The link preview (`og:url`, `og:image` in `index.html`) assumes the site lives at `https://polmarsol.github.io/mai-grades/`; change it if the address differs.
 
 ## Structure
 

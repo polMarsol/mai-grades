@@ -4,7 +4,7 @@
 // assumption is listed in `notes` so students can adjust it in the editor.
 // `milestones` are dates that matter but carry no grade (topic choice, rubrics…).
 
-export const CATALOG_VERSION = '2026-27.4';
+export const CATALOG_VERSION = '2026-27.5';
 
 // Day the structures below were last checked against the course guides and announcements.
 export const CHECKED = '2026-11-14';
@@ -194,7 +194,26 @@ export const CATALOG = [
     ],
     items: [
       { id: 'par-plan-prac', name: 'Planning practical exercise', weight: 25, date: '2026-11-06', retake: 8 },
-      { id: 'par-plan-exam', name: 'Planning theory exam', weight: 30, min: 5, date: '2026-11-18', time: '11:00–13:00', place: 'Rooms A215 and A207, building E1', kind: 'exam' },
+      {
+        id: 'par-plan-exam',
+        name: 'Planning theory exam',
+        weight: 30,
+        min: 5,
+        date: '2026-11-18',
+        time: '11:00–13:00',
+        place: 'Rooms A215 and A207, building E1',
+        kind: 'exam',
+        exam: {
+          duration: '2 hours',
+          format: '10 true/false and 10 multiple-choice questions',
+          prep: [
+            'A preparation guide and a practice quiz are in “Information about the exam” on the course page. The quiz has 60 questions on Lectures 1–5 and three Graphplan problems, and is not graded.',
+            'Questions are welcome in the Doubts Forum.',
+            'In the afternoon, the lab sessions are for questions about the practical work and the LLM lab: G1 16:00–17:00 in Lab 209, G2 17:00–18:00 in Lab 208.',
+          ],
+          source: 'PAR News Forum, 10 November',
+        },
+      },
       { id: 'par-ar-prac', name: 'Approximate Reasoning practical exercise', weight: 15, date: '2026-12-14', retake: 8 },
       { id: 'par-ar-exam', name: 'Approximate Reasoning theory exam', weight: 30, min: 5, date: '2027-01-13', kind: 'exam' },
     ],
@@ -216,20 +235,24 @@ for (const s of CATALOG) {
 export const catalogById = Object.fromEntries(CATALOG.map((s) => [s.id, s]));
 
 // Changes announced during the course, newest first. `date` is the day the app was updated.
+// Give every item a unique `id`: the app uses it to mark news as new until it has been seen.
 export const NEWS = [
   {
+    id: 'iml-w3-moved',
     date: '2026-11-14',
     subject: 'iml',
     title: 'Work 3 is now due on 6 December',
     detail: 'The Work 3 exam is replaced by an ungraded contribution rubric.',
   },
   {
+    id: 'par-exam-moved',
     date: '2026-11-14',
     subject: 'par',
     title: 'Planning exam moved to Wednesday 18 November',
     detail: '11:00–13:00, rooms A215 and A207 (building E1). 10 true/false and 10 multiple-choice questions.',
   },
   {
+    id: 'cv-paper-dates',
     date: '2026-11-14',
     subject: 'cv',
     title: 'Paper presentation dates',
@@ -244,6 +267,12 @@ export const DEMO_GRADES = {
   ci: { 'ci-ec': { v: 8.2 } },
   cv: { 'cv-lab1': { v: 9 }, 'cv-lab2': { v: 8.5 }, 'cv-mid1': { v: 4.6 } },
   par: { 'par-plan-prac': { v: 7.5 } },
+};
+
+// Items marked as submitted in the example (submitted, no grade yet).
+export const DEMO_DONE = {
+  cv: { 'cv-lab3': '2026-11-10' },
+  ihlt: { 'ihlt-sts': '2026-11-12' },
 };
 
 /** Starting structure for a subject the student creates themselves. */

@@ -1064,6 +1064,9 @@ dialog.sheet[open]::backdrop { animation: fadeIn 0.3s var(--ease); }
 }
 .toast.is-on { transform: translate(-50%, 0); visibility: visible; }
 .toast[data-tone='bad'] { background: var(--bad); color: #fff; }
+.toast.has-action { pointer-events: auto; display: flex; align-items: center; gap: 14px; padding: 8px 8px 8px 20px; }
+.toast-action { min-height: 34px; padding: 0 14px; border-radius: 999px; font-weight: 650; color: inherit; background: color-mix(in srgb, currentColor 18%, transparent); }
+.toast-action:hover { background: color-mix(in srgb, currentColor 28%, transparent); }
 .noscript { padding: 40px; text-align: center; }
 
 /* ---------- Reveal on scroll ---------- */
@@ -1099,3 +1102,71 @@ tr[data-reveal] { transform: none; }
   .scale-reach { background: GrayText; }
   .scale-proj { border-color: Highlight; }
 }
+
+/* ---------- Progress, submitted marks, news, exam details ---------- */
+.progress { margin-top: 22px; display: grid; gap: 10px; max-width: 720px; }
+.progress-text { font-size: 15px; color: var(--ink-2); }
+.progress-text strong { color: var(--ink); font-weight: 650; }
+.progress-strip { display: flex; gap: 3px; }
+.progress-strip span { flex: 1 1 0; min-width: 4px; height: 12px; border-radius: 3px; background: var(--track); transition: background 0.3s var(--ease); }
+.progress-strip span.is-done { background: var(--c); }
+.progress-strip span:first-child { border-radius: 6px 3px 3px 6px; }
+.progress-strip span:last-child { border-radius: 3px 6px 6px 3px; }
+
+.row-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; margin-top: 4px; }
+.row-actions:empty { display: none; }
+.done-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 32px; padding: 0 12px 0 6px; border-radius: 999px;
+  font-size: 13px; font-weight: 600; color: var(--ink-2);
+  background: var(--neutral-bg);
+  transition: background 0.2s, color 0.2s, transform 0.15s var(--ease);
+}
+.done-btn:hover { color: var(--ink); }
+.done-btn:active { transform: scale(0.95); }
+.done-box {
+  display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%;
+  border: 1.5px solid var(--line-strong); color: transparent;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.done-box .icon { width: 13px; height: 13px; stroke-width: 3; }
+.done-btn[aria-pressed='true'] { color: var(--good); background: var(--good-bg); }
+.done-btn[aria-pressed='true'] .done-box { background: var(--good); border-color: var(--good); color: #fff; animation: pop-check 0.35s var(--spring); }
+@keyframes pop-check { from { transform: scale(0.6); } }
+.done-btn[hidden] { display: none; }
+.leaf-input .done-btn { margin-top: 2px; }
+
+.is-done .count-title, .is-done .deadline-title, .wk-item.is-done .wk-title { text-decoration: line-through; text-decoration-thickness: 1.5px; text-decoration-color: var(--ink-3); }
+.count.is-done .count-ring, .deadline.is-done .deadline-date, .is-done .count-when { opacity: 0.45; }
+.count.is-done .ring-fill { stroke: var(--good); }
+.wk-item.is-done { border-left-color: var(--good); }
+.cal-chip.is-done b { text-decoration: line-through; color: var(--ink-3); }
+.cal-chip.is-done i { background: transparent; box-shadow: inset 0 0 0 1.5px var(--c); }
+
+.news-flag {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 18px;
+  min-height: 40px; padding: 0 16px 0 12px; border-radius: 999px;
+  font-size: 15px; font-weight: 600; color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+.news-flag:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.news-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.tag-new { color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.deadline.is-new { background: color-mix(in srgb, var(--accent) 5%, transparent); }
+.nav-links a.has-news::after {
+  content: ''; position: absolute; top: 12px; right: 6px;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+}
+.nav-links a { position: relative; }
+@media (max-width: 720px) { .nav-links a.has-news::after { top: 10px; right: calc(50% - 18px); } }
+
+.exam-sheet .sheet-top { margin-bottom: -6px; }
+.exam-facts { margin: 0; display: grid; border-top: 1px solid var(--line); }
+.exam-facts > div { display: grid; grid-template-columns: 130px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.exam-facts dt { font-size: 14px; color: var(--ink-2); }
+.exam-facts dd { margin: 0; font-weight: 550; }
+.exam-need { font-size: 17px; line-height: 1.45; padding: 14px 16px; border-radius: var(--r-md); background: var(--surface); }
+.exam-need strong { font-weight: 700; }
+.exam-prep h3 { font-size: 16px; font-weight: 650; margin-bottom: 8px; }
+.exam-prep ul { display: grid; gap: 8px; padding-left: 18px; list-style: disc; color: var(--ink-2); font-size: 15px; }
+@media (max-width: 480px) { .exam-facts > div { grid-template-columns: 1fr; gap: 2px; } }
+.hero-num[data-v=''] { color: var(--ink-3); font-weight: 300; }

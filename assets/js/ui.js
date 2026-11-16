@@ -73,6 +73,7 @@ const PATHS = {
   mail: '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.5 7.5l8.5 6 8.5-6"/>',
   external: '<path d="M8 16L16 8M9.5 8H16v6.5"/>',
   copy: '<rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2.5"/><path d="M15.5 8.5V6.5A2.5 2.5 0 0 0 13 4H6.5A2.5 2.5 0 0 0 4 6.5V13a2.5 2.5 0 0 0 2.5 2.5h2"/>',
+  info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.5v.01"/>',
   lock: '<rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
   reset: '<path d="M4 4v6h6"/><path d="M4.5 13.5A8 8 0 1 0 7 6.3L4 10"/>',
 };
@@ -202,13 +203,26 @@ export function go(hash) {
 }
 
 let toastTimer;
-export function toast(msg, tone = 'neutral') {
+/** Short message at the top. `action` = { label, run } adds one button (for Undo). */
+export function toast(msg, tone = 'neutral', action = null) {
   const el = document.getElementById('toast');
   el.textContent = msg;
   el.dataset.tone = tone;
+  el.classList.toggle('has-action', !!action);
+  if (action) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'toast-action';
+    b.textContent = action.label;
+    b.addEventListener('click', () => {
+      el.classList.remove('is-on');
+      action.run();
+    });
+    el.append(' ', b);
+  }
   el.classList.add('is-on');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('is-on'), 2600);
+  toastTimer = setTimeout(() => el.classList.remove('is-on'), action ? 5000 : 2600);
 }
 
 /** Promise-based confirm built on <dialog>. */

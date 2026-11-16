@@ -112,3 +112,17 @@ test('example grades and news point at real subjects and items', async () => {
   for (const n of NEWS) assert.ok(catalogById[n.subject], n.subject);
   assert.deepEqual(itemPath(catalogById.iml.items, 'iml-w2-code').slice(-2), ['Work 2: Lazy learning, SVM and RF', 'Code']);
 });
+
+test('news ids are unique and exam details sit only on exams', async () => {
+  const { NEWS, CATALOG: C } = await import('../assets/js/catalog.js');
+  const ids = NEWS.map((n) => n.id);
+  assert.equal(new Set(ids).size, ids.length);
+  assert.ok(ids.every(Boolean));
+  for (const s of C) {
+    for (const n of flatten(s.items)) {
+      if (n.item.exam) assert.equal(n.item.kind, 'exam', n.item.id);
+    }
+  }
+  const par = flatten(catalogById.par.items).find((n) => n.item.id === 'par-plan-exam').item;
+  assert.match(par.exam.format, /10 true\/false/);
+});
