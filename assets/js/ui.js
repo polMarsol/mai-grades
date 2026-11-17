@@ -81,14 +81,7 @@ const PATHS = {
 export const icon = (name, cls = '') =>
   `<svg class="icon ${cls}" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${PATHS[name] || ''}</svg>`;
 
-export const logo = (cls = '') => `
-<svg class="logo ${cls}" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-  <rect class="logo-frame" x="3" y="3" width="42" height="42" rx="13"/>
-  <path class="logo-track" d="M13 31h22"/>
-  <path class="logo-fill" d="M13 31h15"/>
-  <path class="logo-needle" d="M28 31V17"/>
-  <circle class="logo-pin" cx="28" cy="15.5" r="2.6"/>
-</svg>`;
+export const logo = (cls = '') => `<svg class="mark ${cls}" viewBox="2 10 44 28" aria-hidden="true" focusable="false"><path class="mark-ink m1" d="M4.5 35L11 13l6.5 22"/><path class="mark-ink m2" d="M7 28h8"/><path class="mark-ink m3" d="M26 13V35"/><path class="mark-ink m4" d="M22.6 15.4L26 13h3.2"/><path class="mark-ink m5" d="M22.8 35h6.4"/><path class="mark-zero m6" d="M37.8 13A5.2 11 0 1 1 37.79 13"/></svg>`;
 
 /**
  * The grade scale: a 0–10 track showing points secured, what is still in play,

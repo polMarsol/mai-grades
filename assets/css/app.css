@@ -187,14 +187,14 @@ svg { flex: none; }
 }
 html:not(.is-loading) .loader:not(.is-out) { display: none; }
 .loader.is-out { opacity: 0; filter: blur(12px); pointer-events: none; }
-.logo-draw { width: 84px; height: 84px; }
-.logo-draw :is(.logo-frame, .logo-track, .logo-fill, .logo-needle) { stroke-dasharray: 1; stroke-dashoffset: 1; }
-.loader.is-run .logo-frame { animation: draw 0.9s var(--ease) forwards; }
-.loader.is-run .logo-track { animation: draw 0.5s var(--ease) 0.35s forwards; }
-.loader.is-run .logo-fill { animation: draw 0.55s var(--ease) 0.6s forwards; }
-.loader.is-run .logo-needle { animation: draw 0.35s var(--ease) 0.95s forwards; }
-.logo-draw .logo-pin { opacity: 0; transform-origin: 28px 15.5px; transform: scale(0); }
-.loader.is-run .logo-pin { animation: pop 0.45s var(--spring) 1.15s forwards; }
+.mark-draw { width: 116px; height: auto; }
+.mark-draw path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.loader.is-run .m1 { animation: draw 0.55s var(--ease) forwards; }
+.loader.is-run .m2 { animation: draw 0.2s var(--ease) 0.45s forwards; }
+.loader.is-run .m3 { animation: draw 0.35s var(--ease) 0.55s forwards; }
+.loader.is-run .m4 { animation: draw 0.2s var(--ease) 0.8s forwards; }
+.loader.is-run .m5 { animation: draw 0.2s var(--ease) 0.85s forwards; }
+.loader.is-run .m6 { animation: draw 0.6s var(--ease) 0.95s forwards; }
 .loader-word { font-size: 22px; font-weight: 650; letter-spacing: -0.02em; opacity: 0; filter: blur(8px); }
 .loader.is-run .loader-word { animation: focusIn 0.7s var(--ease) 0.5s forwards; }
 .loader-skip {
@@ -211,12 +211,10 @@ html:not(.is-loading) .loader:not(.is-out) { display: none; }
 .is-loading .main, .is-loading .nav-wrap { filter: blur(14px); opacity: 0; transform: scale(0.985); }
 
 /* ---------- Logo ---------- */
-.logo { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
-.logo-frame { stroke-width: 3; }
-.logo-track { stroke-width: 3.2; opacity: 0.28; }
-.logo-fill { stroke-width: 3.2; stroke: var(--c-blue); }
-.logo-needle { stroke-width: 2.6; }
-.logo-pin { fill: currentColor; stroke: none; }
+/* A10: the 1 doubles as the I of AI. Ink follows the text colour, the 0 is the brand blue. */
+.mark { display: block; flex: none; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 3.8; overflow: visible; }
+.mark-ink { stroke: currentColor; }
+.mark-zero { stroke: var(--c-blue); }
 
 /* ---------- Navigation ---------- */
 .nav-wrap {
@@ -237,7 +235,7 @@ html:not(.is-loading) .loader:not(.is-out) { display: none; }
   padding: 0 12px 0 20px;
 }
 .brand { display: flex; align-items: center; gap: 9px; font-size: 17px; font-weight: 650; letter-spacing: -0.02em; margin-right: auto; padding: 6px 4px; border-radius: 8px; }
-.brand .logo { width: 24px; height: 24px; }
+.brand .mark { width: 34px; height: 22px; }
 .nav-links { position: relative; display: flex; }
 .nav-links a {
   display: flex; align-items: center;

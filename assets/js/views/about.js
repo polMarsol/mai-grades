@@ -72,6 +72,7 @@ export function renderAbout(root) {
       </section>
 
       <div class="fineprint">
+        <p>The logo reads two ways: AI, and a 10.</p>
         <p>Made by a MAI student. Not an official tool of UPC, UB or URV: always check the course guide and Campus Virtual, which have the final word.</p>
       </div>
     </div>`;
