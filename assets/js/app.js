@@ -104,10 +104,12 @@ themeBtn.addEventListener('click', () => {
   if (parseRoute().name === 'settings') render();
 });
 
-// Loader: draws once per browser session, can be skipped.
+// Splash: draws once per browser session. AI is drawn, the 0 fills while a counter
+// runs to 10, then the mark flies into the top bar. Tap anywhere to skip.
 function runLoader() {
   const loader = document.getElementById('loader');
   if (!loader) return;
+  const root = document.documentElement;
   let seen = false;
   try {
     seen = sessionStorage.getItem('mai-grades:intro') === '1';
@@ -115,21 +117,82 @@ function runLoader() {
   } catch {
     /* ignore */
   }
-  const done = () => {
-    if (loader.dataset.done) return;
-    loader.dataset.done = '1';
-    document.documentElement.classList.remove('is-loading');
-    loader.classList.add('is-out');
-    setTimeout(() => loader.remove(), 700);
-  };
   if (seen || reducedMotion()) {
     loader.remove();
-    document.documentElement.classList.remove('is-loading');
+    root.classList.remove('is-loading');
     return;
   }
-  loader.querySelector('.loader-skip').addEventListener('click', done);
+
+  const stage = loader.querySelector('.splash-stage');
+  const tilt = loader.querySelector('.splash-tilt');
+  const svg = loader.querySelector('.mark-draw');
+  const count = loader.querySelector('.splash-count');
+  let phase = 'run';
+  const timers = [];
+  const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+
+  const runCounter = (dur) => {
+    const t0 = performance.now();
+    const step = (t) => {
+      const k = Math.min(1, (t - t0) / dur);
+      count.textContent = (10 * (1 - (1 - k) ** 3)).toFixed(1);
+      if (k < 1 && phase === 'run') requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  const finish = () => {
+    loader.remove();
+    root.classList.remove('is-landing');
+  };
+
+  const fly = () => {
+    if (phase === 'fly') return;
+    phase = 'fly';
+    timers.forEach(clearTimeout);
+    count.textContent = '10.0';
+    tilt.style.transform = '';
+    const target = document.querySelector('.brand .mark');
+    root.classList.add('is-landing');
+    root.classList.remove('is-loading');
+    loader.classList.add('is-flying');
+    if (!target || !stage.animate) return finish();
+    const f = svg.getBoundingClientRect();
+    const t = target.getBoundingClientRect();
+    const dx = t.left + t.width / 2 - (f.left + f.width / 2);
+    const dy = t.top + t.height / 2 - (f.top + f.height / 2);
+    const scale = t.width / f.width;
+    const anim = stage.animate(
+      [{ transform: 'none' }, { transform: `translate(${dx}px, ${dy}px) scale(${scale})` }],
+      { duration: 720, easing: 'cubic-bezier(0.65, 0, 0.25, 1)', fill: 'forwards' },
+    );
+    anim.onfinish = finish;
+    setTimeout(finish, 1400); // in case the animation never reports back
+  };
+
+  // Skip: jump to the full mark and fly straight away.
+  const skip = () => {
+    if (phase !== 'run') return;
+    timers.forEach(clearTimeout);
+    loader.classList.add('is-instant', 'is-full');
+    count.textContent = '10.0';
+    setTimeout(fly, 260);
+    phase = 'skipping';
+  };
+
+  // The mark leans towards the pointer while it draws.
+  loader.addEventListener('pointermove', (e) => {
+    if (phase !== 'run' || e.pointerType === 'touch') return;
+    const x = e.clientX / innerWidth - 0.5;
+    const y = e.clientY / innerHeight - 0.5;
+    tilt.style.transform = `perspective(700px) rotateX(${(-y * 18).toFixed(2)}deg) rotateY(${(x * 24).toFixed(2)}deg)`;
+  });
+  loader.addEventListener('click', skip);
+
   loader.classList.add('is-run');
-  setTimeout(done, 1500);
+  at(900, () => runCounter(550));
+  at(1450, () => loader.classList.add('is-full'));
+  at(2250, fly);
 }
 
 countVisit();

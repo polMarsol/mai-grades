@@ -178,37 +178,63 @@ svg { flex: none; }
   stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
 }
 
-/* ---------- Loader ---------- */
+/* ---------- Loader (splash) ----------
+   AI is drawn, the 0 fills like the progress ring while a counter runs to 10,
+   then the mark flies into its place in the top bar. Once per session. */
 .loader {
   position: fixed; inset: 0; z-index: 90;
-  display: grid; place-items: center; align-content: center; gap: 18px;
+  display: grid; place-items: center; align-content: center; gap: 26px;
   background: var(--bg);
-  transition: opacity 0.6s var(--ease), filter 0.6s var(--ease);
+  cursor: pointer;
+  transition: background-color 0.6s var(--ease);
 }
-html:not(.is-loading) .loader:not(.is-out) { display: none; }
-.loader.is-out { opacity: 0; filter: blur(12px); pointer-events: none; }
-.mark-draw { width: 116px; height: auto; }
+html:not(.is-loading) .loader:not(.is-flying) { display: none; }
+.loader.is-flying { background-color: transparent; pointer-events: none; }
+.splash-stage { transform-origin: 50% 50%; will-change: transform; }
+.splash-tilt { position: relative; transition: transform 0.3s var(--ease); transform-style: preserve-3d; }
+.mark-draw { width: 168px; height: auto; transition: filter 0.5s var(--ease); }
+@media (max-width: 560px) { .mark-draw { width: 136px; } }
 .mark-draw path { stroke-dasharray: 1; stroke-dashoffset: 1; }
 .loader.is-run .m1 { animation: draw 0.55s var(--ease) forwards; }
 .loader.is-run .m2 { animation: draw 0.2s var(--ease) 0.45s forwards; }
 .loader.is-run .m3 { animation: draw 0.35s var(--ease) 0.55s forwards; }
-.loader.is-run .m4 { animation: draw 0.2s var(--ease) 0.8s forwards; }
-.loader.is-run .m5 { animation: draw 0.2s var(--ease) 0.85s forwards; }
-.loader.is-run .m6 { animation: draw 0.6s var(--ease) 0.95s forwards; }
-.loader-word { font-size: 22px; font-weight: 650; letter-spacing: -0.02em; opacity: 0; filter: blur(8px); }
-.loader.is-run .loader-word { animation: focusIn 0.7s var(--ease) 0.5s forwards; }
+.loader.is-run .m4 { animation: draw 0.2s var(--ease) 0.75s forwards; }
+.loader.is-run .m5 { animation: draw 0.2s var(--ease) 0.8s forwards; }
+.loader.is-run .m6 { animation: draw 0.55s cubic-bezier(0.3, 0, 0.2, 1) 0.9s forwards; }
+.loader.is-instant .mark-draw path { animation: none !important; stroke-dashoffset: 0; }
+.loader.is-full .mark-draw { animation: splash-pop 0.5s var(--spring); filter: drop-shadow(0 8px 26px color-mix(in srgb, var(--c-blue) 40%, transparent)); }
+.loader.is-flying .mark-draw { filter: none; }
+/* ripple from the centre of the 0 when it closes */
+.splash-ripple {
+  position: absolute; left: 81.4%; top: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px;
+  border-radius: 50%; border: 2px solid var(--c-blue); opacity: 0; pointer-events: none;
+}
+.loader.is-full .splash-ripple { animation: splash-ripple 0.9s cubic-bezier(0.2, 0.7, 0.3, 1); }
+/* counter and name share one slot */
+.splash-text { display: grid; place-items: center; min-height: 34px; }
+.splash-text > * { grid-area: 1 / 1; transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), color 0.2s; }
+.splash-count { font-size: 28px; font-weight: 650; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: var(--ink-3); opacity: 0; }
+.loader.is-run .splash-count { opacity: 1; transition-delay: 0.85s; }
+.loader.is-full .splash-count { color: var(--c-blue); opacity: 0; transform: translateY(-8px); transition-delay: 0.12s, 0.12s, 0s; transition-duration: 0.25s; }
+.loader.is-flying .splash-count { opacity: 0; transition-delay: 0s; }
+.loader-word { font-size: 22px; font-weight: 650; letter-spacing: -0.02em; opacity: 0; transform: translateY(8px); }
+.loader.is-full .loader-word { opacity: 1; transform: none; transition-delay: 0.25s; }
+.loader.is-flying .loader-word, .loader.is-flying .loader-skip { opacity: 0; transition: opacity 0.2s; transition-delay: 0s; }
 .loader-skip {
   position: absolute; bottom: max(28px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%);
   font-size: 15px; color: var(--ink-2);
   padding: 10px 18px; border-radius: 999px;
 }
 .loader-skip:hover { background: var(--fill-hover); color: var(--ink); }
+.is-landing .brand .mark { visibility: hidden; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
-@keyframes pop { to { opacity: 1; transform: scale(1); } }
-@keyframes focusIn { to { opacity: 1; filter: blur(0); } }
+@keyframes splash-pop { 0% { transform: scale(1); } 40% { transform: scale(1.09); } 100% { transform: scale(1); } }
+@keyframes splash-ripple { 0% { opacity: 0.55; transform: scale(0.5); } 100% { opacity: 0; transform: scale(3.4); } }
 
 .main, .nav-wrap { transition: filter 0.7s var(--ease), opacity 0.7s var(--ease), transform 0.7s var(--ease); }
-.is-loading .main, .is-loading .nav-wrap { filter: blur(14px); opacity: 0; transform: scale(0.985); }
+/* the nav is not scaled while loading, so the mark can land exactly on it */
+.is-loading .main { filter: blur(14px); opacity: 0; transform: scale(0.985); }
+.is-loading .nav-wrap { filter: blur(14px); opacity: 0; }
 
 /* ---------- Logo ---------- */
 /* A10: the 1 doubles as the I of AI. Ink follows the text colour, the 0 is the brand blue. */
@@ -1093,6 +1119,7 @@ tr[data-reveal] { transform: none; }
   .blob { animation: none; }
   [data-reveal] { opacity: 1; transform: none; }
   .is-loading .main, .is-loading .nav-wrap { filter: none; opacity: 1; transform: none; }
+  .loader { display: none !important; }
 }
 
 @media (forced-colors: active) {
