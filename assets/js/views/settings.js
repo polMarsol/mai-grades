@@ -3,6 +3,8 @@ import { esc, icon, toast, download, confirmDialog, openDialog, go } from '../ui
 import { openEditor } from '../editor.js';
 import { buildICS } from '../ics.js';
 import { getTheme, setTheme } from '../theme.js';
+import { openCustomize } from '../layout.js';
+import { maybeStartTour } from '../tour.js';
 
 function openAdd(onDone) {
   const st = getState();
@@ -76,6 +78,14 @@ export function renderSettings(root, params) {
               .join('')}
           </div>
         </div>
+        <div class="list-row">
+          <div class="list-text"><span>Home layout</span><span class="muted small">Choose what Home shows and in what order.</span></div>
+          <button type="button" class="btn btn-ghost btn-sm" id="customize-home">${icon('sliders')}Customize</button>
+        </div>
+        <div class="list-row">
+          <div class="list-text"><span>Guided tour</span><span class="muted small">A one-minute walk through Home.</span></div>
+          <button type="button" class="btn btn-ghost btn-sm" id="take-tour">Take the tour</button>
+        </div>
       </div>
     </section>
 
@@ -147,6 +157,11 @@ export function renderSettings(root, params) {
     }),
   );
   root.querySelector('#add').addEventListener('click', () => openAdd(rerender));
+  root.querySelector('#customize-home').addEventListener('click', () => openCustomize());
+  root.querySelector('#take-tour').addEventListener('click', () => {
+    location.hash = '#/';
+    maybeStartTour({ force: true });
+  });
   root.querySelectorAll('[data-move]').forEach((b) =>
     b.addEventListener('click', () => {
       moveSubject(b.dataset.move, Number(b.dataset.dir));

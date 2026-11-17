@@ -15,6 +15,7 @@ const empty = () => ({
   targets: {}, // { [subjectId]: number }
   done: {}, // { [subjectId]: { [itemId]: 'YYYY-MM-DD' } } submitted or taken, grade or not
   seenNews: [], // ids of course news already shown on the home screen
+  layout: null, // Home layout: { preset, order, hidden }; null = default
 });
 
 const todayIso = () => {
@@ -94,7 +95,7 @@ export function startWith(ids) {
 
 /** Load every subject with made-up grades so people can look around before typing anything. */
 export function loadDemo() {
-  state = { ...empty(), onboarded: true, demo: true, subjects: CATALOG.map((s) => official(s.id)), grades: clone(DEMO_GRADES), done: clone(DEMO_DONE), seenNews: NEWS.map((n) => n.id) };
+  state = { ...empty(), onboarded: true, demo: true, subjects: CATALOG.map((s) => official(s.id)), grades: clone(DEMO_GRADES), done: clone(DEMO_DONE), seenNews: NEWS.map((n) => n.id), layout: state.layout };
   persist();
 }
 
@@ -186,6 +187,11 @@ export function markNewsSeen() {
   const ids = unseenNews().map((n) => n.id);
   if (!ids.length) return;
   state.seenNews = [...(state.seenNews || []), ...ids];
+  persist();
+}
+
+export function setLayout(layout) {
+  state.layout = layout;
   persist();
 }
 

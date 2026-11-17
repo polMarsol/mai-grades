@@ -1,9 +1,11 @@
 import { getState, getGrades, startWith, loadDemo, catalog } from '../store.js';
 import { NEWS } from '../catalog.js';
 import { progressHtml, doneButton, examButton, isFinished, doneOn } from '../progress.js';
+import { getLayout, isShown, openCustomize } from '../layout.js';
+import { maybeStartTour } from '../tour.js';
 import { unseenNews, markNewsSeen } from '../store.js';
 import { evaluate, datedItems, weightedMean } from '../grades.js';
-import { esc, fmt, pct, scale, icon, fmtDate, relDay, daysFrom, statusPill, countTo, go, today, safeUrl } from '../ui.js';
+import { esc, fmt, pct, scale, icon, fmtDate, relDay, daysFrom, statusPill, countTo, go, today, safeUrl, reveal } from '../ui.js';
 import { mountInstallHint } from '../install.js';
 
 /** Dated items from `from` to `horizon` days ahead, soonest first. */
@@ -139,37 +141,58 @@ function arrange(root) {
   const home = root.querySelector('#home');
   if (!home) return;
   const $ = (sel) => home.querySelector(sel);
+  const layout = getLayout();
   const head = $('.dash-head');
-  const cal = $('#cal');
-  const side = $('.dash-side');
-  const subjHead = $('.subjects-head');
-  const tiles = $('.tiles');
-  const news = $('#news');
+  const blocks = { calendar: $('#cal'), next: $('.dash-side'), subjects: $('.subjects-block'), news: $('#news') };
   const install = $('[data-install-slot]');
-  const wide = WIDE.matches && cal;
-  home.classList.toggle('home-wide', !!wide);
+  const shown = layout.order.filter((id) => isShown(layout, id) && blocks[id]);
+  if (!isShown(layout, 'progress')) head.querySelector('#progress')?.remove();
+  if (!shown.includes('news')) head.querySelector('#news-flag')?.remove();
+  const wide = WIDE.matches && shown.includes('calendar');
+  home.className = 'home';
   home.replaceChildren();
-  if (wide) {
-    const col = (cls, ...kids) => {
-      const d = document.createElement('div');
-      d.className = cls;
-      d.append(...kids.filter(Boolean));
-      return d;
-    };
-    home.append(
-      col('home-left', subjHead, tiles),
-      col('home-center', head, cal),
-      col('home-right', side, news, install),
-    );
-  } else {
-    const dash = cal ? document.createElement('div') : null;
-    if (dash) {
-      dash.className = 'dash';
-      dash.append(cal, side);
-    }
-    home.append(...[head, dash, subjHead, tiles, news, install].filter(Boolean));
+  const col = (cls, kids) => {
+    const d = document.createElement('div');
+    d.className = cls;
+    d.append(...kids);
+    return d;
+  };
+  if (wide && shown.includes('subjects') && shown.indexOf('subjects') < shown.indexOf('calendar')) {
+    // grades first: subject cards in the middle, calendar and the rest on the right
+    const right = shown.filter((id) => id !== 'subjects').map((id) => blocks[id]);
+    right.push(install);
+    home.classList.add('home-wide', 'no-left', 'subjects-center');
+    home.append(col('home-center', [head, blocks.subjects]), col('home-right', right));
+    return;
   }
+  if (wide) {
+    // subjects on the left, calendar in the middle, everything else on the right, in the chosen order
+    const left = shown.includes('subjects') ? [blocks.subjects] : [];
+    const right = shown.filter((id) => id !== 'calendar' && id !== 'subjects').map((id) => blocks[id]);
+    const center = [head, blocks.calendar];
+    if (right.length) right.push(install);
+    else center.push(install);
+    home.classList.add('home-wide');
+    if (!left.length) home.classList.add('no-left');
+    if (!right.length) home.classList.add('no-right');
+    if (left.length) home.append(col('home-left', left));
+    home.append(col('home-center', center));
+    if (right.length) home.append(col('home-right', right));
+    return;
+  }
+  // stacked in the chosen order; calendar and next up side by side when they follow each other
+  home.append(head);
+  for (let k = 0; k < shown.length; k++) {
+    const id = shown[k];
+    const pair = (id === 'calendar' && shown[k + 1] === 'next') || (id === 'next' && shown[k + 1] === 'calendar');
+    if (pair) {
+      home.append(col('dash', [blocks[id], blocks[shown[k + 1]]]));
+      k++;
+    } else home.append(blocks[id]);
+  }
+  home.append(install);
 }
+
 WIDE.addEventListener('change', () => {
   const root = document.getElementById('main');
   if (root?.querySelector('#home')) arrange(root);
@@ -205,7 +228,10 @@ export function renderHome(root) {
   root.innerHTML = `
     <div class="home" id="home">
     <header class="dash-head">
-      <h1 class="display">${new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }).format(now)}</h1>
+      <div class="dash-title">
+        <h1 class="display">${new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }).format(now)}</h1>
+        <button type="button" class="btn btn-ghost btn-sm" id="customize" aria-label="Customize Home">${icon('sliders')}<span class="cz-label">Customize</span></button>
+      </div>
       <p class="lede">${
         !st.subjects.length
           ? 'Add a subject to see its deadlines here.'
@@ -240,8 +266,9 @@ export function renderHome(root) {
         : ''
     }
 
+    <div class="subjects-block">
     <div class="block-head subjects-head">
-      <h2 class="section-title">Your subjects</h2>
+      <h2 class="section-title" id="h-subjects">Your subjects</h2>
       <p class="muted">${
         avg == null
           ? 'Add your first grade to see your average.'
@@ -249,7 +276,7 @@ export function renderHome(root) {
       }</p>
     </div>
 
-    <section class="tiles" aria-label="Subjects">
+    <section class="tiles" aria-labelledby="h-subjects">
       ${evs
         .map(
           ({ s, ev }, i) => `
@@ -280,6 +307,7 @@ export function renderHome(root) {
         <span>Add a subject</span>
       </a>
     </section>
+    </div>
 
     ${
       news.length
@@ -295,12 +323,19 @@ export function renderHome(root) {
 
   arrange(root);
   countTo(root.querySelector('#home-avg'), avg);
+  root.querySelector('#customize')?.addEventListener('click', () =>
+    openCustomize(() => {
+      renderHome(root);
+      reveal(root);
+    }),
+  );
   root.querySelector('#news-flag')?.addEventListener('click', () => {
     const n = root.querySelector('#news');
     n?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     n?.querySelector('a')?.focus({ preventScroll: true });
   });
-  markNewsSeen();
+  if (root.querySelector('#news')) markNewsSeen();
+  maybeStartTour();
 
   // ----- calendar: week or month, with previous / next / today
   const cal = root.querySelector('#cal');

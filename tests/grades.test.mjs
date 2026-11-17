@@ -126,3 +126,15 @@ test('news ids are unique and exam details sit only on exams', async () => {
   const par = flatten(catalogById.par.items).find((n) => n.item.id === 'par-plan-exam').item;
   assert.match(par.exam.format, /10 true\/false/);
 });
+
+test('home layout presets only use known blocks and default to dates first', async () => {
+  const { PRESETS, BLOCKS, getLayout } = await import('../assets/js/layout.js');
+  const ids = BLOCKS.map((b) => b.id);
+  for (const p of Object.values(PRESETS)) {
+    assert.deepEqual([...p.order].sort(), [...ids].sort());
+    for (const h of p.hidden) assert.ok(ids.includes(h) || h === 'progress');
+  }
+  const l = getLayout();
+  assert.equal(l.preset, 'dates');
+  assert.deepEqual(l.order, PRESETS.dates.order);
+});
