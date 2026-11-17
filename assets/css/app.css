@@ -467,11 +467,13 @@ label.btn:focus-within { outline: 3px solid var(--focus); outline-offset: 3px; }
 .tile-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .tile-code { display: inline-flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 700; letter-spacing: -0.025em; }
 .tile-name { font-size: 15px; color: var(--ink-2); line-height: 1.35; min-height: 2.7em; }
-.tile-grade { display: flex; align-items: baseline; gap: 10px; margin-top: auto; padding-top: 14px; }
+/* fixed spacing from the top so the numbers line up across a row; spare height goes above the footer */
+.tile-grade { display: flex; align-items: baseline; gap: 10px; margin-top: 14px; padding-top: 0; }
 .tile-num { font-size: 40px; font-weight: 650; letter-spacing: -0.04em; line-height: 1; }
 .tile-num.is-empty { color: var(--ink-3); font-weight: 400; }
 .tile-num-label { font-size: 14px; }
-.tile-foot { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 2px 14px; font-size: 13px; margin-top: 8px; padding-right: 32px; min-height: 2.9em; }
+.tile-foot { display: grid; gap: 2px; font-size: 13px; margin-top: auto; padding-top: 10px; padding-right: 32px; }
+.tile-foot span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tile-go {
   position: absolute; right: 20px; bottom: 18px;
   color: var(--ink-2);
@@ -1195,3 +1197,45 @@ tr[data-reveal] { transform: none; }
 .exam-prep ul { display: grid; gap: 8px; padding-left: 18px; list-style: disc; color: var(--ink-2); font-size: 15px; }
 @media (max-width: 480px) { .exam-facts > div { grid-template-columns: 1fr; gap: 2px; } }
 .hero-num[data-v=''] { color: var(--ink-3); font-weight: 300; }
+
+/* calendar chips name the item only on wide screens */
+.chip-name { display: none; }
+
+/* ---------- Wide screens: three columns on Home ---------- */
+@media (min-width: 1400px) {
+  .nav { max-width: 1720px; }
+  .main:has(.home-wide) { max-width: 1720px; }
+  .home-wide { display: grid; grid-template-columns: 340px minmax(0, 1fr) 360px; gap: 36px; align-items: start; }
+  .home-left, .home-center, .home-right { min-width: 0; }
+  .home-wide .subjects-head { margin: 4px 0 12px; }
+  .home-wide .subjects-head .section-title { font-size: 20px; }
+  .home-wide .subjects-head p { font-size: 14px; }
+  .home-wide .tiles { grid-template-columns: 1fr; gap: 10px; }
+  .home-wide .tile { min-height: 0; padding: 16px 18px 14px; gap: 2px; border-radius: 18px; }
+  .home-wide .tile-code { font-size: 20px; }
+  .home-wide .tile-name { font-size: 13.5px; min-height: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .home-wide .tile-grade { margin-top: 10px; gap: 8px; }
+  .home-wide .tile-num { font-size: 32px; }
+  .home-wide .tile-num-label { font-size: 13px; }
+  .home-wide .tile .scale { padding-top: 6px; }
+  .home-wide .tile-foot { font-size: 12.5px; padding-top: 6px; padding-right: 26px; gap: 1px; }
+  .home-wide .tile-go { right: 14px; bottom: 12px; }
+  .home-wide .tile-add { min-height: 52px; flex-direction: row; gap: 10px; }
+  .home-wide .tile-add .tile-add-icon { width: 30px; height: 30px; }
+  .home-wide .cal-day { min-height: 104px; }
+  .home-wide .dash-sub { margin-bottom: 12px; }
+  .home-right #news { margin-top: 32px; }
+  .home-right #news .section-title { font-size: 17px; }
+  .home-right #news .deadlines { margin: 0 -14px; }
+  .home-right .install { margin-top: 28px; flex-wrap: wrap; padding: 14px 8px 8px 18px; gap: 6px 8px; }
+  .home-right .install p { flex: 1 1 100%; padding-right: 36px; }
+  .home-right .install [data-install-dismiss], .home-right .install .icon-btn:last-child { position: absolute; top: 6px; right: 6px; }
+  .home-right .install { position: relative; }
+}
+/* the calendar names each item once there is room for it */
+@media (min-width: 1600px) {
+  .home-wide .cal-chip { align-items: flex-start; font-weight: 550; }
+  .home-wide .cal-chip i { margin-top: 4px; }
+  .home-wide .cal-chip b { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .home-wide .chip-name { display: inline; }
+}

@@ -132,6 +132,49 @@ function onboarding(root) {
   });
 }
 
+// On wide screens the home splits into three columns: subjects, calendar, and what's next.
+// The blocks are moved (not just restyled) so reading and tab order match what you see.
+const WIDE = matchMedia('(min-width: 1400px)');
+function arrange(root) {
+  const home = root.querySelector('#home');
+  if (!home) return;
+  const $ = (sel) => home.querySelector(sel);
+  const head = $('.dash-head');
+  const cal = $('#cal');
+  const side = $('.dash-side');
+  const subjHead = $('.subjects-head');
+  const tiles = $('.tiles');
+  const news = $('#news');
+  const install = $('[data-install-slot]');
+  const wide = WIDE.matches && cal;
+  home.classList.toggle('home-wide', !!wide);
+  home.replaceChildren();
+  if (wide) {
+    const col = (cls, ...kids) => {
+      const d = document.createElement('div');
+      d.className = cls;
+      d.append(...kids.filter(Boolean));
+      return d;
+    };
+    home.append(
+      col('home-left', subjHead, tiles),
+      col('home-center', head, cal),
+      col('home-right', side, news, install),
+    );
+  } else {
+    const dash = cal ? document.createElement('div') : null;
+    if (dash) {
+      dash.className = 'dash';
+      dash.append(cal, side);
+    }
+    home.append(...[head, dash, subjHead, tiles, news, install].filter(Boolean));
+  }
+}
+WIDE.addEventListener('change', () => {
+  const root = document.getElementById('main');
+  if (root?.querySelector('#home')) arrange(root);
+});
+
 export function renderHome(root) {
   const st = getState();
   if (!st.onboarded) return onboarding(root);
@@ -160,6 +203,7 @@ export function renderHome(root) {
   }
 
   root.innerHTML = `
+    <div class="home" id="home">
     <header class="dash-head">
       <h1 class="display">${new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }).format(now)}</h1>
       <p class="lede">${
@@ -246,8 +290,10 @@ export function renderHome(root) {
         : ''
     }
 
-    <div data-install-slot></div>`;
+    <div data-install-slot></div>
+    </div>`;
 
+  arrange(root);
   countTo(root.querySelector('#home-avg'), avg);
   root.querySelector('#news-flag')?.addEventListener('click', () => {
     const n = root.querySelector('#news');
@@ -297,7 +343,7 @@ export function renderHome(root) {
           if (!items.length) return `<span class="${cls}">${num}</span>`;
           const chips = [...new Map(items.map((r) => [r.s.id, r])).values()]
             .slice(0, 3)
-            .map((r) => `<span class="cal-chip${isFinished(r.s, r.n.item) ? ' is-done' : ''}" data-color="${esc(r.s.color)}"><i></i><b>${esc(r.s.code)}</b></span>`)
+            .map((r) => `<span class="cal-chip${isFinished(r.s, r.n.item) ? ' is-done' : ''}" data-color="${esc(r.s.color)}"><i></i><b>${esc(r.s.code)}<span class="chip-name">: ${esc(r.n.item.name)}</span></b></span>`)
             .join('');
           const label = `${fmtDate(key)}: ${items.map((r) => `${r.s.code} ${r.n.item.name}`).join('; ')}`;
           return `<button type="button" class="${cls}" data-day="${key}" aria-pressed="${key === selected}" aria-label="${esc(label)}">${num}<span class="cal-chips">${chips}</span></button>`;
