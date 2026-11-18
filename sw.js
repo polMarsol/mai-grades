@@ -1,5 +1,5 @@
 // Offline support: precache the app shell, then serve cache-first and refresh in the background.
-const VERSION = 'mai-grades-v13';
+const VERSION = 'mai-grades-v14';
 const SHELL = [
   './',
   './index.html',
@@ -12,7 +12,10 @@ const SHELL = [
   './assets/js/grades.js',
   './assets/js/ics.js',
   './assets/js/install.js',
+  './assets/js/safety.js',
   './assets/js/share.js',
+  './assets/js/subscribe.js',
+  './assets/js/news.js',
   './assets/js/stats.js',
   './assets/js/layout.js',
   './assets/js/progress.js',
@@ -26,6 +29,7 @@ const SHELL = [
   './assets/js/views/overview.js',
   './assets/js/views/settings.js',
   './assets/js/views/stats.js',
+  './assets/js/views/news.js',
   './assets/js/views/subject.js',
   './assets/fonts/inter-latin-opsz.woff2',
   './assets/fonts/inter-latin-ext-opsz.woff2',
@@ -37,7 +41,13 @@ const SHELL = [
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  // 'reload' skips the browser's HTTP cache, so a new version never precaches yesterday's files
+  event.waitUntil(
+    caches
+      .open(VERSION)
+      .then((c) => c.addAll(SHELL.map((u) => new Request(u, { cache: 'reload' }))))
+      .then(() => self.skipWaiting()),
+  );
 });
 
 self.addEventListener('activate', (event) => {

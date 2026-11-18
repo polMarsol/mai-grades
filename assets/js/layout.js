@@ -6,7 +6,7 @@ export const BLOCKS = [
   { id: 'calendar', name: 'Calendar', desc: 'Every date of the semester, by month or week' },
   { id: 'next', name: 'Next up', desc: 'Countdowns to your next deadlines' },
   { id: 'subjects', name: 'Your subjects', desc: 'A card per subject with your grade so far' },
-  { id: 'news', name: 'Course news', desc: 'Recent changes to dates and weights' },
+  { id: 'news', name: 'News', desc: 'The latest stories about your subjects and the app' },
 ];
 const IDS = BLOCKS.map((b) => b.id);
 

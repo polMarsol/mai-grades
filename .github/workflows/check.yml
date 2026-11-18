@@ -1,0 +1,12 @@
+# Runs the tests on every push: grade maths, catalog weights and that the calendar feeds are up to date.
+name: Check
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test tests/*.test.mjs

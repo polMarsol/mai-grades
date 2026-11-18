@@ -11,6 +11,8 @@ A small, private grade tracker for students of the Master in Artificial Intellig
 - Course news: a short dated list of changes. News the student hasn't seen yet is marked New, with a dot on the Home tab.
 - Mark work as submitted (or an exam as taken, from its day on). A strip on Home shows how much of the semester is done; submitted work waits in Overview until it gets a grade.
 - Stats: every grade on a timeline, ECTS-weighted average, spread and σ per subject, points decided, distance to your target, a Monte Carlo of your chance of passing, where an extra point counts most, records and streaks, a semester load calendar and a few numbers for the nerds.
+- News: stories about what changed in each subject (with before and after) and what is new in the app.
+- Calendar subscription: subscribe once in Google, Apple or Outlook and every date change follows.
 - Customize Home: presets (Dates first, Grades first, Essentials) or your own order, with any block hidden. Saved with the rest of your data.
 - Welcome aboard: a short guided tour the first time, with a hands-on example of what you need in an exam. Run it again from Settings.
 - Exam details: date, time, room, duration, format, preparation tips and what you need, for every exam. Add them under `exam` on an item in `catalog.js`.
@@ -65,3 +67,13 @@ assets/js/editor.js   structure editor
 ```
 
 Inter is bundled under the SIL Open Font License (`assets/fonts/OFL.txt`).
+
+## Updating course data
+
+1. Change dates or weights in `assets/js/catalog.js` and bump `CATALOG_VERSION` and `CHECKED`.
+2. Rebuild the calendar feeds: `node tools/build-calendars.mjs` (the tests fail if you forget).
+3. Write a story in `assets/js/news.js` explaining what changed: a title, a subtitle, a few paragraphs and, for dates, a `changes` list with before and after. Photos go in `assets/news/`.
+4. Bump `VERSION` in `sw.js`, so open copies of the app show the “New version ready” bar.
+5. Run `node --test tests/*.test.mjs` and push.
+
+Calendar feeds are served from `calendar/all.ics` and `calendar/<subject>.ics`. If the site moves to another address, change `SITE` in `tools/calendars.mjs`.

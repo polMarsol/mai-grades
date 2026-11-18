@@ -1,0 +1,182 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//MAI Grades//Calendar feed//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:MAI CV
+X-WR-CALDESC:Deliveries and exams from the MAI course guides. Updated by MA
+ I Grades.
+X-WR-TIMEZONE:Europe/Madrid
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VTIMEZONE
+TZID:Europe/Madrid
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+TZNAME:CEST
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+TZNAME:CET
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:cv-cv-lab1@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261020
+DTEND;VALUE=DATE:20261021
+SUMMARY:CV: Lab evaluation 1
+DESCRIPTION:8.3% of the final CV mark (Computational Vision).\nYour grades:
+  https://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Lab evaluation 1
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-lab2@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261103
+DTEND;VALUE=DATE:20261104
+SUMMARY:CV: Lab evaluation 2
+DESCRIPTION:8.3% of the final CV mark (Computational Vision).\nYour grades:
+  https://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Lab evaluation 2
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-mid1@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261103
+DTEND;VALUE=DATE:20261104
+SUMMARY:CV: Midterm exam
+DESCRIPTION:25% of the final CV mark (Computational Vision).\nYour grades: 
+ https://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Midterm exam
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-lab3@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261110
+DTEND;VALUE=DATE:20261111
+SUMMARY:CV: Lab evaluation 3
+DESCRIPTION:8.3% of the final CV mark (Computational Vision).\nYour grades:
+  https://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Lab evaluation 3
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-paper-topic@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261116
+DTEND;VALUE=DATE:20261117
+SUMMARY:CV: Paper presentation: article and group (due 23:00)
+DESCRIPTION:by 23:00\nComputational Vision. Not graded.\nYour grades: https
+ ://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Paper presentation: article and group
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-lab4@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261201
+DTEND;VALUE=DATE:20261202
+SUMMARY:CV: Lab evaluation 4
+DESCRIPTION:8.3% of the final CV mark (Computational Vision).\nYour grades:
+  https://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Lab evaluation 4
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-paper-slides@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261213
+DTEND;VALUE=DATE:20261214
+SUMMARY:CV: Paper presentation: slides and critical discussion (due 23:00)
+DESCRIPTION:by 23:00\nComputational Vision. Not graded.\nYour grades: https
+ ://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Paper presentation: slides and critical discussion
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-paper@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;TZID=Europe/Madrid:20261215T153000
+DTEND;TZID=Europe/Madrid:20261215T183000
+SUMMARY:CV: Paper presentation
+DESCRIPTION:15:30–18:30\n8.3% of the final CV mark (Computational Vision)
+ .\nYour grades: https://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Paper presentation
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-mid2@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261215
+DTEND;VALUE=DATE:20261216
+SUMMARY:CV: Final exam
+DESCRIPTION:25% of the final CV mark (Computational Vision).\nYour grades: 
+ https://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Final exam
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+END:VCALENDAR

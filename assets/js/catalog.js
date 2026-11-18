@@ -349,57 +349,8 @@ export const catalogById = Object.fromEntries(CATALOG.map((s) => [s.id, s]));
 
 // Changes announced during the course, newest first. `date` is the day the app was updated.
 // Give every item a unique `id`: the app uses it to mark news as new until it has been seen.
-export const NEWS = [
-  {
-    id: 'ihlt-schedule',
-    date: '2026-11-18',
-    subject: 'ihlt',
-    title: 'Every IHLT lab delivery is now dated',
-    detail: 'Lab 8 on 26 November, Lab 9 on 3 December, project on 10 December, final exam on 14 January.',
-  },
-  {
-    id: 'iml-weekly-tests',
-    date: '2026-11-18',
-    subject: 'iml',
-    title: 'Weekly questionnaires are ready to fill in',
-    detail: 'T1 to T10, each on its Tuesday. No need to add them one by one.',
-  },
-  {
-    id: 'imas-campus-dates',
-    date: '2026-11-18',
-    subject: 'imas',
-    title: 'Task 1 due Sunday 22 November, 23:55',
-    detail: 'Choose your presentation slot by the same time. Task 2 is due 16 December. Links to each task are in the subject.',
-  },
-  {
-    id: 'par-campus-links',
-    date: '2026-11-18',
-    subject: 'par',
-    title: 'Assignment #2 (fuzzy expert system) due 14 December',
-    detail: 'Second call for assignments on 17 January, with a maximum of 8. The exam retake is only for MESIIA.',
-  },
-  {
-    id: 'iml-w3-moved',
-    date: '2026-11-14',
-    subject: 'iml',
-    title: 'Work 3 is now due on 6 December',
-    detail: 'The Work 3 exam is replaced by an ungraded contribution rubric.',
-  },
-  {
-    id: 'par-exam-moved',
-    date: '2026-11-14',
-    subject: 'par',
-    title: 'Planning exam moved to Wednesday 18 November',
-    detail: '11:00–13:00, rooms A215 and A207 (building E1). 10 true/false and 10 multiple-choice questions.',
-  },
-  {
-    id: 'cv-paper-dates',
-    date: '2026-11-14',
-    subject: 'cv',
-    title: 'Paper presentation dates',
-    detail: 'Article and group by 16 November; slides and critical discussion by 13 December.',
-  },
-];
+// Course and app news live in news.js.
+export { NEWS } from './news.js';
 
 // Made-up grades for the "See an example" mode.
 export const DEMO_GRADES = {

@@ -1,0 +1,318 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//MAI Grades//Calendar feed//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:MAI IML
+X-WR-CALDESC:Deliveries and exams from the MAI course guides. Updated by MA
+ I Grades.
+X-WR-TIMEZONE:Europe/Madrid
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VTIMEZONE
+TZID:Europe/Madrid
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+TZNAME:CEST
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+TZNAME:CET
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:iml-iml-t1@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261006
+DTEND;VALUE=DATE:20261007
+SUMMARY:IML: T1: Introduction to ML
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T1: Introduction to ML
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t2@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261006
+DTEND;VALUE=DATE:20261007
+SUMMARY:IML: T2: Introduction to supervised learning
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T2: Introduction to supervised learning
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t3@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261013
+DTEND;VALUE=DATE:20261014
+SUMMARY:IML: T3: Lazy learning
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T3: Lazy learning
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-w2-code@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261020
+DTEND;VALUE=DATE:20261021
+SUMMARY:IML: Code
+DESCRIPTION:8.4% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: Code
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-w2-report@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261020
+DTEND;VALUE=DATE:20261021
+SUMMARY:IML: Report
+DESCRIPTION:8.4% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: Report
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t4@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261020
+DTEND;VALUE=DATE:20261021
+SUMMARY:IML: T4: Model selection
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T4: Model selection
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-w2-exam@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261027
+DTEND;VALUE=DATE:20261028
+SUMMARY:IML: Work 2 exam
+DESCRIPTION:7.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: Work 2 exam
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t5@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261027
+DTEND;VALUE=DATE:20261028
+SUMMARY:IML: T5: SVM and kernels
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T5: SVM and kernels
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t6@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261103
+DTEND;VALUE=DATE:20261104
+SUMMARY:IML: T6: Feature selection
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T6: Feature selection
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t7@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261110
+DTEND;VALUE=DATE:20261111
+SUMMARY:IML: T7: Clustering\, part 1
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T7: Clustering\, part 1
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t8@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261117
+DTEND;VALUE=DATE:20261118
+SUMMARY:IML: T8: Clustering\, part 2
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T8: Clustering\, part 2
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t9@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261124
+DTEND;VALUE=DATE:20261125
+SUMMARY:IML: T9: Factor analysis: PCA and ICA
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T9: Factor analysis: PCA and ICA
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t10@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261201
+DTEND;VALUE=DATE:20261202
+SUMMARY:IML: T10: Visualisation: SOM and MDS
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T10: Visualisation: SOM and MDS
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-w3-code@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261206
+DTEND;VALUE=DATE:20261207
+SUMMARY:IML: Code
+DESCRIPTION:12% of the final IML mark (Introduction to Machine Learning).\n
+ Your grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: Code
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-w3-report@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261206
+DTEND;VALUE=DATE:20261207
+SUMMARY:IML: Report
+DESCRIPTION:12% of the final IML mark (Introduction to Machine Learning).\n
+ Your grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: Report
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-w3-rubric@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261206
+DTEND;VALUE=DATE:20261207
+SUMMARY:IML: Work 3 contribution rubric (not graded)
+DESCRIPTION:Introduction to Machine Learning. Not graded.\nYour grades: htt
+ ps://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: Work 3 contribution rubric (not graded)
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-exam@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261215
+DTEND;VALUE=DATE:20261216
+SUMMARY:IML: Final exam
+DESCRIPTION:40% of the final IML mark (Introduction to Machine Learning).\n
+ Your grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: Final exam
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+END:VCALENDAR

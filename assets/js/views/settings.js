@@ -1,9 +1,10 @@
-import { getState, getSubject, addFromCatalog, createCustom, moveSubject, exportData, importData, eraseAll, catalog } from '../store.js';
+import { getState, getSubject, addFromCatalog, createCustom, moveSubject, importData, eraseAll, catalog } from '../store.js';
 import { esc, icon, toast, download, confirmDialog, openDialog, go } from '../ui.js';
 import { openEditor } from '../editor.js';
-import { buildICS } from '../ics.js';
+import { openCalendarSheet } from '../subscribe.js';
 import { getTheme, setTheme } from '../theme.js';
 import { openCustomize } from '../layout.js';
+import { saveBackup } from '../safety.js';
 import { maybeStartTour } from '../tour.js';
 
 function openAdd(onDone) {
@@ -127,8 +128,8 @@ export function renderSettings(root, params) {
           <label class="btn btn-ghost btn-sm">${icon('upload')}Import<input type="file" accept="application/json,.json" id="import" class="sr-only"></label>
         </div>
         <div class="list-row">
-          <div class="list-text"><span>Deadlines in your calendar</span><span class="muted small">An .ics file for Google Calendar, Apple Calendar or Outlook.</span></div>
-          <button type="button" class="btn btn-ghost btn-sm" id="ics">${icon('calendar')}Download</button>
+          <div class="list-text"><span>Deadlines in your calendar</span><span class="muted small">Subscribe in Google, Apple or Outlook and it follows every change.</span></div>
+          <button type="button" class="btn btn-ghost btn-sm" id="ics">${icon('calendar')}Add</button>
         </div>
         <div class="list-row">
           <div class="list-text"><span>Erase everything</span><span class="muted small">Deletes all subjects and grades from this device.</span></div>
@@ -171,11 +172,7 @@ export function renderSettings(root, params) {
   );
   root.querySelectorAll('[data-edit]').forEach((b) => b.addEventListener('click', () => openEditor(getSubject(b.dataset.edit), rerender)));
 
-  root.querySelector('#export').addEventListener('click', () => {
-    const d = new Date().toISOString().slice(0, 10);
-    download(`mai-grades-${d}.json`, exportData(), 'application/json');
-    toast('Backup downloaded');
-  });
+  root.querySelector('#export').addEventListener('click', saveBackup);
   root.querySelector('#import').addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -194,10 +191,7 @@ export function renderSettings(root, params) {
     }
     e.target.value = '';
   });
-  root.querySelector('#ics').addEventListener('click', () => {
-    download('mai-deadlines.ics', buildICS(getState().subjects), 'text/calendar');
-    toast('Calendar file downloaded');
-  });
+  root.querySelector('#ics').addEventListener('click', openCalendarSheet);
   root.querySelector('#erase').addEventListener('click', async () => {
     const ok = await confirmDialog({
       title: 'Erase all data?',

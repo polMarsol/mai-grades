@@ -80,6 +80,11 @@ function steps() {
       text: 'Every grade on a timeline, your ECTS-weighted average, the spread of each subject and your chance of passing, simulated a thousand times.',
     },
     {
+      target: '#news-btn',
+      title: 'News',
+      text: 'When a date moves or an exam changes, the story is here, with what changed and what to do. A dot means there is something you have not read.',
+    },
+    {
       target: '#customize',
       title: 'Make it yours',
       text: 'Move or hide blocks, or pick a preset such as Grades first or Essentials.',

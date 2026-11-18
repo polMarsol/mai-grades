@@ -111,7 +111,14 @@ test('example grades and news point at real subjects and items', async () => {
   for (const [sid, grades] of Object.entries(DEMO_GRADES)) {
     for (const lid of Object.keys(grades)) assert.ok(findItem(catalogById[sid].items, lid), `${sid}/${lid}`);
   }
-  for (const n of NEWS) assert.ok(catalogById[n.subject], n.subject);
+  for (const n of NEWS) {
+    assert.ok(['course', 'app'].includes(n.kind), n.id);
+    if (n.kind === 'course') assert.ok(catalogById[n.subject], n.subject);
+    assert.match(n.date, /^\d{4}-\d{2}-\d{2}$/, n.id);
+    assert.ok(n.title && n.dek && n.body?.length, n.id);
+    for (const c of n.changes || []) assert.ok(c.what && c.after, n.id);
+    for (const l of n.links || []) assert.match(l.url, /^https:\/\//, n.id);
+  }
   assert.deepEqual(itemPath(catalogById.iml.items, 'iml-w2-code').slice(-2), ['Work 2: Lazy learning, SVM and RF', 'Code']);
 });
 
@@ -193,4 +200,25 @@ test('stats: simulation is repeatable and a finished subject is certain', async 
   // one point on an exam worth half of a 5-ECTS subject, out of 5 ECTS in total
   const gain = S.sensitivity(S.collect([{ s: ci, grades: {}, target: 5 }]));
   near(gain.find((g) => g.item.id === 'ci-exam').semesterGain, 0.5);
+});
+
+test('calendar feeds in /calendar match the catalog (run: node tools/build-calendars.mjs)', async () => {
+  const { readFileSync } = await import('node:fs');
+  const { feeds } = await import('../tools/calendars.mjs');
+  for (const f of feeds()) {
+    const onDisk = readFileSync(new URL(`../calendar/${f.file}`, import.meta.url), 'utf8');
+    assert.equal(onDisk, f.text, `calendar/${f.file} is out of date`);
+  }
+});
+
+test('calendar feeds: stable ids, timed exams in Madrid time, all-day deadlines', async () => {
+  const { buildFeed, parseSlot } = await import('../assets/js/ics.js');
+  assert.deepEqual(parseSlot('11:00–13:00'), { start: '110000', end: '130000' });
+  assert.deepEqual(parseSlot('9:30'), { start: '093000', end: '113000' });
+  assert.equal(parseSlot('by 23:55'), null);
+  const text = buildFeed([catalogById.par], { name: 'MAI PAR', stamp: '2026-11-18', site: 'https://x/' });
+  assert.match(text, /UID:par-par-plan-exam@mai-grades/);
+  assert.match(text, /DTSTART;TZID=Europe\/Madrid:20261118T110000/);
+  assert.match(text, /DTSTART;VALUE=DATE:20261214/);
+  for (const line of text.split('\r\n')) assert.ok(new TextEncoder().encode(line).length <= 75, line);
 });

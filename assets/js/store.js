@@ -202,17 +202,19 @@ export function setDone(subjectId, itemId, on) {
   persist();
 }
 
-/** Course news for the student's subjects that the home screen hasn't shown yet. */
+/** News not read yet: app news, and course news for the student's subjects. */
 export function unseenNews() {
   const mine = new Set(state.subjects.map((s) => s.id));
   const seen = new Set(state.seenNews || []);
-  return NEWS.filter((n) => mine.has(n.subject) && !seen.has(n.id));
+  return NEWS.filter((n) => (n.kind === 'app' || mine.has(n.subject)) && !seen.has(n.id));
 }
 
-export function markNewsSeen() {
-  const ids = unseenNews().map((n) => n.id);
-  if (!ids.length) return;
-  state.seenNews = [...(state.seenNews || []), ...ids];
+/** Mark stories as read (all unread ones when no ids are given). */
+export function markNewsSeen(ids = unseenNews().map((n) => n.id)) {
+  const seen = new Set(state.seenNews || []);
+  const add = ids.filter((id) => !seen.has(id));
+  if (!add.length) return;
+  state.seenNews = [...seen, ...add];
   persist();
 }
 

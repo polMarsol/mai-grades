@@ -3,10 +3,11 @@ import { NEWS } from '../catalog.js';
 import { progressHtml, doneButton, examButton, isFinished, doneOn } from '../progress.js';
 import { getLayout, isShown, openCustomize } from '../layout.js';
 import { maybeStartTour } from '../tour.js';
-import { unseenNews, markNewsSeen } from '../store.js';
+import { unseenNews } from '../store.js';
 import { evaluate, datedItems, weightedMean } from '../grades.js';
 import { esc, fmt, pct, scale, icon, fmtDate, relDay, daysFrom, statusPill, countTo, go, today, safeUrl, reveal } from '../ui.js';
 import { mountInstallHint } from '../install.js';
+import { askToKeep } from '../safety.js';
 
 /** Dated items from `from` to `horizon` days ahead, soonest first. */
 export function upcoming(subjects, limit = Infinity, horizon = Infinity, from = 0) {
@@ -70,15 +71,16 @@ function counter(r, big) {
 }
 
 function newsRow(item, s, isNew) {
+  const code = item.kind === 'app' ? 'MAI Grades' : s.code;
   return `
-    <li class="deadline${isNew ? ' is-new' : ''}" data-color="${esc(s.color)}">
+    <li class="deadline${isNew ? ' is-new' : ''}" data-color="${esc(item.kind === 'app' ? 'ink' : s.color)}">
       <time class="deadline-date" datetime="${item.date}">
         <span>${fmtDate(item.date, { day: 'numeric' })}</span>
         <small>${fmtDate(item.date, { month: 'short' })}</small>
       </time>
       <div class="deadline-text">
-        <a href="#/s/${esc(s.id)}" class="deadline-title"><span class="code-dot" aria-hidden="true"></span>${esc(s.code)}: ${esc(item.title)}${isNew ? '<span class="tag tag-new">New</span>' : ''}</a>
-        <span class="muted">${esc(item.detail)}</span>
+        <a href="#/news/${esc(item.id)}" class="deadline-title"><span class="code-dot" aria-hidden="true"></span>${esc(code)}: ${esc(item.title)}${isNew ? '<span class="tag tag-new">New</span>' : ''}</a>
+        <span class="muted">${esc(item.dek)}</span>
       </div>
     </li>`;
 }
@@ -147,7 +149,6 @@ function arrange(root) {
   const install = $('[data-install-slot]');
   const shown = layout.order.filter((id) => isShown(layout, id) && blocks[id]);
   if (!isShown(layout, 'progress')) head.querySelector('#progress')?.remove();
-  if (!shown.includes('news')) head.querySelector('#news-flag')?.remove();
   const wide = WIDE.matches && shown.includes('calendar');
   home.className = 'home';
   home.replaceChildren();
@@ -209,7 +210,9 @@ export function renderHome(root) {
   const byId = Object.fromEntries(st.subjects.map((s) => [s.id, s]));
   const fresh = new Set(unseenNews().map((n) => n.id));
   // unseen news always shows; then the latest ones, up to four
-  const news = NEWS.filter((n) => byId[n.subject]).sort((a, b) => fresh.has(b.id) - fresh.has(a.id)).slice(0, Math.max(4, fresh.size));
+  const news = NEWS.filter((n) => n.kind === 'app' || byId[n.subject])
+    .sort((a, b) => fresh.has(b.id) - fresh.has(a.id) || b.date.localeCompare(a.date))
+    .slice(0, 4);
 
   // Dates first: countdowns to the next deadlines and a calendar (week or month).
   const all = upcoming(st.subjects);
@@ -242,7 +245,7 @@ export function renderHome(root) {
       ${progressHtml(st)}
       ${
         fresh.size
-          ? `<button type="button" class="news-flag" id="news-flag"><span class="news-dot" aria-hidden="true"></span>${fresh.size} ${fresh.size === 1 ? 'update' : 'updates'} to your subjects since your last visit</button>`
+          ? `<a class="news-flag" id="news-flag" href="#/news"><span class="news-dot" aria-hidden="true"></span>${fresh.size} new ${fresh.size === 1 ? 'story' : 'stories'} since your last visit</a>`
           : ''
       }
     </header>
@@ -312,7 +315,7 @@ export function renderHome(root) {
     ${
       news.length
         ? `<section class="block" aria-labelledby="h-news" id="news">
-            <div class="block-head"><h2 class="section-title" id="h-news">Course news</h2></div>
+            <div class="block-head"><h2 class="section-title" id="h-news">News</h2><a class="link-more" href="#/news">All news</a></div>
             <ul class="deadlines">${news.map((n) => newsRow(n, byId[n.subject], fresh.has(n.id))).join('')}</ul>
           </section>`
         : ''
@@ -329,12 +332,7 @@ export function renderHome(root) {
       reveal(root);
     }),
   );
-  root.querySelector('#news-flag')?.addEventListener('click', () => {
-    const n = root.querySelector('#news');
-    n?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    n?.querySelector('a')?.focus({ preventScroll: true });
-  });
-  if (root.querySelector('#news')) markNewsSeen();
+  // news stays marked as new on Home until the student opens it
   maybeStartTour();
 
   // ----- calendar: week or month, with previous / next / today
@@ -462,4 +460,5 @@ export function renderHome(root) {
     draw();
   }
   mountInstallHint(root.querySelector('[data-install-slot]'));
+  askToKeep();
 }

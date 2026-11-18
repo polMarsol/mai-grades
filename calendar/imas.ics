@@ -1,0 +1,137 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//MAI Grades//Calendar feed//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:MAI IMAS
+X-WR-CALDESC:Deliveries and exams from the MAI course guides. Updated by MA
+ I Grades.
+X-WR-TIMEZONE:Europe/Madrid
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VTIMEZONE
+TZID:Europe/Madrid
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+TZNAME:CEST
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+TZNAME:CET
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:imas-imas-task1@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:IMAS: Task 1: Design activity (due 23:55)
+DESCRIPTION:by 23:55\n15% of the final IMAS mark (Introduction to Multi-Age
+ nt Systems).\nTask: https://campusvirtual.urv.cat/mod/assign/view.php?id=
+ 4372679\nYour grades: https://polmarsol.github.io/mai-grades/#/s/imas
+URL:https://campusvirtual.urv.cat/mod/assign/view.php?id=4372679
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IMAS: Task 1: Design activity
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:imas-imas-slot@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:IMAS: Choose your Task 1 presentation slot (due 23:55)
+DESCRIPTION:by 23:55\nIntroduction to Multi-Agent Systems. Not graded.\nTas
+ k: https://campusvirtual.urv.cat/mod/choice/view.php?id=4372690\nYour gra
+ des: https://polmarsol.github.io/mai-grades/#/s/imas
+URL:https://campusvirtual.urv.cat/mod/choice/view.php?id=4372690
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IMAS: Choose your Task 1 presentation slot
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:imas-imas-task1-talks@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261125
+DTEND;VALUE=DATE:20261126
+SUMMARY:IMAS: Task 1 presentations\, week of 25 November
+DESCRIPTION:Introduction to Multi-Agent Systems. Not graded.\nYour grades: 
+ https://polmarsol.github.io/mai-grades/#/s/imas
+URL:https://polmarsol.github.io/mai-grades/#/s/imas
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IMAS: Task 1 presentations\, week of 25 November
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:imas-imas-prelim@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261216
+DTEND;VALUE=DATE:20261217
+SUMMARY:IMAS: Task 2: Coordination and implementation preliminary revision 
+ (due 23:55)
+DESCRIPTION:by 23:55\n5% of the final IMAS mark (Introduction to Multi-Agen
+ t Systems).\nTask: https://campusvirtual.urv.cat/mod/assign/view.php?id=4
+ 372680\nYour grades: https://polmarsol.github.io/mai-grades/#/s/imas
+URL:https://campusvirtual.urv.cat/mod/assign/view.php?id=4372680
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IMAS: Task 2: Coordination and implementation preliminary revis
+ ion
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:imas-imas-final@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20270110
+DTEND;VALUE=DATE:20270111
+SUMMARY:IMAS: Final documentation and implementation (due 23:55)
+DESCRIPTION:by 23:55\n35% of the final IMAS mark (Introduction to Multi-Age
+ nt Systems).\nTask: https://campusvirtual.urv.cat/mod/assign/view.php?id=
+ 4372681\nYour grades: https://polmarsol.github.io/mai-grades/#/s/imas
+URL:https://campusvirtual.urv.cat/mod/assign/view.php?id=4372681
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IMAS: Final documentation and implementation
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:imas-imas-exam@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20270113
+DTEND;VALUE=DATE:20270114
+SUMMARY:IMAS: Theory exam
+DESCRIPTION:40% of the final IMAS mark (Introduction to Multi-Agent Systems
+ ).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/imas
+URL:https://polmarsol.github.io/mai-grades/#/s/imas
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IMAS: Theory exam
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+END:VCALENDAR

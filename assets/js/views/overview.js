@@ -1,8 +1,8 @@
 import { getState, getGrades, isDone } from '../store.js';
 import { evaluate, weightedMean, datedItems, leafValue } from '../grades.js';
-import { esc, fmt, pct, scale, statusPill, icon, countTo, download, toast, fmtDate, daysFrom } from '../ui.js';
+import { esc, fmt, pct, scale, statusPill, icon, countTo, fmtDate, daysFrom } from '../ui.js';
 import { upcoming, deadlineRow } from './home.js';
-import { buildICS } from '../ics.js';
+import { openCalendarSheet } from '../subscribe.js';
 
 export function renderOverview(root) {
   const st = getState();
@@ -128,8 +128,5 @@ export function renderOverview(root) {
   countTo(root.querySelector('#ov-avg'), avg);
   countTo(root.querySelector('#ov-proj'), proj);
 
-  root.querySelector('#ics').addEventListener('click', () => {
-    download('mai-deadlines.ics', buildICS(st.subjects), 'text/calendar');
-    toast('Calendar file downloaded');
-  });
+  root.querySelector('#ics').addEventListener('click', openCalendarSheet);
 }

@@ -1,5 +1,6 @@
 // A quiet "add to your home screen" line, shown from the second visit on.
 import { icon } from './ui.js';
+import { safetyCard, mountSafety, isStandalone, isIOS } from './safety.js';
 
 const VISITS = 'mai-grades:visits';
 const DISMISSED = 'mai-grades:install-dismissed';
@@ -41,12 +42,12 @@ export function countVisit() {
   write(VISITS, String((Number(read(VISITS)) || 0) + 1));
 }
 
-const isStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
 export function mountInstallHint(slot) {
   if (!slot) return;
   slot.innerHTML = '';
+  // keeping grades safe comes before the install suggestion
+  const card = safetyCard();
+  if (card) return mountSafety(slot, card);
   if (isStandalone() || read(DISMISSED) || (Number(read(VISITS)) || 0) < 2) return;
   if (!deferred && !isIOS()) return;
   slot.innerHTML = `

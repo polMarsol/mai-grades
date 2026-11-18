@@ -1,0 +1,250 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//MAI Grades//Calendar feed//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:MAI IHLT
+X-WR-CALDESC:Deliveries and exams from the MAI course guides. Updated by MA
+ I Grades.
+X-WR-TIMEZONE:Europe/Madrid
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VTIMEZONE
+TZID:Europe/Madrid
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+TZNAME:CEST
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+TZNAME:CET
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:ihlt-ihlt-s1@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20260930
+DTEND;VALUE=DATE:20261001
+SUMMARY:IHLT: Lab 1: Framework
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 1: Framework
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s2@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261008
+DTEND;VALUE=DATE:20261009
+SUMMARY:IHLT: Lab 2
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 2
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s3@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261015
+DTEND;VALUE=DATE:20261016
+SUMMARY:IHLT: Lab 3
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 3
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s4@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261022
+DTEND;VALUE=DATE:20261023
+SUMMARY:IHLT: Lab 4
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 4
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s5@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261029
+DTEND;VALUE=DATE:20261030
+SUMMARY:IHLT: Lab 5
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 5
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s6@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261105
+DTEND;VALUE=DATE:20261106
+SUMMARY:IHLT: Lab 6
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 6
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s7@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261112
+DTEND;VALUE=DATE:20261113
+SUMMARY:IHLT: Lab 7
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 7
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s8@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261126
+DTEND;VALUE=DATE:20261127
+SUMMARY:IHLT: Lab 8
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 8
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s9@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261203
+DTEND;VALUE=DATE:20261204
+SUMMARY:IHLT: Lab 9
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 9
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-sts@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261210
+DTEND;VALUE=DATE:20261211
+SUMMARY:IHLT: STS project
+DESCRIPTION:30% of the final IHLT mark (Introduction to Human Language Tech
+ nologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: STS project
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-pres-1@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261210
+DTEND;VALUE=DATE:20261211
+SUMMARY:IHLT: Project presentations\, first day
+DESCRIPTION:Introduction to Human Language Technologies. Not graded.\nYour 
+ grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Project presentations\, first day
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-pres-2@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261217
+DTEND;VALUE=DATE:20261218
+SUMMARY:IHLT: Project presentations\, second day
+DESCRIPTION:Introduction to Human Language Technologies. Not graded.\nYour 
+ grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Project presentations\, second day
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-exam@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20270114
+DTEND;VALUE=DATE:20270115
+SUMMARY:IHLT: Final exam
+DESCRIPTION:50% of the final IHLT mark (Introduction to Human Language Tech
+ nologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Final exam
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+END:VCALENDAR

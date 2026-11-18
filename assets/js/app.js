@@ -2,6 +2,7 @@ import { renderHome } from './views/home.js';
 import { renderSubject } from './views/subject.js';
 import { renderOverview } from './views/overview.js';
 import { renderStats } from './views/stats.js';
+import { renderNews, renderArticle } from './views/news.js';
 import { renderSettings } from './views/settings.js';
 import { renderAbout } from './views/about.js';
 import { renderAdd } from './views/add.js';
@@ -24,13 +25,15 @@ function parseRoute() {
   if (parts[0] === 's' && parts[1]) return { name: 'subject', id: decodeURIComponent(parts[1]), params };
   if (parts[0] === 'overview') return { name: 'overview', params };
   if (parts[0] === 'stats') return { name: 'stats', params };
+  if (parts[0] === 'news' && parts[1]) return { name: 'article', id: decodeURIComponent(parts[1]), params };
+  if (parts[0] === 'news') return { name: 'news', params };
   if (parts[0] === 'settings') return { name: 'settings', params };
   if (parts[0] === 'about') return { name: 'about', params };
   if (parts[0] === 'add') return { name: 'add', params };
   return { name: 'home', params };
 }
 
-const TITLES = { home: 'Home', overview: 'Overview', stats: 'Stats', settings: 'Settings', about: 'About', add: 'Add a grade' };
+const TITLES = { home: 'Home', overview: 'Overview', stats: 'Stats', news: 'News', settings: 'Settings', about: 'About', add: 'Add a grade' };
 
 function moveIndicator() {
   const active = nav.querySelector('[aria-current="page"]');
@@ -58,11 +61,13 @@ function render() {
     else if (r.name === 'subject') renderSubject(main, r.id);
     else if (r.name === 'overview') renderOverview(main);
     else if (r.name === 'stats') renderStats(main);
+    else if (r.name === 'news') renderNews(main);
+    else if (r.name === 'article') renderArticle(main, r.id);
     else if (r.name === 'about') renderAbout(main);
     else if (r.name === 'add') renderAdd(main, r.params);
     else renderSettings(main, r.params);
     const h1 = main.querySelector('h1');
-    document.title = `${r.name === 'subject' ? h1?.textContent : TITLES[r.name]} – MAI Grades`;
+    document.title = `${r.name === 'subject' || r.name === 'article' ? h1?.textContent : TITLES[r.name]} – MAI Grades`;
     if (getState().demo && r.name !== 'add') {
       const banner = document.createElement('div');
       banner.className = 'sim-banner demo-banner';
@@ -76,11 +81,13 @@ function render() {
       main.prepend(banner);
     }
     reveal(main);
-    // dot on the Home tab while there is course news the student hasn't seen
-    const homeLink = nav.querySelector('[data-section="home"]');
+    // a dot on the News button while there are stories the student hasn't read
+    const newsBtn = document.getElementById('news-btn');
     const n = unseenNews().length;
-    homeLink.classList.toggle('has-news', n > 0);
-    homeLink.setAttribute('aria-label', n > 0 ? `Home, ${n} new ${n === 1 ? 'update' : 'updates'}` : 'Home');
+    newsBtn.classList.toggle('has-news', n > 0);
+    newsBtn.setAttribute('aria-label', n > 0 ? `News, ${n} unread` : 'News');
+    if (r.name === 'news' || r.name === 'article') newsBtn.setAttribute('aria-current', 'page');
+    else newsBtn.removeAttribute('aria-current');
   };
 
   if (!first && document.startViewTransition && !reducedMotion()) document.startViewTransition(draw);
@@ -211,5 +218,35 @@ window.addEventListener('resize', moveIndicator);
 document.fonts?.ready.then(moveIndicator);
 
 if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+  window.addEventListener('load', () => {
+    // A page that already had a worker is running the old version when a new one takes over.
+    const hadWorker = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', () => hadWorker && showUpdateBar());
+    navigator.serviceWorker
+      .register('./sw.js')
+      .then((reg) => {
+        // look for a new version whenever the app comes back to the front, and every hour
+        const check = () => reg.update().catch(() => {});
+        document.addEventListener('visibilitychange', () => !document.hidden && check());
+        setInterval(check, 60 * 60 * 1000);
+      })
+      .catch(() => {});
+  });
+}
+
+/** A bar that stays until the student reloads: new dates should not go unnoticed. */
+function showUpdateBar() {
+  if (document.getElementById('update-bar')) return;
+  const bar = document.createElement('div');
+  bar.id = 'update-bar';
+  bar.className = 'update-bar';
+  bar.setAttribute('role', 'status');
+  bar.innerHTML = `
+    <span class="update-text"><strong>New version ready.</strong> Dates or features have changed.</span>
+    <button type="button" class="update-go">Reload</button>
+    <button type="button" class="icon-btn update-x" aria-label="Later">${icon('x')}</button>`;
+  bar.querySelector('.update-go').addEventListener('click', () => location.reload());
+  bar.querySelector('.update-x').addEventListener('click', () => bar.remove());
+  document.body.append(bar);
+  requestAnimationFrame(() => bar.classList.add('is-on'));
 }

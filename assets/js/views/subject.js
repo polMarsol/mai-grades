@@ -73,6 +73,23 @@ function groupBlock(s, n, flat, grades) {
   </section>`;
 }
 
+const REPO = 'https://github.com/polMarsol/mai-grades';
+
+/** A new GitHub issue, filled in with the subject, ready to say what is wrong. */
+function reportUrl(s) {
+  const body = [
+    `**Subject:** ${s.code} (${s.name})`,
+    '**Assessment:** ',
+    '**What MAI Grades says:** ',
+    '**What it should say:** ',
+    '**Where it comes from:** (Campus Virtual link, forum post or a screenshot)',
+    '',
+    `_Course guide last checked on ${s.checked || 'unknown'}._`,
+  ].join('\n');
+  const q = new URLSearchParams({ title: `${s.code}: wrong date or weight`, body, labels: 'course data' });
+  return `${REPO}/issues/new?${q}`;
+}
+
 export function renderSubject(root, id) {
   const s = getSubject(id);
   if (!s) {
@@ -192,6 +209,11 @@ export function renderSubject(root, id) {
         ? `<section class="notes">
             ${s.notes?.length ? `<ul>${s.notes.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
             ${s.source ? `<p>Source: ${esc(s.source)}. Check the official guide if anything changes.</p>` : ''}
+            ${
+              s.custom
+                ? ''
+                : `<p class="report">Something wrong or out of date? <a href="${esc(reportUrl(s))}" target="_blank" rel="noopener">Report it on GitHub${icon('external')}</a> or <a href="#/about">write to us</a>.</p>`
+            }
           </section>`
         : ''
     }`;

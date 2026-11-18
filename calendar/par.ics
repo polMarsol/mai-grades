@@ -1,0 +1,102 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//MAI Grades//Calendar feed//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:MAI PAR
+X-WR-CALDESC:Deliveries and exams from the MAI course guides. Updated by MA
+ I Grades.
+X-WR-TIMEZONE:Europe/Madrid
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VTIMEZONE
+TZID:Europe/Madrid
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+TZNAME:CEST
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+TZNAME:CET
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:par-par-plan-prac@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261106
+DTEND;VALUE=DATE:20261107
+SUMMARY:PAR: Assignment #1: Planning (due 23:59)
+DESCRIPTION:by 23:59\n25% of the final PAR mark (Planning and Approximate R
+ easoning).\nTask: https://campusvirtual.urv.cat/mod/assign/view.php?id=44
+ 16197\nYour grades: https://polmarsol.github.io/mai-grades/#/s/par
+URL:https://campusvirtual.urv.cat/mod/assign/view.php?id=4416197
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:PAR: Assignment #1: Planning
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:par-par-plan-exam@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;TZID=Europe/Madrid:20261118T110000
+DTEND;TZID=Europe/Madrid:20261118T130000
+SUMMARY:PAR: Exam: Planning
+DESCRIPTION:11:00–13:00\n30% of the final PAR mark (Planning and Approxim
+ ate Reasoning).\nTask: https://campusvirtual.urv.cat/mod/assign/view.php?
+ id=4416199\nYour grades: https://polmarsol.github.io/mai-grades/#/s/par
+LOCATION:Rooms A215 and A207\, building E1
+URL:https://campusvirtual.urv.cat/mod/assign/view.php?id=4416199
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:PAR: Exam: Planning
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:par-par-ar-prac@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261214
+DTEND;VALUE=DATE:20261215
+SUMMARY:PAR: Assignment #2: Fuzzy expert system (due 23:59)
+DESCRIPTION:by 23:59\n15% of the final PAR mark (Planning and Approximate R
+ easoning).\nTask: https://campusvirtual.urv.cat/mod/assign/view.php?id=44
+ 16201\nYour grades: https://polmarsol.github.io/mai-grades/#/s/par
+URL:https://campusvirtual.urv.cat/mod/assign/view.php?id=4416201
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:PAR: Assignment #2: Fuzzy expert system
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:par-par-ar-exam@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;TZID=Europe/Madrid:20270113T110000
+DTEND;TZID=Europe/Madrid:20270113T130000
+SUMMARY:PAR: Exam: Approximate Reasoning
+DESCRIPTION:11:00\n30% of the final PAR mark (Planning and Approximate Reas
+ oning).\nTask: https://campusvirtual.urv.cat/mod/assign/view.php?id=44162
+ 02\nYour grades: https://polmarsol.github.io/mai-grades/#/s/par
+URL:https://campusvirtual.urv.cat/mod/assign/view.php?id=4416202
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:PAR: Exam: Approximate Reasoning
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,975 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//MAI Grades//Calendar feed//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:MAI deadlines
+X-WR-CALDESC:Deliveries and exams from the MAI course guides. Updated by MA
+ I Grades.
+X-WR-TIMEZONE:Europe/Madrid
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VTIMEZONE
+TZID:Europe/Madrid
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+TZNAME:CEST
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+TZNAME:CET
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:iml-iml-t1@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261006
+DTEND;VALUE=DATE:20261007
+SUMMARY:IML: T1: Introduction to ML
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T1: Introduction to ML
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t2@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261006
+DTEND;VALUE=DATE:20261007
+SUMMARY:IML: T2: Introduction to supervised learning
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T2: Introduction to supervised learning
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t3@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261013
+DTEND;VALUE=DATE:20261014
+SUMMARY:IML: T3: Lazy learning
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T3: Lazy learning
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-w2-code@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261020
+DTEND;VALUE=DATE:20261021
+SUMMARY:IML: Code
+DESCRIPTION:8.4% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: Code
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-w2-report@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261020
+DTEND;VALUE=DATE:20261021
+SUMMARY:IML: Report
+DESCRIPTION:8.4% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: Report
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t4@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261020
+DTEND;VALUE=DATE:20261021
+SUMMARY:IML: T4: Model selection
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T4: Model selection
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-w2-exam@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261027
+DTEND;VALUE=DATE:20261028
+SUMMARY:IML: Work 2 exam
+DESCRIPTION:7.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: Work 2 exam
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t5@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261027
+DTEND;VALUE=DATE:20261028
+SUMMARY:IML: T5: SVM and kernels
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T5: SVM and kernels
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t6@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261103
+DTEND;VALUE=DATE:20261104
+SUMMARY:IML: T6: Feature selection
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T6: Feature selection
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t7@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261110
+DTEND;VALUE=DATE:20261111
+SUMMARY:IML: T7: Clustering\, part 1
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T7: Clustering\, part 1
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t8@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261117
+DTEND;VALUE=DATE:20261118
+SUMMARY:IML: T8: Clustering\, part 2
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T8: Clustering\, part 2
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t9@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261124
+DTEND;VALUE=DATE:20261125
+SUMMARY:IML: T9: Factor analysis: PCA and ICA
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T9: Factor analysis: PCA and ICA
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-t10@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261201
+DTEND;VALUE=DATE:20261202
+SUMMARY:IML: T10: Visualisation: SOM and MDS
+DESCRIPTION:1.2% of the final IML mark (Introduction to Machine Learning).\
+ nYour grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: T10: Visualisation: SOM and MDS
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-w3-code@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261206
+DTEND;VALUE=DATE:20261207
+SUMMARY:IML: Code
+DESCRIPTION:12% of the final IML mark (Introduction to Machine Learning).\n
+ Your grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: Code
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-w3-report@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261206
+DTEND;VALUE=DATE:20261207
+SUMMARY:IML: Report
+DESCRIPTION:12% of the final IML mark (Introduction to Machine Learning).\n
+ Your grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: Report
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-w3-rubric@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261206
+DTEND;VALUE=DATE:20261207
+SUMMARY:IML: Work 3 contribution rubric (not graded)
+DESCRIPTION:Introduction to Machine Learning. Not graded.\nYour grades: htt
+ ps://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: Work 3 contribution rubric (not graded)
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:iml-iml-exam@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261215
+DTEND;VALUE=DATE:20261216
+SUMMARY:IML: Final exam
+DESCRIPTION:40% of the final IML mark (Introduction to Machine Learning).\n
+ Your grades: https://polmarsol.github.io/mai-grades/#/s/iml
+URL:https://polmarsol.github.io/mai-grades/#/s/iml
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IML: Final exam
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s1@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20260930
+DTEND;VALUE=DATE:20261001
+SUMMARY:IHLT: Lab 1: Framework
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 1: Framework
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s2@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261008
+DTEND;VALUE=DATE:20261009
+SUMMARY:IHLT: Lab 2
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 2
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s3@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261015
+DTEND;VALUE=DATE:20261016
+SUMMARY:IHLT: Lab 3
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 3
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s4@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261022
+DTEND;VALUE=DATE:20261023
+SUMMARY:IHLT: Lab 4
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 4
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s5@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261029
+DTEND;VALUE=DATE:20261030
+SUMMARY:IHLT: Lab 5
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 5
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s6@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261105
+DTEND;VALUE=DATE:20261106
+SUMMARY:IHLT: Lab 6
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 6
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s7@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261112
+DTEND;VALUE=DATE:20261113
+SUMMARY:IHLT: Lab 7
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 7
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s8@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261126
+DTEND;VALUE=DATE:20261127
+SUMMARY:IHLT: Lab 8
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 8
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-s9@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261203
+DTEND;VALUE=DATE:20261204
+SUMMARY:IHLT: Lab 9
+DESCRIPTION:1.1% of the final IHLT mark (Introduction to Human Language Tec
+ hnologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Lab 9
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-sts@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261210
+DTEND;VALUE=DATE:20261211
+SUMMARY:IHLT: STS project
+DESCRIPTION:30% of the final IHLT mark (Introduction to Human Language Tech
+ nologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: STS project
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-pres-1@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261210
+DTEND;VALUE=DATE:20261211
+SUMMARY:IHLT: Project presentations\, first day
+DESCRIPTION:Introduction to Human Language Technologies. Not graded.\nYour 
+ grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Project presentations\, first day
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-pres-2@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261217
+DTEND;VALUE=DATE:20261218
+SUMMARY:IHLT: Project presentations\, second day
+DESCRIPTION:Introduction to Human Language Technologies. Not graded.\nYour 
+ grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Project presentations\, second day
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ihlt-ihlt-exam@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20270114
+DTEND;VALUE=DATE:20270115
+SUMMARY:IHLT: Final exam
+DESCRIPTION:50% of the final IHLT mark (Introduction to Human Language Tech
+ nologies).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/ihlt
+URL:https://polmarsol.github.io/mai-grades/#/s/ihlt
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IHLT: Final exam
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ci-ci-ec@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261112
+DTEND;VALUE=DATE:20261113
+SUMMARY:CI: Evolutionary Computation project
+DESCRIPTION:16.7% of the final CI mark (Computational Intelligence).\nYour 
+ grades: https://polmarsol.github.io/mai-grades/#/s/ci
+URL:https://polmarsol.github.io/mai-grades/#/s/ci
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CI: Evolutionary Computation project
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ci-ci-nc-start@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261126
+DTEND;VALUE=DATE:20261127
+SUMMARY:CI: Neural Computation project starts
+DESCRIPTION:Computational Intelligence. Not graded.\nYour grades: https://p
+ olmarsol.github.io/mai-grades/#/s/ci
+URL:https://polmarsol.github.io/mai-grades/#/s/ci
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CI: Neural Computation project starts
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ci-ci-nc@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261217
+DTEND;VALUE=DATE:20261218
+SUMMARY:CI: Neural Computation project
+DESCRIPTION:16.7% of the final CI mark (Computational Intelligence).\nYour 
+ grades: https://polmarsol.github.io/mai-grades/#/s/ci
+URL:https://polmarsol.github.io/mai-grades/#/s/ci
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CI: Neural Computation project
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ci-ci-fc-start@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261217
+DTEND;VALUE=DATE:20261218
+SUMMARY:CI: Fuzzy Computation project starts
+DESCRIPTION:Computational Intelligence. Not graded.\nYour grades: https://p
+ olmarsol.github.io/mai-grades/#/s/ci
+URL:https://polmarsol.github.io/mai-grades/#/s/ci
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CI: Fuzzy Computation project starts
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ci-ci-exam@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20270107
+DTEND;VALUE=DATE:20270108
+SUMMARY:CI: Exam
+DESCRIPTION:50% of the final CI mark (Computational Intelligence).\nYour gr
+ ades: https://polmarsol.github.io/mai-grades/#/s/ci
+URL:https://polmarsol.github.io/mai-grades/#/s/ci
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CI: Exam
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ci-ci-fc@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20270113
+DTEND;VALUE=DATE:20270114
+SUMMARY:CI: Fuzzy Computation project
+DESCRIPTION:16.7% of the final CI mark (Computational Intelligence).\nYour 
+ grades: https://polmarsol.github.io/mai-grades/#/s/ci
+URL:https://polmarsol.github.io/mai-grades/#/s/ci
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CI: Fuzzy Computation project
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-lab1@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261020
+DTEND;VALUE=DATE:20261021
+SUMMARY:CV: Lab evaluation 1
+DESCRIPTION:8.3% of the final CV mark (Computational Vision).\nYour grades:
+  https://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Lab evaluation 1
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-lab2@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261103
+DTEND;VALUE=DATE:20261104
+SUMMARY:CV: Lab evaluation 2
+DESCRIPTION:8.3% of the final CV mark (Computational Vision).\nYour grades:
+  https://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Lab evaluation 2
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-mid1@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261103
+DTEND;VALUE=DATE:20261104
+SUMMARY:CV: Midterm exam
+DESCRIPTION:25% of the final CV mark (Computational Vision).\nYour grades: 
+ https://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Midterm exam
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-lab3@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261110
+DTEND;VALUE=DATE:20261111
+SUMMARY:CV: Lab evaluation 3
+DESCRIPTION:8.3% of the final CV mark (Computational Vision).\nYour grades:
+  https://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Lab evaluation 3
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-paper-topic@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261116
+DTEND;VALUE=DATE:20261117
+SUMMARY:CV: Paper presentation: article and group (due 23:00)
+DESCRIPTION:by 23:00\nComputational Vision. Not graded.\nYour grades: https
+ ://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Paper presentation: article and group
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-lab4@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261201
+DTEND;VALUE=DATE:20261202
+SUMMARY:CV: Lab evaluation 4
+DESCRIPTION:8.3% of the final CV mark (Computational Vision).\nYour grades:
+  https://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Lab evaluation 4
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-paper-slides@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261213
+DTEND;VALUE=DATE:20261214
+SUMMARY:CV: Paper presentation: slides and critical discussion (due 23:00)
+DESCRIPTION:by 23:00\nComputational Vision. Not graded.\nYour grades: https
+ ://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Paper presentation: slides and critical discussion
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-paper@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;TZID=Europe/Madrid:20261215T153000
+DTEND;TZID=Europe/Madrid:20261215T183000
+SUMMARY:CV: Paper presentation
+DESCRIPTION:15:30–18:30\n8.3% of the final CV mark (Computational Vision)
+ .\nYour grades: https://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Paper presentation
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cv-cv-mid2@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261215
+DTEND;VALUE=DATE:20261216
+SUMMARY:CV: Final exam
+DESCRIPTION:25% of the final CV mark (Computational Vision).\nYour grades: 
+ https://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Final exam
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:imas-imas-task1@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:IMAS: Task 1: Design activity (due 23:55)
+DESCRIPTION:by 23:55\n15% of the final IMAS mark (Introduction to Multi-Age
+ nt Systems).\nTask: https://campusvirtual.urv.cat/mod/assign/view.php?id=
+ 4372679\nYour grades: https://polmarsol.github.io/mai-grades/#/s/imas
+URL:https://campusvirtual.urv.cat/mod/assign/view.php?id=4372679
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IMAS: Task 1: Design activity
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:imas-imas-slot@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:IMAS: Choose your Task 1 presentation slot (due 23:55)
+DESCRIPTION:by 23:55\nIntroduction to Multi-Agent Systems. Not graded.\nTas
+ k: https://campusvirtual.urv.cat/mod/choice/view.php?id=4372690\nYour gra
+ des: https://polmarsol.github.io/mai-grades/#/s/imas
+URL:https://campusvirtual.urv.cat/mod/choice/view.php?id=4372690
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IMAS: Choose your Task 1 presentation slot
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:imas-imas-task1-talks@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261125
+DTEND;VALUE=DATE:20261126
+SUMMARY:IMAS: Task 1 presentations\, week of 25 November
+DESCRIPTION:Introduction to Multi-Agent Systems. Not graded.\nYour grades: 
+ https://polmarsol.github.io/mai-grades/#/s/imas
+URL:https://polmarsol.github.io/mai-grades/#/s/imas
+CATEGORIES:Milestone
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IMAS: Task 1 presentations\, week of 25 November
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:imas-imas-prelim@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261216
+DTEND;VALUE=DATE:20261217
+SUMMARY:IMAS: Task 2: Coordination and implementation preliminary revision 
+ (due 23:55)
+DESCRIPTION:by 23:55\n5% of the final IMAS mark (Introduction to Multi-Agen
+ t Systems).\nTask: https://campusvirtual.urv.cat/mod/assign/view.php?id=4
+ 372680\nYour grades: https://polmarsol.github.io/mai-grades/#/s/imas
+URL:https://campusvirtual.urv.cat/mod/assign/view.php?id=4372680
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IMAS: Task 2: Coordination and implementation preliminary revis
+ ion
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:imas-imas-final@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20270110
+DTEND;VALUE=DATE:20270111
+SUMMARY:IMAS: Final documentation and implementation (due 23:55)
+DESCRIPTION:by 23:55\n35% of the final IMAS mark (Introduction to Multi-Age
+ nt Systems).\nTask: https://campusvirtual.urv.cat/mod/assign/view.php?id=
+ 4372681\nYour grades: https://polmarsol.github.io/mai-grades/#/s/imas
+URL:https://campusvirtual.urv.cat/mod/assign/view.php?id=4372681
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IMAS: Final documentation and implementation
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:imas-imas-exam@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20270113
+DTEND;VALUE=DATE:20270114
+SUMMARY:IMAS: Theory exam
+DESCRIPTION:40% of the final IMAS mark (Introduction to Multi-Agent Systems
+ ).\nYour grades: https://polmarsol.github.io/mai-grades/#/s/imas
+URL:https://polmarsol.github.io/mai-grades/#/s/imas
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:IMAS: Theory exam
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:par-par-plan-prac@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261106
+DTEND;VALUE=DATE:20261107
+SUMMARY:PAR: Assignment #1: Planning (due 23:59)
+DESCRIPTION:by 23:59\n25% of the final PAR mark (Planning and Approximate R
+ easoning).\nTask: https://campusvirtual.urv.cat/mod/assign/view.php?id=44
+ 16197\nYour grades: https://polmarsol.github.io/mai-grades/#/s/par
+URL:https://campusvirtual.urv.cat/mod/assign/view.php?id=4416197
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:PAR: Assignment #1: Planning
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:par-par-plan-exam@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;TZID=Europe/Madrid:20261118T110000
+DTEND;TZID=Europe/Madrid:20261118T130000
+SUMMARY:PAR: Exam: Planning
+DESCRIPTION:11:00–13:00\n30% of the final PAR mark (Planning and Approxim
+ ate Reasoning).\nTask: https://campusvirtual.urv.cat/mod/assign/view.php?
+ id=4416199\nYour grades: https://polmarsol.github.io/mai-grades/#/s/par
+LOCATION:Rooms A215 and A207\, building E1
+URL:https://campusvirtual.urv.cat/mod/assign/view.php?id=4416199
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:PAR: Exam: Planning
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:par-par-ar-prac@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261214
+DTEND;VALUE=DATE:20261215
+SUMMARY:PAR: Assignment #2: Fuzzy expert system (due 23:59)
+DESCRIPTION:by 23:59\n15% of the final PAR mark (Planning and Approximate R
+ easoning).\nTask: https://campusvirtual.urv.cat/mod/assign/view.php?id=44
+ 16201\nYour grades: https://polmarsol.github.io/mai-grades/#/s/par
+URL:https://campusvirtual.urv.cat/mod/assign/view.php?id=4416201
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:PAR: Assignment #2: Fuzzy expert system
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:par-par-ar-exam@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;TZID=Europe/Madrid:20270113T110000
+DTEND;TZID=Europe/Madrid:20270113T130000
+SUMMARY:PAR: Exam: Approximate Reasoning
+DESCRIPTION:11:00\n30% of the final PAR mark (Planning and Approximate Reas
+ oning).\nTask: https://campusvirtual.urv.cat/mod/assign/view.php?id=44162
+ 02\nYour grades: https://polmarsol.github.io/mai-grades/#/s/par
+URL:https://campusvirtual.urv.cat/mod/assign/view.php?id=4416202
+CATEGORIES:Exam
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:PAR: Exam: Approximate Reasoning
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+END:VCALENDAR
