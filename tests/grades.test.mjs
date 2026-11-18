@@ -6,6 +6,8 @@ import { CATALOG, catalogById } from '../assets/js/catalog.js';
 const near = (a, b, eps = 1e-6) => assert.ok(Math.abs(a - b) < eps, `${a} ≈ ${b}`);
 const g = (obj) => Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, { v }]));
 
+const TESTS10 = Object.fromEntries(Array.from({ length: 10 }, (_, k) => [`iml-t${k + 1}`, 10]));
+
 test('every catalog subject sums to 100% of the final mark', () => {
   for (const s of CATALOG) {
     const total = flatten(s.items).filter((n) => n.isLeaf).reduce((a, n) => a + n.frac, 0);
@@ -18,7 +20,7 @@ test('IML official formula', () => {
   const grades = g({
     'iml-w2-code': 8, 'iml-w2-report': 7, 'iml-w2-exam': 6,
     'iml-w3-code': 9, 'iml-w3-report': 8,
-    'iml-tests': 10, 'iml-exam': 6,
+    ...TESTS10, 'iml-exam': 6,
   });
   const w2 = 0.35 * 8 + 0.35 * 7 + 0.3 * 6;
   const w3 = 0.5 * 9 + 0.5 * 8; // Work 3 exam replaced by an ungraded rubric
@@ -34,7 +36,7 @@ test('IML exam below 3.5 fails the subject even with a good average', () => {
   const ev = evaluate(catalogById.iml, g({
     'iml-w2-code': 10, 'iml-w2-report': 10, 'iml-w2-exam': 10,
     'iml-w3-code': 10, 'iml-w3-report': 10,
-    'iml-tests': 10, 'iml-exam': 3,
+    ...TESTS10, 'iml-exam': 3,
   }));
   assert.ok(ev.secured > 5);
   assert.equal(ev.status, 'failed');
@@ -53,7 +55,7 @@ test('needed grade honours a minimum when it is the binding constraint', () => {
   const iml = catalogById.iml;
   const grades = g({
     'iml-w2-code': 10, 'iml-w2-report': 10, 'iml-w2-exam': 10,
-    'iml-w3-code': 10, 'iml-w3-report': 10, 'iml-tests': 10,
+    'iml-w3-code': 10, 'iml-w3-report': 10, ...TESTS10,
   });
   const r = needed(iml, grades, 5);
   assert.equal(r.kind, 'need');
@@ -137,4 +139,58 @@ test('home layout presets only use known blocks and default to dates first', asy
   const l = getLayout();
   assert.equal(l.preset, 'dates');
   assert.deepEqual(l.order, PRESETS.dates.order);
+});
+
+test('IML weekly questionnaires: ten dated Tuesdays worth 12% of the mark together', () => {
+  const nodes = flatten(catalogById.iml.items);
+  const tests = nodes.filter((n) => n.parent === 'iml-tests');
+  assert.equal(tests.length, 10);
+  near(tests.reduce((a, n) => a + n.frac, 0), 0.6 * 0.2);
+  for (const n of tests) assert.equal(new Date(n.item.date + 'T12:00').getDay(), 2, n.item.id);
+});
+
+test('a grade on an item that became a group moves to its past parts', async () => {
+  const { splitGrades } = await import('../assets/js/store.js');
+  const grades = { 'iml-tests': { v: 8 } };
+  splitGrades(grades, catalogById.iml.items, '2026-10-20');
+  assert.equal(grades['iml-tests'], undefined);
+  assert.deepEqual(Object.keys(grades).sort(), ['iml-t1', 'iml-t2', 'iml-t3', 'iml-t4']);
+  near(evaluate(catalogById.iml, grades).nodes['iml-tests'].value, 8);
+  const ihlt = { 'ihlt-sessions': { v: 9 } };
+  splitGrades(ihlt, catalogById.ihlt.items, '2026-10-01');
+  assert.deepEqual(ihlt, { 'ihlt-s1': { v: 9 } });
+});
+
+test('stats helpers: sample deviation, quantiles, means, regression and streaks', async () => {
+  const S = await import('../assets/js/stats.js');
+  near(S.sd([2, 4, 4, 4, 5, 5, 7, 9]), 2.138, 0.001);
+  assert.equal(S.median([1, 3, 2]), 2);
+  near(S.quantile([1, 2, 3, 4], 0.25), 1.75);
+  near(S.geometricMean([2, 8]), 4);
+  near(S.harmonicMean([2, 8]), 3.2);
+  near(S.pearson([[1, 2], [2, 4], [3, 6]]), 1);
+  const reg = S.regression([[0, 1], [1, 3], [2, 5]]);
+  near(reg.b, 2);
+  near(reg.r2, 1);
+  assert.deepEqual(S.streaks([8, 9, 6, 7, 7.5, 10], 7), { best: 3, current: 3 });
+  assert.equal(S.gpaPoints(9), 4);
+  assert.equal(S.gpaPoints(4.9), 0);
+});
+
+test('stats: simulation is repeatable and a finished subject is certain', async () => {
+  const S = await import('../assets/js/stats.js');
+  const { DEMO_GRADES } = await import('../assets/js/catalog.js');
+  const rows = S.collect(CATALOG.map((s) => ({ s, grades: DEMO_GRADES[s.id] || {}, target: 5 })));
+  const a = S.simulate(rows, { runs: 200, seed: 42 });
+  const b = S.simulate(rows, { runs: 200, seed: 42 });
+  assert.deepEqual(a.semester, b.semester);
+  for (const o of a.subjects) if (o.finals) assert.ok(o.pass >= 0 && o.pass <= 1);
+  const ci = catalogById.ci;
+  const done = S.collect([{ s: ci, grades: { 'ci-ec': { v: 8 }, 'ci-nc': { v: 8 }, 'ci-fc': { v: 8 }, 'ci-exam': { v: 6 } }, target: 7 }]);
+  const sim = S.simulate(done, { runs: 50, seed: 1 });
+  assert.equal(sim.subjects[0].pass, 1);
+  assert.equal(sim.subjects[0].hit, 1);
+  // one point on an exam worth half of a 5-ECTS subject, out of 5 ECTS in total
+  const gain = S.sensitivity(S.collect([{ s: ci, grades: {}, target: 5 }]));
+  near(gain.find((g) => g.item.id === 'ci-exam').semesterGain, 0.5);
 });

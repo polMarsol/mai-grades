@@ -75,6 +75,11 @@ function steps() {
       text: 'One block per assessment. They fill in with the colour of the subject as you hand things in or get grades.',
     },
     {
+      target: '.nav-links a[data-section="stats"]',
+      title: 'Stats',
+      text: 'Every grade on a timeline, your ECTS-weighted average, the spread of each subject and your chance of passing, simulated a thousand times.',
+    },
+    {
       target: '#customize',
       title: 'Make it yours',
       text: 'Move or hide blocks, or pick a preset such as Grades first or Essentials.',

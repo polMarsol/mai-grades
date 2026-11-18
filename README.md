@@ -10,6 +10,7 @@ A small, private grade tracker for students of the Master in Artificial Intellig
 - Home is a dates dashboard: countdown rings for the next deadlines, a week or month calendar, and links to each course page (set `url` on a subject or item in `catalog.js`, or in Edit structure).
 - Course news: a short dated list of changes. News the student hasn't seen yet is marked New, with a dot on the Home tab.
 - Mark work as submitted (or an exam as taken, from its day on). A strip on Home shows how much of the semester is done; submitted work waits in Overview until it gets a grade.
+- Stats: every grade on a timeline, ECTS-weighted average, spread and σ per subject, points decided, distance to your target, a Monte Carlo of your chance of passing, where an extra point counts most, records and streaks, a semester load calendar and a few numbers for the nerds.
 - Customize Home: presets (Dates first, Grades first, Essentials) or your own order, with any block hidden. Saved with the rest of your data.
 - Welcome aboard: a short guided tour the first time, with a hands-on example of what you need in an exam. Run it again from Settings.
 - Exam details: date, time, room, duration, format, preparation tips and what you need, for every exam. Add them under `exam` on an item in `catalog.js`.

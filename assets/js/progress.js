@@ -4,7 +4,9 @@ import { flatten, leafValue, findItem, needed, evaluate, PASS } from './grades.j
 import { esc, icon, fmt, pct, fmtDate, relDay, daysFrom, toast, openDialog, safeUrl } from './ui.js';
 
 const isExam = (item) => item?.kind === 'exam';
-const doneWord = (item) => (isExam(item) ? 'Taken' : 'Submitted');
+// exams and in-class tests are sat, not handed in
+const sitIn = (item) => item?.kind === 'exam' || item?.kind === 'test';
+const doneWord = (item) => (sitIn(item) ? 'Taken' : 'Submitted');
 
 /** Everything a student has to hand in or sit this semester: graded items and ungraded dates. */
 export function semesterItems(st = getState()) {
@@ -53,7 +55,7 @@ export function doneButton(s, item, { keep = false } = {}) {
   const graded = leafValue(item, getGrades(s.id)[item.id]) != null;
   if (graded && !keep) return '';
   // an exam can only be marked as taken from its day on
-  if (isExam(item) && item.date && daysFrom(item.date) > 0 && !isDone(s.id, item.id)) return '';
+  if (sitIn(item) && item.date && daysFrom(item.date) > 0 && !isDone(s.id, item.id)) return '';
   const on = isDone(s.id, item.id);
   const word = doneWord(item);
   return `<button type="button" class="done-btn" data-done="${esc(s.id)}|${esc(item.id)}" aria-pressed="${on}" ${graded ? 'hidden' : ''}>

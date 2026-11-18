@@ -31,7 +31,7 @@ export function deadlineRow({ s, n }) {
       <div class="deadline-text">
         <a href="#/s/${esc(s.id)}" class="deadline-title"><span class="code-dot" aria-hidden="true"></span>${esc(s.code)}: ${esc(n.item.name)}</a>
         <span class="muted">${relDay(n.date)}, ${n.isMilestone ? 'no grade' : `${pct(n.frac)} of the final mark`}${
-          doneOn(s.id, n.item.id) ? `. ${n.item.kind === 'exam' ? 'Taken' : 'Submitted'} on ${fmtDate(doneOn(s.id, n.item.id), { day: 'numeric', month: 'short' })}` : ''
+          doneOn(s.id, n.item.id) ? `. ${n.item.kind === 'exam' || n.item.kind === 'test' ? 'Taken' : 'Submitted'} on ${fmtDate(doneOn(s.id, n.item.id), { day: 'numeric', month: 'short' })}` : ''
         }</span>
         ${where ? `<span class="deadline-where">${where}</span>` : ''}
         <span class="row-actions">${doneButton(s, n.item)}${examButton(s, n.item)}${campusLink(s, n.item)}</span>

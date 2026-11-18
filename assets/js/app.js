@@ -1,6 +1,7 @@
 import { renderHome } from './views/home.js';
 import { renderSubject } from './views/subject.js';
 import { renderOverview } from './views/overview.js';
+import { renderStats } from './views/stats.js';
 import { renderSettings } from './views/settings.js';
 import { renderAbout } from './views/about.js';
 import { renderAdd } from './views/add.js';
@@ -22,13 +23,14 @@ function parseRoute() {
   const parts = path.split('/').filter(Boolean);
   if (parts[0] === 's' && parts[1]) return { name: 'subject', id: decodeURIComponent(parts[1]), params };
   if (parts[0] === 'overview') return { name: 'overview', params };
+  if (parts[0] === 'stats') return { name: 'stats', params };
   if (parts[0] === 'settings') return { name: 'settings', params };
   if (parts[0] === 'about') return { name: 'about', params };
   if (parts[0] === 'add') return { name: 'add', params };
   return { name: 'home', params };
 }
 
-const TITLES = { home: 'Home', overview: 'Overview', settings: 'Settings', about: 'About', add: 'Add a grade' };
+const TITLES = { home: 'Home', overview: 'Overview', stats: 'Stats', settings: 'Settings', about: 'About', add: 'Add a grade' };
 
 function moveIndicator() {
   const active = nav.querySelector('[aria-current="page"]');
@@ -55,6 +57,7 @@ function render() {
     if (r.name === 'home') renderHome(main);
     else if (r.name === 'subject') renderSubject(main, r.id);
     else if (r.name === 'overview') renderOverview(main);
+    else if (r.name === 'stats') renderStats(main);
     else if (r.name === 'about') renderAbout(main);
     else if (r.name === 'add') renderAdd(main, r.params);
     else renderSettings(main, r.params);

@@ -1,5 +1,5 @@
 // Offline support: precache the app shell, then serve cache-first and refresh in the background.
-const VERSION = 'mai-grades-v11';
+const VERSION = 'mai-grades-v13';
 const SHELL = [
   './',
   './index.html',
@@ -13,6 +13,7 @@ const SHELL = [
   './assets/js/ics.js',
   './assets/js/install.js',
   './assets/js/share.js',
+  './assets/js/stats.js',
   './assets/js/layout.js',
   './assets/js/progress.js',
   './assets/js/store.js',
@@ -24,6 +25,7 @@ const SHELL = [
   './assets/js/views/home.js',
   './assets/js/views/overview.js',
   './assets/js/views/settings.js',
+  './assets/js/views/stats.js',
   './assets/js/views/subject.js',
   './assets/fonts/inter-latin-opsz.woff2',
   './assets/fonts/inter-latin-ext-opsz.woff2',

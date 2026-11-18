@@ -16,7 +16,7 @@ function leafRow(s, n, grades) {
   return `
   <div class="leaf" data-id="${esc(it.id)}">
     <div class="leaf-text">
-      <label class="leaf-name" for="in-${esc(it.id)}">${esc(it.name)}${it.kind === 'exam' ? '<span class="tag">Exam</span>' : ''}</label>
+      <label class="leaf-name" for="in-${esc(it.id)}">${esc(it.name)}${it.kind === 'exam' ? '<span class="tag">Exam</span>' : it.kind === 'test' ? '<span class="tag">In class</span>' : ''}</label>
       <span class="leaf-meta">
         <span>${pctFine(n.frac)} of final</span>
         ${it.date ? `<span>${fmtDate(it.date)} <span class="muted">(${relDay(it.date)})</span></span>` : ''}

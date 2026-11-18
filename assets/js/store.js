@@ -51,6 +51,7 @@ function migrate(st) {
       const next = official(s.id);
       const shape = (x) => JSON.stringify([x.items, x.milestones || []]);
       if (shape(next) !== shape(s)) migrated.push(s.code);
+      splitGrades(st.grades?.[s.id], next.items);
       return { ...next, color: s.color };
     }
     return { ...s, outdated: true };
@@ -62,6 +63,29 @@ function migrate(st) {
     /* ignore */
   }
   return st;
+}
+
+/**
+ * A graded item that has become a group (say, "Weekly questionnaires" now split into T1…T10)
+ * hands its grade to the parts already past, or to the first part when none has a date yet.
+ * That keeps the subject's grade where it was; the student can then fill in each part.
+ */
+export function splitGrades(grades, items, today = new Date().toISOString().slice(0, 10)) {
+  if (!grades) return;
+  const walk = (list) => {
+    for (const it of list) {
+      if (!it.children?.length) continue;
+      const old = grades[it.id];
+      if (old && old.v != null) {
+        const kids = it.children.filter((c) => !c.children?.length);
+        const past = kids.filter((c) => c.date && c.date <= today);
+        for (const c of past.length ? past : kids.slice(0, 1)) grades[c.id] ??= { ...old };
+        delete grades[it.id];
+      }
+      walk(it.children);
+    }
+  };
+  walk(items);
 }
 
 /** Codes of subjects refreshed from the course guides on this load (returned once). */
@@ -152,7 +176,9 @@ export function setGrade(subjectId, leafId, value, retake) {
   if (value == null) {
     delete g[leafId];
   } else {
-    g[leafId] = { v: value, ...(retake ? { retake: true } : {}) };
+    // `at`: the day the grade was typed, used to place undated grades on the Stats timeline
+    const at = g[leafId]?.v === value && g[leafId]?.at ? g[leafId].at : new Date().toISOString().slice(0, 10);
+    g[leafId] = { v: value, at, ...(retake ? { retake: true } : {}) };
   }
   persist();
 }
