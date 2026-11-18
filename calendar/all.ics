@@ -724,6 +724,23 @@ TRIGGER:-PT15H
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
+UID:cv-cv-lab5@mai-grades
+DTSTAMP:20261118T000000Z
+DTSTART;VALUE=DATE:20261124
+DTEND;VALUE=DATE:20261125
+SUMMARY:CV: Lab evaluation 5
+DESCRIPTION:8.3% of the final CV mark (Computational Vision).\nYour grades:
+  https://polmarsol.github.io/mai-grades/#/s/cv
+URL:https://polmarsol.github.io/mai-grades/#/s/cv
+CATEGORIES:Delivery
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:CV: Lab evaluation 5
+TRIGGER:-PT15H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
 UID:cv-cv-lab4@mai-grades
 DTSTAMP:20261118T000000Z
 DTSTART;VALUE=DATE:20261201

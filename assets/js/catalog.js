@@ -4,7 +4,7 @@
 // assumption is listed in `notes` so students can adjust it in the editor.
 // `milestones` are dates that matter but carry no grade (topic choice, rubrics…).
 
-export const CATALOG_VERSION = '2026-27.7';
+export const CATALOG_VERSION = '2026-27.8';
 
 // Day the structures below were last checked against the course guides and announcements.
 export const CHECKED = '2026-11-18';
@@ -172,7 +172,7 @@ export const CATALOG = [
     source: 'CV 2026-27 Course Presentation and Campus Virtual',
     notes: [
       'Paper presentation: 13 minutes per group; submit the slides (course template) and a critical discussion of up to 2 pages.',
-      'Five lab evaluations, done in person in the lab roughly every two weeks (on Campus Virtual they appear as “Evaluation on Sets …”). The date of the fifth is not known yet. Lab and presentation weights inside the practicum are not published; they are equal here.',
+      'Five lab evaluations, done in person in the lab roughly every two weeks (on Campus Virtual they appear as “Evaluation on Sets …”). Lab and presentation weights inside the practicum are not published; they are equal here.',
       'The midterm has a test part worth 5 points and a second part; enter the overall grade.',
       'If you fail the first midterm, the second exam covers the whole course.',
     ],
@@ -187,7 +187,7 @@ export const CATALOG = [
           { id: 'cv-lab2', name: 'Lab evaluation 2', weight: 1, date: '2026-11-03' },
           { id: 'cv-lab3', name: 'Lab evaluation 3', weight: 1, date: '2026-11-10' },
           { id: 'cv-lab4', name: 'Lab evaluation 4', weight: 1, date: '2026-12-01' },
-          { id: 'cv-lab5', name: 'Lab evaluation 5', weight: 1 },
+          { id: 'cv-lab5', name: 'Lab evaluation 5', weight: 1, date: '2026-11-24' },
           { id: 'cv-paper', name: 'Paper presentation', weight: 1, date: '2026-12-15', time: '15:30–18:30' },
         ],
       },

@@ -16,6 +16,19 @@
 
 export const NEWS = [
   {
+    id: 'cv-lab5-date',
+    date: '2026-11-18',
+    kind: 'course',
+    subject: 'cv',
+    title: 'CV Lab evaluation 5 is on 24 November',
+    dek: 'The last in-person lab evaluation now has its date: next Tuesday.',
+    body: [
+      'The fifth lab evaluation of Computer Vision is on **Tuesday 24 November**, in person in the lab, like the others.',
+      'The five lab evaluations and the paper presentation make up the practicum, half of the final mark, and the practicum needs at least a 5.',
+    ],
+    changes: [{ what: 'Lab evaluation 5', before: 'No date', after: 'Tue 24 Nov' }],
+  },
+  {
     id: 'app-calendar-feed',
     date: '2026-11-18',
     kind: 'app',
