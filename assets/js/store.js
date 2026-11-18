@@ -1,4 +1,5 @@
 // Local-first state. Everything lives in this browser's localStorage.
+import { sanitizeState } from './sanitize.js';
 import { CATALOG, catalogById, CATALOG_VERSION, blankSubject, COLORS, DEMO_GRADES, DEMO_DONE, NEWS } from './catalog.js';
 
 const KEY = 'mai-grades:v1';
@@ -33,7 +34,7 @@ function load() {
     const parsed = JSON.parse(raw);
     // Saved before news had ids: everything published so far was already on screen.
     if (!Array.isArray(parsed.seenNews)) parsed.seenNews = parsed.onboarded ? NEWS.map((n) => n.id) : [];
-    return migrate({ ...empty(), ...parsed });
+    return migrate(sanitizeState({ ...empty(), ...parsed }));
   } catch {
     return empty();
   }
@@ -238,7 +239,7 @@ export function importData(text) {
     throw new Error('This file is not a MAI Grades backup.');
   }
   const { app, exportedAt, ...rest } = data;
-  state = migrate({ ...empty(), ...rest, onboarded: true });
+  state = migrate(sanitizeState({ ...empty(), ...rest, onboarded: true }));
   persist();
 }
 

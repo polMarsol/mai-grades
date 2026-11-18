@@ -73,7 +73,8 @@ export function renderAbout(root) {
 
       <div class="fineprint">
         <p>The logo reads two ways: AI, and a 10.</p>
-        <p>Made by a MAI student. Not an official tool of UPC, UB or URV: always check the course guide and Campus Virtual, which have the final word.</p>
+        <p>Made by a MAI student. Not an official tool of UPC, UB or URV: always check the course guide and Campus Virtual, which have the final word. Grades shown here are estimates; your official marks are the ones the university publishes.</p>
+        <p>Privacy: MAI Grades has no accounts, no analytics and no cookies, and your grades never leave your browser. The site is hosted on GitHub Pages, which, like any web host, receives your IP address when you visit.</p>
       </div>
     </div>`;
 

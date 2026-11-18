@@ -20,7 +20,7 @@ function leafRow(s, n, grades) {
       <span class="leaf-meta">
         <span>${pctFine(n.frac)} of final</span>
         ${it.date ? `<span>${fmtDate(it.date)} <span class="muted">(${relDay(it.date)})</span></span>` : ''}
-        ${it.min != null && it.min !== '' ? `<span>At least ${it.min}</span>` : ''}
+        ${it.min != null && it.min !== '' ? `<span>At least ${esc(String(it.min))}</span>` : ''}
       </span>
       ${examButton(s, it) ? `<span class="row-actions">${examButton(s, it)}</span>` : ''}
     </div>
@@ -29,7 +29,7 @@ function leafRow(s, n, grades) {
              placeholder="–" value="${val == null ? '' : val}" aria-describedby="err-${esc(it.id)}" aria-label="Grade for ${esc(it.name)}, 0 to 10">
       ${
         it.retake
-          ? `<label class="mini-check"><input type="checkbox" data-retake ${e?.retake ? 'checked' : ''} ${val == null ? 'disabled' : ''}> Resubmitted, max ${it.retake}</label>`
+          ? `<label class="mini-check"><input type="checkbox" data-retake ${e?.retake ? 'checked' : ''} ${val == null ? 'disabled' : ''}> Resubmitted, max ${esc(String(it.retake))}</label>`
           : ''
       }
       <span class="leaf-err" id="err-${esc(it.id)}" role="alert"></span>
@@ -59,7 +59,7 @@ function groupBlock(s, n, flat, grades) {
         <span class="group-name">${esc(it.name)}</span>
         <span class="leaf-meta">
           <span>${pctFine(n.frac)} of final</span>
-          ${it.min != null && it.min !== '' ? `<span>At least ${it.min}</span>` : ''}
+          ${it.min != null && it.min !== '' ? `<span>At least ${esc(String(it.min))}</span>` : ''}
         </span>
       </span>
       <span class="group-grade num" data-node="${esc(it.id)}">–</span>
@@ -86,7 +86,7 @@ function reportUrl(s) {
     '',
     `_Course guide last checked on ${s.checked || 'unknown'}._`,
   ].join('\n');
-  const q = new URLSearchParams({ title: `${s.code}: wrong date or weight`, body, labels: 'course data' });
+  const q = new URLSearchParams({ title: `${s.code}: wrong date or weight`, body });
   return `${REPO}/issues/new?${q}`;
 }
 

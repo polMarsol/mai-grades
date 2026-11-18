@@ -106,7 +106,7 @@ export function openExam(sid, iid) {
     else if (r.kind === 'impossible') need = `${target === PASS ? 'Passing' : `A ${target}`} is out of reach on continuous assessment. The most you can still get is <strong class="num">${fmt(r.max)}</strong>.`;
     else
       need = `To ${goal} you need an average of <strong class="num">${fmt(r.x)}</strong> on the remaining ${pct(ev.remainingFrac)}, this exam included.`;
-    if (item.min != null && item.min !== '') need += ` This exam also needs at least <strong class="num">${item.min}</strong> on its own.`;
+    if (item.min != null && item.min !== '') need += ` This exam also needs at least <strong class="num">${esc(String(item.min))}</strong> on its own.`;
   }
 
   const facts = [

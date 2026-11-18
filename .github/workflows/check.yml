@@ -1,6 +1,8 @@
 # Runs the tests on every push: grade maths, catalog weights and that the calendar feeds are up to date.
 name: Check
 on: [push, pull_request]
+permissions:
+  contents: read
 jobs:
   test:
     runs-on: ubuntu-latest

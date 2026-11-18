@@ -222,3 +222,53 @@ test('calendar feeds: stable ids, timed exams in Madrid time, all-day deadlines'
   assert.match(text, /DTSTART;VALUE=DATE:20261214/);
   for (const line of text.split('\r\n')) assert.ok(new TextEncoder().encode(line).length <= 75, line);
 });
+
+test('a crafted backup cannot inject markup: fields are reduced to their types', async () => {
+  const { sanitizeState } = await import('../assets/js/sanitize.js');
+  const evil = '<img src=x onerror=alert(1)>';
+  const st = sanitizeState({
+    subjects: [
+      { id: 'iml', code: 'IML', name: 'ok', color: `blue" onclick="x`, ects: evil, url: 'javascript:alert(1)',
+        items: [{ id: 'a"b', name: 'bad id', weight: 1 }, { id: 'ok-1', name: evil, weight: '2', min: evil, retake: 8, date: evil, kind: evil, url: 'https://campus.example/x' }] },
+      { id: '<script>', code: 'X', items: [] },
+    ],
+    grades: { iml: { 'ok-1': { v: 11 }, 'ok-2': { v: 7, at: evil } }, other: { a: { v: 5 } } },
+    targets: { iml: evil },
+    seenNews: ['ok', evil],
+  });
+  assert.equal(st.subjects.length, 1);
+  const s = st.subjects[0];
+  assert.equal(s.color, 'blue');
+  assert.equal(s.ects, undefined);
+  assert.equal(s.url, undefined);
+  assert.deepEqual(s.items.map((i) => i.id), ['ok-1']);
+  const it = s.items[0];
+  assert.equal(it.min, undefined);
+  assert.equal(it.date, undefined);
+  assert.equal(it.kind, undefined);
+  assert.equal(it.weight, 2);
+  assert.equal(it.url, 'https://campus.example/x');
+  assert.equal(it.name, evil); // text is kept, and escaped wherever it is shown
+  assert.deepEqual(st.grades, { iml: { 'ok-2': { v: 7 } } });
+  assert.deepEqual(st.targets, {});
+  assert.deepEqual(st.seenNews, ['ok']);
+});
+
+test('the catalog survives sanitizing unchanged', async () => {
+  const { sanitizeSubject } = await import('../assets/js/sanitize.js');
+  for (const s of CATALOG) assert.deepEqual(sanitizeSubject(JSON.parse(JSON.stringify(s))), JSON.parse(JSON.stringify(s)), s.id);
+});
+
+test('the security policy allows the inline scripts as they are (update the hash if you edit them)', async () => {
+  const { readFileSync } = await import('node:fs');
+  const { createHash } = await import('node:crypto');
+  for (const page of ['index.html', '404.html']) {
+    const html = readFileSync(new URL(`../${page}`, import.meta.url), 'utf8');
+    const csp = /http-equiv="Content-Security-Policy" content="([^"]+)"/.exec(html)?.[1];
+    assert.ok(csp, page);
+    for (const [, js] of html.matchAll(/<script>([\s\S]*?)<\/script>/g)) {
+      const h = createHash('sha256').update(js).digest('base64');
+      assert.ok(csp.includes(`'sha256-${h}'`), `${page}: inline script hash ${h} missing from the policy`);
+    }
+  }
+});
